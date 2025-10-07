@@ -14,7 +14,7 @@
     "JavaScript": {
       "language_servers": [
         "!deno",
-        "!typescript-language-server",
+        "typescript-language-server",
         "!vtsls",
         "eslint"
       ],
@@ -26,7 +26,7 @@
     "TSX": {
       "language_servers": [
         "!deno",
-        "!typescript-language-server",
+        "typescript-language-server",
         "!vtsls",
         "eslint"
       ],
@@ -35,7 +35,7 @@
     "TypeScript": {
       "language_servers": [
         "!deno",
-        "!typescript-language-server",
+        "typescript-language-server",
         "!vtsls",
         "eslint"
       ],
@@ -44,7 +44,18 @@
   },
   "lsp": {
     "eslint": {
-      // eslint config stuff here
+      "settings": {
+        "problems": {
+          "shortenToSingleLine": true
+        },
+        "workingDirectory": {
+          "mode": "auto"
+        },
+        "rulesCustomizations": [
+          // set all eslint errors/warnings to show as warnings
+          // { "rule": "*", "severity": "warn" }
+        ]
+      }
     }
   }
 }

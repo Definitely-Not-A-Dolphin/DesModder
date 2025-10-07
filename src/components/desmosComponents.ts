@@ -230,7 +230,7 @@ function exprTemplate(
     {
       model: () => self.props.model(),
       controller: () => self.props.controller(),
-      onDragPending: () => {},
+      // onDragPending: () => {},
       isDragCopy: () => false,
     },
     []

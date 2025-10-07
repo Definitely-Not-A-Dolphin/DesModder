@@ -328,6 +328,7 @@ export async function capture(vc: VideoCreator) {
     }
     if (vc.captureMethod === "ticks") {
       // prevent the current slider ticking since we will manually tick the sliders.
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       vc.cc._tickSliders = () => {};
     } else if (vc.cc.getPlayingSliders().length > 0) {
       vc.cc.stopAllSliders();

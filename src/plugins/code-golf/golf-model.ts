@@ -222,6 +222,7 @@ function golfStatsForExpr(cc: CalcController, latex: string): GolfStats {
     latex: () => latex ?? "",
     isFocused: () => false,
     selectOnFocus: () => false,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     handleLatexChanged: () => {},
     hasError: () => false,
     handleFocusChanged: () => () => false,

@@ -42,7 +42,7 @@ export default class ReplaceBar extends Component<{
                   }
                 }
               }}
-              onFocusedChanged={() => {}}
+              // onFocusedChanged={() => {}}
               hasError={false}
               selectOnFocus
               noFadeout

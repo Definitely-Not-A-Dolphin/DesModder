@@ -88,11 +88,12 @@ export default tseslint.config(
       "@typescript-eslint/class-methods-use-this": "off",
       "@typescript-eslint/max-params": "off",
       "@typescript-eslint/init-declarations": "off",
-      "@typescript-eslint/no-empty-function": "off",
+      "@typescript-eslint/no-empty-function": "warn",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-loop-func": "off",
       "@typescript-eslint/no-inferrable-types": "off",
       "@typescript-eslint/no-deprecated": "off",
+      // Turning this off because fixing it requires a deep understanding of the code
       "@typescript-eslint/no-magic-numbers": "off",
       "@typescript-eslint/no-redundant-type-constituents": "off",
       "@typescript-eslint/no-unnecessary-condition": "off",

@@ -20,7 +20,7 @@ export abstract class ClassComponent<
   children!: unknown;
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(_props: OrConst<PropsType>) {}
-  init(): void {}
+  // Removing the above constructor causes an error in src/plugins/pin-expressions/components/PinnedPanel.tsx
   abstract template(): unknown;
   _element!:
     | {

@@ -25,11 +25,9 @@ export default class CodeGolf extends PluginController {
     return () => GolfStatsPanelFn(this.cc, model);
   }
 
-  afterConfigChange(): void {}
-
-  afterEnable() {}
-
-  afterDisable() {}
+  // afterConfigChange(): void {}
+  // afterEnable() {}
+  // afterDisable() {}
 
   handleDispatchedAction(action: DispatchedEvent) {
     switch (action.type) {

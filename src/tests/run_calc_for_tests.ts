@@ -1,5 +1,4 @@
 /* eslint-disable import/first */
-/* eslint-disable no-console */
 document.body.dataset.loadData = JSON.stringify({ seed: "c29cb3444b1c435c8e4422a19ebf56f5" });
 document.body.innerHTML = `
   <div class="dcg-sliding-interior">
@@ -28,13 +27,12 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 HTMLCanvasElement.prototype.getContext = () => ({
-  scale: () => {}
+  // scale: () => {}
 } as any)
 HTMLCanvasElement.prototype.toDataURL = () => ""
 HTMLMediaElement.prototype.play = async () => {
   await new Promise<void>((resolve) => resolve())
 }
-console.debug = () => {}
 window.ResizeObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
   unobserve: jest.fn(),

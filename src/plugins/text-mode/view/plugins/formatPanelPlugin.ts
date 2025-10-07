@@ -13,7 +13,7 @@ function formatPanel(ev: EditorView): Panel {
         update: () => mount?.update(),
       });
     },
-    update() {},
+    // update() {},
     destroy() {
       if (dom) DCGView.unmountFromNode(dom);
     },

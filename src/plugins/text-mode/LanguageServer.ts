@@ -126,7 +126,9 @@ function setCalcState(tm: TextMode, state: GraphState) {
   //   the current autocomplete tooltip from disappearing
   const ae = document.activeElement as HTMLElement | undefined;
   const oldBlur = ae?.blur.bind(ae);
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   if (ae) ae.blur = () => {};
+  // I can't fix this with my current knowledge
   state.graph.product = tm.cc.graphSettings.config.product;
   tm.calc.setState(state, { allowUndo: true, fromTextMode: true } as any);
   if (ae) ae.blur = oldBlur!;

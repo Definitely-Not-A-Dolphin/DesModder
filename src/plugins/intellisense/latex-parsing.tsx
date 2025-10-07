@@ -241,9 +241,15 @@ export function getPartialFunctionCall(
   }
 }
 
+/* Recommended returntype be
+{
+  ident: string;
+  back?: () => void;
+}
+*/
 export function getCorrectableIdentifier(mq: MathQuillField): {
   ident: string;
-  back: () => void;
+  back?: () => void;
 } {
   let cursor: MQCursor | undefined = mq.__controller.cursor[-1];
 
@@ -252,7 +258,7 @@ export function getCorrectableIdentifier(mq: MathQuillField): {
 
   // don't bother if you're in a subscript
   if (isInSubscript) {
-    return { ident: "", back: () => {} };
+    return { ident: "" /* , back: () => {}*/ };
   }
 
   const identifierSegments: string[] = [];
@@ -311,6 +317,6 @@ export function getCorrectableIdentifier(mq: MathQuillField): {
       back,
     };
   } else {
-    return { ident: "", back: () => {} };
+    return { ident: "" /* , back: () => {} */ };
   }
 }

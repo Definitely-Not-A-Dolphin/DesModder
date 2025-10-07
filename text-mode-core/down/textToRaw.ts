@@ -38,7 +38,7 @@ export function textModeExprToLatex(cfg: Config, tmExpr: string) {
   )
     return;
   const [parsedExpr] = parsedTextMode.program.children;
-  if (parsedExpr && parsedExpr.type === "ExprStatement") {
+  if (/* parsedExpr && */ parsedExpr.type === "ExprStatement") {
     const aug = childExprToAug(parsedExpr.expr);
     const latex = latexTreeToString(cfg, aug);
     return latex;

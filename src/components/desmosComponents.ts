@@ -174,6 +174,7 @@ export abstract class ExpressionViewComponent extends ClassComponent<
 > {}
 
 // `?` to avoid a crash if the replacement fails
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 const ExpressionView = window.DesModderFragile?.ExpressionView;
 
 export abstract class IconViewComponent extends ClassComponent<{
@@ -182,6 +183,7 @@ export abstract class IconViewComponent extends ClassComponent<{
 }> {}
 
 // `?` to avoid a crash if the replacement fails
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 export const ImageIconView = window.DesModderFragile?.ImageIconView;
 
 interface ModelAndController {

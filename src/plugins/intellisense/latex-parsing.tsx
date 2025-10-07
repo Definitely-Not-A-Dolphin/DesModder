@@ -78,7 +78,7 @@ function isDigit(cursor: MQCursor) {
 
 // is an MQ node the start of an operator name?
 function isStartingOperatorName(cursor: MQCursor) {
-  return isOperatorName(cursor) && cursor.latex?.()?.[0] === "\\";
+  return isOperatorName(cursor) && cursor.latex?.()[0] === "\\";
 }
 
 // is an MQ node a variable name
@@ -113,7 +113,7 @@ function rawTryGetMathquillIdent(
     node = cursor;
     while (node?.[1]) {
       goToEnd++;
-      node = node?.[1];
+      node = node[1];
     }
     node = node?.parent?.parent;
   }
@@ -150,7 +150,7 @@ function rawTryGetMathquillIdent(
   if (node && isSubscript(node)) {
     latexSegments.push(node.latex?.());
 
-    backspaces += (node.latex?.()?.length ?? 4) - 4;
+    backspaces += (node.latex?.().length ?? 4) - 4;
 
     hasSubscript = true;
 
@@ -220,7 +220,7 @@ export function getPartialFunctionCall(
   let cursor: MQCursor | undefined = getController(mq).cursor;
   let paramIndex = 0;
   while (cursor) {
-    const ltx = cursor?.latex?.();
+    const ltx = cursor.latex?.();
     if (ltx === ",") paramIndex++;
     if (cursor[-1]) {
       cursor = cursor[-1];
@@ -254,7 +254,7 @@ export function getCorrectableIdentifier(mq: MathQuillField): {
   let cursor: MQCursor | undefined = mq.__controller.cursor[-1];
 
   const isInSubscript =
-    mq.__controller.cursor?.parent?._el?.classList.contains("dcg-mq-sub");
+    mq.__controller.cursor.parent?._el?.classList.contains("dcg-mq-sub");
 
   // don't bother if you're in a subscript
   if (isInSubscript) {
@@ -274,7 +274,7 @@ export function getCorrectableIdentifier(mq: MathQuillField): {
       isDigit(cursor);
     if (!isValid) break;
 
-    const ltx = cursor?.latex?.();
+    const ltx = cursor.latex?.();
     if (ltx === undefined) break;
     const filteredLatex = ltx.replace(/[^a-zA-Z0-9]/g, "");
     // MathQuill considers "." to be a digit, so filter out that case.

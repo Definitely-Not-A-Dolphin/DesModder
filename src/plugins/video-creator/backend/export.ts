@@ -109,8 +109,8 @@ async function exportFFmpeg(
   const filenames: string[] = [];
 
   async function writeFile(filename: string, frame: Blob) {
-    if (ffmpeg !== null)
-      ffmpeg.FS("writeFile", filename, await fetchFile(frame));
+    //if (ffmpeg !== null)
+    ffmpeg.FS("writeFile", filename, await fetchFile(frame));
   }
 
   for await (const { name, input } of files(vc.frames)) {

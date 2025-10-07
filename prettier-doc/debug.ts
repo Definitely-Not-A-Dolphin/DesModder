@@ -103,9 +103,8 @@ export function printDocToDebug(doc: Doc) {
         ? "dedentToRoot(" + printDoc(doc.contents) + ")"
         : typeof doc.n === "number" && doc.n < 0
           ? "dedent(" + printDoc(doc.contents) + ")"
-          : typeof doc.n !== "string" &&
-              typeof doc.n !== "number" &&
-              doc.n.type === "root"
+          : typeof doc.n !== "string" && typeof doc.n !== "number" /*&&
+              doc.n.type === "root"*/
             ? "markAsRoot(" + printDoc(doc.contents) + ")"
             : "align(" +
               JSON.stringify(doc.n) +
@@ -134,9 +133,9 @@ export function printDocToDebug(doc: Doc) {
         optionsParts.push("negate: true");
       }
 
-      if (doc.groupId) {
-        optionsParts.push(`groupId: ${printGroupId(doc.groupId)}`);
-      }
+      //if (doc.groupId) {
+      optionsParts.push(`groupId: ${printGroupId(doc.groupId)}`);
+      //}
 
       const options =
         optionsParts.length > 0 ? `, { ${optionsParts.join(", ")} }` : "";

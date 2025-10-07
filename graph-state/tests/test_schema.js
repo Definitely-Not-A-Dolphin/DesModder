@@ -29,12 +29,12 @@ fs.readdirSync("./calc_states").forEach((filename) => {
     }
     const valid = validate(data);
     const [graphID] = filename.replace(/\?.*/, "").split(".");
-    if (printGraphs) console.log(graphID);
+    // if (printGraphs) console.log(graphID);
     total += 1;
     if (valid) {
       successes += 1;
     } else {
-      if (!printGraphs) console.log(graphID, "FAIL", validate.errors);
+      /*if (!printGraphs)*/ console.log(graphID, "FAIL", validate.errors);
     }
   } catch {
     // Crashes mostly come from empty or completely malformed graph data.
@@ -42,9 +42,9 @@ fs.readdirSync("./calc_states").forEach((filename) => {
     crashes += 1;
   }
 });
-if (!printGraphs)
-  console.log(
-    `\nTesting finished: ${successes}/${total} version-${VERSION} graphs passed. Skipped ${
-      wrongVersion + crashes
-    } graphs (${wrongVersion} incorrect versions and ${crashes} test runner exceptions).`
-  );
+//if (!printGraphs)
+console.log(
+  `\nTesting finished: ${successes}/${total} version-${VERSION} graphs passed. Skipped ${
+    wrongVersion + crashes
+  } graphs (${wrongVersion} incorrect versions and ${crashes} test runner exceptions).`
+);

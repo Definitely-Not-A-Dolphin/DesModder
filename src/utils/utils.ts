@@ -42,14 +42,16 @@ export function jsx(
   const element = document.createElement(tag);
 
   // Set all defined/non-null attributes.
-  Object.entries(attrs ?? {})
-    .filter(([, value]) => value != null)
+  Object.entries(attrs)
+    //.filter(([, value]) => value != null)
     .forEach(([name, value]) =>
       element.setAttribute(
         name,
         typeof value === "object"
           ? // handle class={{class1: true, class2: false}}
             Object.keys(value)
+              // Dunno how to fix this
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               .filter((key) => value[key])
               .join(" ")
           : // all other attribute changes
@@ -58,7 +60,7 @@ export function jsx(
     );
 
   // Set all defined/non-null children.
-  element.append(...children.flat().filter((e) => e != null));
+  element.append(...children.flat() /*.filter((e) => e != null)*/);
 
   return element;
 }

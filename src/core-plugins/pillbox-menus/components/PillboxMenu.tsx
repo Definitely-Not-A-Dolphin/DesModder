@@ -45,9 +45,7 @@ export default class PillboxMenu extends Component<{
           >
             <Switch key={() => this.pm.pillboxMenuOpen}>
               {() =>
-                this.pm.pillboxButtons[this.pm.pillboxMenuOpen!]?.popup?.(
-                  this.pm
-                )
+                this.pm.pillboxButtons[this.pm.pillboxMenuOpen!].popup(this.pm)
               }
             </Switch>
             <div class="dcg-arrow" />

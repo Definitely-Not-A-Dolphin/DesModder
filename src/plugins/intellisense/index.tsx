@@ -43,9 +43,7 @@ export interface BoundIdentifierFunction {
 }
 
 export function getMQCursorPosition(focusedMQ: MathQuillField) {
-  return getController(
-    focusedMQ
-  ).cursor?.cursorElement?.getBoundingClientRect();
+  return getController(focusedMQ).cursor.cursorElement?.getBoundingClientRect();
 }
 
 export default class Intellisense extends PluginController<{
@@ -101,7 +99,7 @@ export default class Intellisense extends PluginController<{
   }
 
   getExpressionIndex(id: string): number | undefined {
-    return this.cc.listModel.__itemIdToModel[id]?.index;
+    return this.cc.listModel.__itemIdToModel[id].index;
   }
 
   getExpressionLatex(id: string): string | undefined {
@@ -130,7 +128,7 @@ export default class Intellisense extends PluginController<{
 
   // recalculate the intellisense
   updateIntellisense() {
-    if (!this.intellisenseState) return;
+    // if (!this.intellisenseState) return;
     const focusedMQ = MathQuillView.getFocusedMathquill();
     this.saveCursorState();
     this.intellisenseOpts = [];
@@ -175,7 +173,7 @@ export default class Intellisense extends PluginController<{
 
       // determine where to put intellisense window
       const bbox = getMQCursorPosition(focusedMQ);
-      if (bbox && bbox?.left !== 0 && bbox?.top !== 0) {
+      if (bbox && bbox.left !== 0 && bbox.top !== 0) {
         ({ left: this.x, top: this.y } = bbox);
       } else {
         this.canHaveIntellisense = false;
@@ -259,7 +257,7 @@ export default class Intellisense extends PluginController<{
   // you were previously in
   leaveIntellisenseMenu() {
     if (this.intellisenseReturnMQ) {
-      this.intellisenseReturnMQ?.focus();
+      this.intellisenseReturnMQ.focus();
       this.latestMQ = this.intellisenseReturnMQ;
     }
 
@@ -375,8 +373,8 @@ export default class Intellisense extends PluginController<{
       // selecting and autocompleting an intellisense selection
       // or jump to def if in row 1
     } else if (
-      key === "Enter" &&
-      this.intellisenseOpts[this.intellisenseIndex] !== undefined
+      key === "Enter" /* &&
+      this.intellisenseOpts[this.intellisenseIndex] !== undefined */
     ) {
       if (this.intellisenseRow === 0) {
         this.doAutocomplete(
@@ -564,7 +562,7 @@ export default class Intellisense extends PluginController<{
         type: "set-none-selected",
       });
 
-      (document.activeElement as HTMLElement)?.blur?.();
+      (document.activeElement as HTMLElement).blur();
 
       this.jumpToDefState = {
         varName: identDsts[0].variableName,
@@ -723,7 +721,8 @@ export default class Intellisense extends PluginController<{
             .find((e) => e.variableName === ident.ident);
 
           if (match) {
-            ident.back();
+            // This function was made optional, it didn't do anything
+            // ident.back();
             this.latestMQ.typedText(match.variableName);
             this.latestMQ.keystroke("Right");
           }
@@ -746,7 +745,7 @@ export default class Intellisense extends PluginController<{
   updateCSSForDocstringExpression(model: TextModel | undefined) {
     const noteElement = model?.dcgView?._element._domNode;
     if (noteElement) {
-      if (model?.text?.includes("@")) {
+      if (model.text?.includes("@")) {
         noteElement.dataset.isDoc = "true";
       } else {
         delete noteElement.dataset.isDoc;

@@ -268,7 +268,7 @@ function augNonFolderToRaw(
       return {
         ...base,
         type: "text",
-        text: item.text ?? "",
+        text: item.text,
       };
   }
 }

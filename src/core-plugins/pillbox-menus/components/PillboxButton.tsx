@@ -42,7 +42,7 @@ export class PillboxButton extends Component<{
             onTap={() => this.onTapMenuButton(id)}
             // TODO: manageFocus?
           >
-            <i class={() => this.pm.pillboxButtons[id].iconClass ?? ""} />
+            <i class={() => this.pm.pillboxButtons[id].iconClass /* ?? ""*/} />
           </div>
         </Tooltip>
         {

@@ -56,9 +56,9 @@ export class OrientationView extends Component<{
 
   setOrientationModeIndex(i: number) {
     const mode = orientationModes[i];
-    if (mode !== undefined) {
-      this.or.orientationMode = mode;
-    }
+    // if (mode !== undefined) {
+    this.or.orientationMode = mode;
+    // }
   }
 
   templateCurrent() {

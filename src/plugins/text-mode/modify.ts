@@ -110,7 +110,7 @@ function evaluatorChange(
       // length 2 corresponds to dragging a point, which is latex only
       // otherwise (length 4), it is dragging an image
       itemsChanged[changeID] =
-        change.move_strategy?.length === 2 ? "latex-only" : "image-pos";
+        change.move_strategy.length === 2 ? "latex-only" : "image-pos";
     else if (change.regression !== undefined)
       itemsChanged[changeID] = "regression";
     else if (change.column_data !== undefined)
@@ -170,8 +170,9 @@ function metadataChange(
 ): ChangeSpec {
   const oldNode = analysis.mapIDstmt[id];
   if (
-    !oldNode ||
-    (oldNode.type !== "ExprStatement" && oldNode.type !== "Image")
+    //!oldNode ||
+    oldNode.type !== "ExprStatement" &&
+    oldNode.type !== "Image"
   )
     return [];
   const expr = state.expressions.list.find((x) => x.id === id);
@@ -204,35 +205,35 @@ function newItemsChange(
       lastItem = undefined;
       continue;
     }
-    const stmt = analysis.mapIDstmt[item.id];
-    if (stmt) {
-      lastItem = item;
-    } else {
-      const aug = rawNonFolderToAug(tm.getTextModeConfig(), item, dsmMetadata);
-      const ast = itemAugToAST(aug);
-      if (!ast) continue;
-      const body = astToText(ast);
-      function insertPos(item: NonFolderState) {
-        if (item.folderId && lastItem?.folderId !== item.folderId) {
-          const folder = analysis.mapIDstmt[item.folderId];
-          if (folder.type === "Folder") {
-            return { pos: folder.afterOpen, insert: "\n" + body + "\n" };
-          }
-        } else if (!item.folderId && lastItem?.folderId) {
-          const folder = analysis.mapIDstmt[lastItem.folderId];
-          return { pos: folder.pos.to, insert: "\n\n" + body };
-        } else if (lastItem) {
-          const stmt = analysis.mapIDstmt[lastItem.id];
-          return { pos: stmt.pos.to, insert: "\n\n" + body };
+    //const stmt = analysis.mapIDstmt[item.id];
+    //if (stmt) {
+    lastItem = item;
+    //} else {
+    const aug = rawNonFolderToAug(tm.getTextModeConfig(), item, dsmMetadata);
+    const ast = itemAugToAST(aug);
+    if (!ast) continue;
+    const body = astToText(ast);
+    function insertPos(item: NonFolderState) {
+      if (item.folderId && lastItem?.folderId !== item.folderId) {
+        const folder = analysis.mapIDstmt[item.folderId];
+        if (folder.type === "Folder") {
+          return { pos: folder.afterOpen, insert: "\n" + body + "\n" };
         }
-        // Should never happen, but might as well do something reasonable
-        return { pos: analysis.program.pos.to, insert: "\n\n" + body };
+      } else if (!item.folderId && lastItem?.folderId) {
+        const folder = analysis.mapIDstmt[lastItem.folderId];
+        return { pos: folder.pos.to, insert: "\n\n" + body };
+      } else if (lastItem) {
+        const stmt = analysis.mapIDstmt[lastItem.id];
+        return { pos: stmt.pos.to, insert: "\n\n" + body };
       }
-      const { pos: p, insert } = insertPos(item);
-      const pos = { from: p, to: p };
-      out.push(insertWithIndentation(view, pos, insert));
-      effects.push(addRawID.of({ ...pos, id: item.id }));
+      // Should never happen, but might as well do something reasonable
+      return { pos: analysis.program.pos.to, insert: "\n\n" + body };
     }
+    const { pos: p, insert } = insertPos(item);
+    const pos = { from: p, to: p };
+    out.push(insertWithIndentation(view, pos, insert));
+    effects.push(addRawID.of({ ...pos, id: item.id }));
+    //}
   }
   return { changes: out, effects };
 }
@@ -284,7 +285,7 @@ function itemChange(
   const newStateItem = state.expressions.list.find((e) => e.id === changeID);
   if (!newStateItem || newStateItem.type === "folder") return [];
   const oldNode = analysis.mapIDstmt[changeID];
-  if (oldNode === undefined) return [];
+  //if (oldNode === undefined) return [];
   const tm = view.state.facet(tmPlugin);
   const itemAug = rawNonFolderToAug(
     tm.getTextModeConfig(),

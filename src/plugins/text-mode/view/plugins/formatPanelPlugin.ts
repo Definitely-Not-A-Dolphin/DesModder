@@ -15,7 +15,8 @@ function formatPanel(ev: EditorView): Panel {
     },
     // update() {},
     destroy() {
-      if (dom) DCGView.unmountFromNode(dom);
+      // if (dom)
+      DCGView.unmountFromNode(dom);
     },
     top: false,
   };

@@ -62,22 +62,22 @@ export default class DSM extends TransparentPlugins {
 
   handleDispatchedAction(evt: DispatchedEvent) {
     for (const [_id, plugin] of this.enabledPluginsSorted()) {
-      const keepGoing = plugin?.handleDispatchedAction?.(evt);
+      const keepGoing = plugin.handleDispatchedAction?.(evt);
       if (keepGoing === "abort-later-handlers") return;
     }
     this.vanillaHandleAction(evt);
     for (const [_id, plugin] of this.enabledPluginsSorted()) {
-      plugin?.afterHandleDispatchedAction?.(evt);
+      plugin.afterHandleDispatchedAction?.(evt);
     }
   }
 
   updateTheComputedWorld() {
     for (const [_id, plugin] of this.enabledPluginsSorted()) {
-      plugin?.beforeUpdateTheComputedWorld?.();
+      plugin.beforeUpdateTheComputedWorld?.();
     }
     this.vanillaUpdateTheComputedWorld();
     for (const [_id, plugin] of this.enabledPluginsSorted()) {
-      plugin?.afterUpdateTheComputedWorld?.();
+      plugin.afterUpdateTheComputedWorld?.();
     }
   }
 

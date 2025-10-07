@@ -50,22 +50,25 @@ export function hydrate<T>(
           )
         );
     const chosenEntry: TextAST.MappingEntry | undefined = matchingEntries[0];
+    /*
     if (chosenEntry?.expr === null)
       throw Error("Null expression in style mapping");
+    */
     function pushError(msg: string) {
-      ds.pushError(msg, chosenEntry?.expr?.pos);
+      ds.pushError(msg, chosenEntry?.expr.pos);
       hasNull = true;
     }
     const givenValue = matchingEntries[0]?.expr ?? undefined;
     const errPath = itemType + path + "." + key;
     if (typeof schemaType === "object" && schemaType.type === "schema") {
+      /*
       if (givenValue === undefined) {
         if (schemaType.fillDefaults) {
           res[key] = (defaults as any)[key];
         } else {
           res[key] = undefined;
         }
-      } else if (givenValue.type === "StyleMapping") {
+        } else */ if (givenValue.type === "StyleMapping") {
         const style = hydrate(
           ds,
           givenValue,
@@ -85,9 +88,9 @@ export function hydrate<T>(
             `Expected ${errPath} to be style mapping, but got primitive`
           );
       }
-    } else if (givenValue === undefined) {
+    } /* else if (givenValue === undefined) {
       res[key] = defaults[key] as any;
-    } else {
+    } */ else {
       if (givenValue.type === "StyleMapping") {
         pushError(`Expected ${errPath} to be primitive, but got style mapping`);
       } else if (schemaType === "expr") {

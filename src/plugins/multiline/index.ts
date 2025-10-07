@@ -126,10 +126,10 @@ export default class Multiline extends PluginController<Config> {
       }));
 
       const mathfield = (
-        f?.parentElement as unknown as {
+        f.parentElement as unknown as {
           _mqMathFieldInstance: MathQuillField;
         }
-      )?._mqMathFieldInstance;
+      )._mqMathFieldInstance;
 
       // add line breaks
       verticalify(
@@ -158,7 +158,7 @@ export default class Multiline extends PluginController<Config> {
           determineLineBreaksAutomatically:
             this.settings.automaticallyMultilinify &&
             (this.settings.disableAutomaticLineBreaksForHandAlignedExpressions
-              ? !(mathfield?.latex?.() ?? "").includes("\\ \\ \\ ")
+              ? !mathfield.latex().includes("\\ \\ \\ ")
               : true),
         }
       );
@@ -252,15 +252,15 @@ export default class Multiline extends PluginController<Config> {
       this.lastRememberedCursorX = cursor.getBoundingClientRect().left;
     } else {
       let xpos =
-        this.calc.focusedMathQuill?.mq.__controller.cursor?.[
+        this.calc.focusedMathQuill?.mq.__controller.cursor[
           -1
-        ]?._el?.getBoundingClientRect()?.right;
+        ]?._el?.getBoundingClientRect().right;
       if (xpos !== undefined) {
         this.lastRememberedCursorX = xpos;
       } else {
         xpos =
-          this.calc.focusedMathQuill?.mq.__controller.cursor?.[1]?._el?.getBoundingClientRect()
-            ?.left;
+          this.calc.focusedMathQuill?.mq.__controller.cursor[1]?._el?.getBoundingClientRect()
+            .left;
         this.lastRememberedCursorX = xpos;
       }
     }
@@ -427,7 +427,7 @@ export default class Multiline extends PluginController<Config> {
       // get cursor and adjacent element so we can figure out
       // if it's a line break
       const ctrlr = getController(focusedmq);
-      let next = ctrlr.cursor?.[up ? L : R]?._el;
+      let next = ctrlr.cursor[up ? L : R]?._el;
 
       // are we getting the right side or the left side
       // of the element? (e.g. the bounding client rect "left" or "right" property)
@@ -439,7 +439,7 @@ export default class Multiline extends PluginController<Config> {
       // if we can't directly get the next element (e.g. end of a parenthesis block),
       // shift the cursor so that we can get access to it from the "other side"
       if (!next) {
-        next = ctrlr.cursor?.[up ? R : L]?._el;
+        next = ctrlr.cursor[up ? R : L]?._el;
         isNextRight = !isNextRight;
       }
 

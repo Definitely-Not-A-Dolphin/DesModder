@@ -23,7 +23,7 @@ export default createRule({
       CallExpression(node) {
         const [argNode] = node.arguments;
         if (
-          argNode &&
+          // argNode &&
           node.callee.type === AST_NODE_TYPES.Identifier &&
           node.callee.name === "expect"
         ) {

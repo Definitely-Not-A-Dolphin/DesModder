@@ -80,7 +80,7 @@ function _sendHeartbeat(options: WindowHeartbeatOptions) {
       [StorageKeys.pluginSettings]: {},
     },
     (items) => {
-      const s = items?.[StorageKeys.pluginSettings];
+      const s = items[StorageKeys.pluginSettings];
       const wakatime = s?.wakatime;
       const secretKey = wakatime?.secretKey;
       const projectName = wakatime?.projectName;
@@ -116,7 +116,8 @@ function injectStyle() {
   const s = document.createElement("link");
   s.rel = "stylesheet";
   s.href = chrome.runtime.getURL("script.css");
-  (document.head || document.documentElement).appendChild(s);
+  document/*document.head ||*/ .documentElement
+    .appendChild(s);
 }
 
 listenToMessageUp((message) => {

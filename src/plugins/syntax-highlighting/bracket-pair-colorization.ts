@@ -32,7 +32,7 @@ export function generateBracketPairColorizationCSS(settings: Config) {
 
               return `${channel} * pow(0, mod(var(--bracket-depth2) - ${colindex}, ${colors.length}))`;
             })
-            .join(" + ") ?? 0
+            .join(" + ") // ?? 0
         })`
     )
     .join(", ")})`;

@@ -453,8 +453,8 @@ function normalizeDoc(doc: Doc) {
     }
     if (
       typeof currentDoc === "string" ||
-      !("parts" in currentDoc) ||
-      !currentDoc.parts
+      !("parts" in currentDoc) /* ||
+      !currentDoc.parts */
     ) {
       return currentDoc;
     }

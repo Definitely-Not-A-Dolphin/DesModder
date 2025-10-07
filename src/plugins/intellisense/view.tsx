@@ -69,7 +69,7 @@ export class JumpToDefinitionMenu extends Component<{
               <ul>
                 <For
                   each={() =>
-                    this.props.info()?.idents?.map((e, i) => [e, i] as const) ??
+                    this.props.info()?.idents.map((e, i) => [e, i] as const) ??
                     []
                   }
                   key={(e) => e[0].sourceExprIndex}
@@ -247,7 +247,7 @@ export class PartialFunctionCallView extends Component<{
                       )
                     }
                     selectedParam={() =>
-                      this.props.partialFunctionCallIdent()?.params?.[
+                      this.props.partialFunctionCallIdent()?.params[
                         this.props.partialFunctionCall()?.paramIndex ?? 0
                       ] ?? ""
                     }
@@ -293,7 +293,7 @@ export class PartialFunctionCallView extends Component<{
                             ) +
                             (getPair()[1] ===
                             (this.props.partialFunctionCallIdent()?.params
-                              ?.length ?? 0) -
+                              .length ?? 0) -
                               1
                               ? ""
                               : ",")

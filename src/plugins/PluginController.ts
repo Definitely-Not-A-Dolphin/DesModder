@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { ConfigItem, GenericSettings } from ".";
 import DSM from "#DSM";
 
@@ -17,10 +18,10 @@ export class PluginController<
     public settings: Settings
   ) {}
 
-  // afterEnable() {}
-  // afterConfigChange() {}
-  // beforeDisable() {}
-  // afterDisable() {}
+  afterEnable() {}
+  afterConfigChange() {}
+  beforeDisable() {}
+  afterDisable() {}
 }
 
 export type Replacer<T = any> = undefined | ((old: T) => any);

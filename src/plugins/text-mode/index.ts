@@ -133,9 +133,9 @@ export default class TextMode extends PluginController {
     if (!this.isEditorMounted) return;
     this.isEditorMounted = false;
     this.dispatchListenerID = null;
-    if (this.dispatchListenerID !== null) {
+    /*if (this.dispatchListenerID !== null) {
       this.cc.dispatcher.unregister(this.dispatchListenerID);
-    }
+    }*/
     if (this.view) {
       this.abortScrollListenerController.abort();
       this.view.destroy();
@@ -234,13 +234,13 @@ function selectFromText(view: EditorView) {
 function getSelectedItem(view: EditorView): string | undefined {
   const analysis = view.state.field(analysisStateField);
   const selection = view.state.selection.main;
-  if (analysis) {
-    const containingPairs = Object.entries(analysis.mapIDstmt).filter(
-      ([_id, stmt]) =>
-        stmt.type !== "Folder" &&
-        stmt.pos.from <= selection.from &&
-        stmt.pos.to >= selection.to
-    );
-    return containingPairs[0]?.[0];
-  }
+  //if (analysis) {
+  const containingPairs = Object.entries(analysis.mapIDstmt).filter(
+    ([_id, stmt]) =>
+      stmt.type !== "Folder" &&
+      stmt.pos.from <= selection.from &&
+      stmt.pos.to >= selection.to
+  );
+  return containingPairs[0]?.[0];
+  //}
 }

@@ -28,7 +28,7 @@ export function drawGLesmosSketchToCtx(
   drawCtx: DrawCtx,
   { id, branches }: GLesmosSketch
 ) {
-  branches = branches.filter((b) => b.graphMode === "GLesmos");
+  //branches = branches.filter((b) => b.graphMode === "GLesmos");
 
   const glBranches = branches.map((b) => b.compiledGL);
   if (glBranches.length === 0) return;
@@ -42,7 +42,7 @@ export function drawGLesmosSketchToCtx(
     hasOutlines: glBranches.reduce((a, b) => a && b.hasOutlines, true),
   };
 
-  drawOneGLesmosSketchToCtx?.(cc, drawCtx, compiledGL, id);
+  drawOneGLesmosSketchToCtx(cc, drawCtx, compiledGL, id);
 }
 
 function drawOneGLesmosSketchToCtx(
@@ -67,9 +67,9 @@ function drawOneGLesmosSketchToCtx(
     if (compiledGL.hasOutlines)
       // no grouping, perf will suffer
       for (const chunk of compiledGL.chunks) {
-        canvas?.buildGLesmosFancy(deps, chunk);
-        canvas?.renderFancy();
-        ctx.drawImage(canvas?.element, 0, 0);
+        canvas.buildGLesmosFancy(deps, chunk);
+        canvas.renderFancy();
+        ctx.drawImage(canvas.element, 0, 0);
       }
     else {
       // No grouping. DCG_SC_uniforms will normally cause a list of
@@ -77,9 +77,9 @@ function drawOneGLesmosSketchToCtx(
       // Grouping them might save some performance on repeated blitting,
       // but the main gain from the old grouping approach was avoiding compiles.
       for (const chunk of compiledGL.chunks) {
-        canvas?.buildGLesmosFast(deps, chunk);
-        canvas?.renderFast();
-        ctx.drawImage(canvas?.element, 0, 0);
+        canvas.buildGLesmosFast(deps, chunk);
+        canvas.renderFast();
+        ctx.drawImage(canvas.element, 0, 0);
       }
     }
   } catch (e) {

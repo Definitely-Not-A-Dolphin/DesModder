@@ -37,9 +37,9 @@ function isCtrlArrowSkippableSymbolMQElem(el?: HTMLElement) {
 function isAtStartOrEndOfASubscriptOrSuperscript(mq: MathQuillField, dir: Dir) {
   const ctrlr = getController(mq);
   return (
-    (ctrlr.cursor?.parent?._el?.classList.contains("dcg-mq-sup") ||
-      ctrlr.cursor?.parent?._el?.classList.contains("dcg-mq-sub")) &&
-    !ctrlr.cursor?.[dir]
+    (ctrlr.cursor.parent?._el?.classList.contains("dcg-mq-sup") ||
+      ctrlr.cursor.parent?._el?.classList.contains("dcg-mq-sub")) &&
+    !ctrlr.cursor[dir]
   );
 }
 
@@ -102,7 +102,7 @@ export default class BetterNavigation extends PluginController<BetterNavSettings
 
     if (!mq) return;
     const navOption = NavigationTable[key];
-    if (!navOption) return;
+    //if (!navOption) return;
 
     // type an empty string to force desmos to update
     setTimeout(() => {
@@ -117,7 +117,7 @@ export default class BetterNavigation extends PluginController<BetterNavSettings
 
     const ctrlr = getController(mq);
 
-    const next = ctrlr.cursor?.[navOption.dir];
+    const next = ctrlr.cursor[navOption.dir];
 
     // if the next element is one of the following:
     // bracket, fraction, sum, product, integral, sqrt, nthroot
@@ -140,9 +140,9 @@ export default class BetterNavigation extends PluginController<BetterNavSettings
         mq.keystroke(arrowOp);
 
       let i = 0;
-      while (isWordMQElem(ctrlr.cursor?.[dir]?._el) && i < 1000) {
+      while (isWordMQElem(ctrlr.cursor[dir]?._el) && i < 1000) {
         // skip over super/subscript
-        if (isSupSubscriptMQElem(ctrlr.cursor?.[dir]?._el)) {
+        if (isSupSubscriptMQElem(ctrlr.cursor[dir]?._el)) {
           mq.keystroke(dir === R ? "Shift-Right" : "Shift-Left");
 
           // remove selection if not extending selection

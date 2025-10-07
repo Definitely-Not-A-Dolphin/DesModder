@@ -316,6 +316,8 @@ export function wolfram2desmos(input: string, config: Config) {
   replace(/(?<![A-Za-zΑ-ω])omega/g, "ω");
   replace(/(?<![A-Za-zΑ-ω])constant/g, "C");
 
+  // There HAS to be a better way to do this right
+
   // MISSING BRACKETS
   // this will ensure brackets AFTER each operator
   while (findFinal(/[/^_√∛%](?!\()/g) !== -1) {
@@ -563,7 +565,7 @@ export function wolfram2desmos(input: string, config: Config) {
           break;
         }
       }
-      if (!temp && bracket === 0) {
+      if (bracket === 0) {
         temp = true;
       }
     }

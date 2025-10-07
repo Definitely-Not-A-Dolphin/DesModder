@@ -22,7 +22,7 @@ export class IndexFor<T> extends Component<{
       >
         {(getPair: () => [T, () => number]) => {
           const [elem, index] = getPair();
-          return this.props?.children(elem, index);
+          return this.props.children(elem, index);
         }}
       </For>
     );

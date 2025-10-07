@@ -401,8 +401,8 @@ function findPattern(
   const fixedToken = pattern.find(
     (x) => !x.type.startsWith("Pattern")
   ) as Token;
-  if (fixedToken === undefined)
-    throw new Error("Pattern Error: No fixed token found");
+  /*if (fixedToken === undefined)
+    throw new Error("Pattern Error: No fixed token found");*/
   const fixedTokenIdx = pattern.indexOf(fixedToken);
   if (pattern.slice(0, fixedTokenIdx).some(isLongPattern))
     throw new Error("First fixed token is after a variable-width span.");
@@ -571,7 +571,7 @@ function patternMatch(
       continue;
     }
     const foundToken = str[strIndex];
-    if (foundToken === undefined) return null;
+    //if (foundToken === undefined) return null;
     // whitespace is already filtered out of pattern
     // ignore whitespace in str, except at the start of a match
     if (isIgnoredWhitespace(foundToken) && !patternQueue.isAtStart()) {
@@ -648,7 +648,7 @@ function patternMatch(
         str[strIndex + 2]
       ) {
         strIndex += 2;
-        if (foundToken.type !== "IdentifierName") return null;
+        // if (foundToken.type !== "IdentifierName") return null;
       }
       if (doTable)
         table!.set(expectedToken.value, {

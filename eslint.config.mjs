@@ -96,7 +96,7 @@ export default tseslint.config(
       // Turning this off because fixing it requires a deep understanding of the code
       "@typescript-eslint/no-magic-numbers": "off",
       "@typescript-eslint/no-redundant-type-constituents": "off",
-      "@typescript-eslint/no-unnecessary-condition": "off",
+      "@typescript-eslint/no-unnecessary-condition": "warn",
       "@typescript-eslint/no-unnecessary-type-arguments": "off",
       "@typescript-eslint/no-unnecessary-type-parameters": "off",
       "@typescript-eslint/no-unsafe-assignment": "off",

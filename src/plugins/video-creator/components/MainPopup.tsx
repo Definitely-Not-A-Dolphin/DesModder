@@ -206,9 +206,9 @@ export default class MainPopup extends Component<{
 
   setSelectedFileTypeIndex(i: number) {
     const name = fileTypeNames[i];
-    if (name !== undefined) {
-      this.vc.setOutputFiletype(name);
-    }
+    // if (name !== undefined) {
+    this.vc.setOutputFiletype(name);
+    //}
   }
 
   eventShouldCloseExpanded(e: Event) {

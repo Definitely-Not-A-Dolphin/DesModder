@@ -48,7 +48,7 @@ export class IntellisenseState {
     const mdl = this.cc.getItemModel(ident.exprId);
     if (!mdl?.folderId) return undefined;
     const folderModel = this.cc.getItemModel(mdl.folderId);
-    return folderModel?.type === "folder" ? folderModel?.title : undefined;
+    return folderModel?.type === "folder" ? folderModel.title : undefined;
   }
 
   getIdentFolderId(ident: BoundIdentifier) {

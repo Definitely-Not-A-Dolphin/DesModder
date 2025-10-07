@@ -107,7 +107,7 @@ function parseBlock(
       i++;
     } else if (token.tag === "emph") {
       const nextToken = tokens[i + 1];
-      const code = nextToken?.tag === "code" ? nextToken : undefined;
+      const code = nextToken.tag === "code" ? nextToken : undefined;
       commands.push(getCommand(token, code));
       i += code !== undefined ? 2 : 1;
     } else {

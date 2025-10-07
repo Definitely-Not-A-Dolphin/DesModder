@@ -78,13 +78,13 @@ export default class FolderTools extends PluginController {
   private folderDump(folderIndex: number) {
     const folderModel = this.cc.getItemModelByIndex(folderIndex);
     if (!folderModel || folderModel.type !== "folder") return;
-    const folderId = folderModel?.id;
+    const folderId = folderModel.id;
 
     // Remove folderId on all of the contents of the folder
     for (
       let currIndex = folderIndex + 1,
         currExpr = this.cc.getItemModelByIndex(currIndex);
-      currExpr && currExpr.type !== "folder" && currExpr?.folderId === folderId;
+      currExpr && currExpr.type !== "folder" && currExpr.folderId === folderId;
       currIndex++, currExpr = this.cc.getItemModelByIndex(currIndex)
     ) {
       currExpr.folderId = undefined;

@@ -75,10 +75,10 @@ export default class CompactView extends PluginController<Config> {
 
         // get the width of the actual math in the expression
         let rootblockInnerWidth = 0;
-        if (rootblock?.firstChild && rootblock?.lastChild) {
+        if (rootblock?.firstChild && rootblock.lastChild) {
           const range = new Range();
-          range.setStartBefore(rootblock?.firstChild);
-          range.setEndAfter(rootblock?.lastChild);
+          range.setStartBefore(rootblock.firstChild);
+          range.setEndAfter(rootblock.lastChild);
           rootblockInnerWidth = range.getBoundingClientRect().width;
         }
 

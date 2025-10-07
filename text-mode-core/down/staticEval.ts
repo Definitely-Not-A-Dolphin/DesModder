@@ -20,7 +20,6 @@ export function evalExpr(
       return value !== null ? -value : null;
     }
     case "ListExpression": {
-      let someNotNumber = false;
       const res = expr.values.map((e) => {
         const r = evalExpr(diagnostics, e);
         if (typeof r === "number") return r;
@@ -30,10 +29,8 @@ export function evalExpr(
             "pos" in expr ? expr.pos : undefined
           )
         );
-        someNotNumber = true;
         return 0;
       });
-      if (someNotNumber) return null;
       return res;
     }
     case "Identifier":

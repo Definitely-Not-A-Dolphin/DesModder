@@ -33,13 +33,14 @@ export default class BuiltinSettings extends PluginController<Config> {
         )[key] ?? false;
     }
     for (const key of specialKeys) {
-      switch (key) {
+      this.initialSettings[key] = hasQueryFlag("showIDs");
+      /*switch (key) {
         case "showIDs":
           this.initialSettings[key] = hasQueryFlag("showIDs");
           break;
         default:
           key satisfies never;
-      }
+      }*/
     }
     this.updateConfig(this.settings);
   }
@@ -55,6 +56,13 @@ export default class BuiltinSettings extends PluginController<Config> {
   private updateURL(config: Config) {
     const params = new URLSearchParams(window.location.search);
     for (const key of specialKeys) {
+      if (config[key]) {
+        params.set(key, "trueDSMDELETE");
+        continue;
+      }
+      params.delete(key);
+
+      /*
       switch (key) {
         case "showIDs":
           if (config[key]) {
@@ -65,7 +73,7 @@ export default class BuiltinSettings extends PluginController<Config> {
           break;
         default:
           key satisfies never;
-      }
+      }*/
     }
     const { href } = window.location;
     const url = new URL(href);

@@ -678,7 +678,6 @@ function isNumericLikeLiteral(node: TextAST.Expression) {
   return (
     isUnsignedNumericLikeLiteral(node) ||
     (node.type === "PrefixExpression" &&
-      node.op === "-" &&
       isUnsignedNumericLikeLiteral(node.expr))
   );
 }

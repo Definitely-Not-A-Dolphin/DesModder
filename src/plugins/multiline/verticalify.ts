@@ -37,6 +37,7 @@ function getBracketType(
   elem: Element
 ): "paren" | "square" | "curly" | "abs" | undefined {
   // get the svg path
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const svgPath = elem?.children?.[0]?.children?.[0];
 
   // make sure it's an svg path

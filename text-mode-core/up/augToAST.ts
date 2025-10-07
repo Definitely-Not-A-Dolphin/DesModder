@@ -109,7 +109,7 @@ export function itemAugToAST(item: Aug.ItemAug): TextAST.Statement | null {
           style: styleMapping({
             ...base,
             errorHidden: booleanToAST(item.errorHidden, false),
-            logMode: booleanToAST(item.regression?.isLogMode, false),
+            logMode: booleanToAST(item.regression.isLogMode, false),
           }),
           parameters: {
             type: "RegressionParameters",
@@ -148,13 +148,11 @@ export function itemAugToAST(item: Aug.ItemAug): TextAST.Statement | null {
           height: childLatexToASTmaybe(item.height),
           center: childLatexToASTmaybe(item.center),
           angle:
-            item.angle &&
-            (item.angle.type !== "Constant" || item.angle.value !== 0)
+            item.angle.type !== "Constant" || item.angle.value !== 0
               ? childLatexToASTmaybe(item.angle)
               : undefined,
           opacity:
-            item.opacity &&
-            (item.opacity.type !== "Constant" || item.opacity.value !== 1)
+            item.opacity.type !== "Constant" || item.opacity.value !== 1
               ? childLatexToASTmaybe(item.opacity)
               : undefined,
           foreground: booleanToAST(item.foreground, false),
@@ -233,24 +231,19 @@ function expressionStyle(
         min: childLatexToASTmaybe(item.cdf.min),
         max: childLatexToASTmaybe(item.cdf.max),
       }),
-    vizProps:
-      item.vizProps &&
-      styleMapping({
-        boxplot:
-          item.vizProps.boxplot &&
-          styleMapping({
-            breadth: childLatexToASTmaybe(item.vizProps.boxplot.breadth),
-            axisOffset: childLatexToASTmaybe(item.vizProps.boxplot.axisOffset),
-            alignedAxis: stringToASTmaybe(item.vizProps.boxplot.alignedAxis),
-            showOutliers: booleanToAST(
-              item.vizProps.boxplot.showOutliers,
-              true
-            ),
-          }),
-        dotplotMode: stringToASTmaybe(item.vizProps.dotplotMode),
-        binAlignment: stringToASTmaybe(item.vizProps.binAlignment),
-        histogramMode: stringToASTmaybe(item.vizProps.histogramMode),
-      }),
+    vizProps: styleMapping({
+      boxplot:
+        item.vizProps.boxplot &&
+        styleMapping({
+          breadth: childLatexToASTmaybe(item.vizProps.boxplot.breadth),
+          axisOffset: childLatexToASTmaybe(item.vizProps.boxplot.axisOffset),
+          alignedAxis: stringToASTmaybe(item.vizProps.boxplot.alignedAxis),
+          showOutliers: booleanToAST(item.vizProps.boxplot.showOutliers, true),
+        }),
+      dotplotMode: stringToASTmaybe(item.vizProps.dotplotMode),
+      binAlignment: stringToASTmaybe(item.vizProps.binAlignment),
+      histogramMode: stringToASTmaybe(item.vizProps.histogramMode),
+    }),
     onClick: childLatexToASTmaybe(item.clickableInfo?.latex),
     clickDescription: stringToASTmaybe(item.clickableInfo?.description),
   };
@@ -277,16 +270,14 @@ function columnExpressionCommonStyle(
     hidden: booleanToAST(item.hidden, false),
   };
   if (item.lines) {
-    res.lines = item.lines
-      ? styleMapping(
-          {
-            opacity: childLatexToASTmaybe(item.lines.opacity),
-            width: childLatexToASTmaybe(item.lines.width),
-            style: stringToASTmaybe(item.lines.style),
-          },
-          { includeEmpty: true }
-        )
-      : undefined;
+    res.lines = styleMapping(
+      {
+        opacity: childLatexToASTmaybe(item.lines.opacity),
+        width: childLatexToASTmaybe(item.lines.width),
+        style: stringToASTmaybe(item.lines.style),
+      },
+      { includeEmpty: true }
+    );
   }
   if (item.points) {
     res.points = styleMapping(
@@ -306,22 +297,17 @@ function columnToAST(col: Aug.TableColumnAug): TextAST.TableColumn {
   return {
     type: "ExprStatement",
     expr:
-      col.latex === undefined
+      col.latex.type === "Identifier"
         ? {
-            type: "ListExpression",
-            values: col.values.map((e) => childLatexToAST(e)),
+            type: "BinaryExpression",
+            op: "=",
+            left: childLatexToAST(col.latex),
+            right: {
+              type: "ListExpression",
+              values: col.values.map(childLatexToAST),
+            },
           }
-        : col.latex.type === "Identifier"
-          ? {
-              type: "BinaryExpression",
-              op: "=",
-              left: childLatexToAST(col.latex),
-              right: {
-                type: "ListExpression",
-                values: col.values.map(childLatexToAST),
-              },
-            }
-          : childLatexToAST(col.latex),
+        : childLatexToAST(col.latex),
     style: styleMapping({
       id: idToString(col.id),
       ...columnExpressionCommonStyle(col),

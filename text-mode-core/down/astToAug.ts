@@ -320,8 +320,8 @@ function settingsToAug(
   delete res.lockViewport;
   if (res.product !== "graphing-3d") {
     res.viewport = { ...res.viewport };
-    delete res.viewport?.zmin;
-    delete res.viewport?.zmax;
+    delete res.viewport.zmin;
+    delete res.viewport.zmax;
     delete res.axis3D;
     delete res.speed3D;
     delete res.worldRotation3D;
@@ -643,9 +643,11 @@ export function childExprToAug(
         arg: childExprToAug(expr.expr),
       };
     case "UpdateRule":
+      /*
       if (expr.variable.type !== "Identifier") {
         throw Error("Update rule may only assign to a variable");
       }
+      */
       return {
         type: "UpdateRule",
         variable: identifierToAug(expr.variable),
@@ -691,7 +693,8 @@ export function childExprToAug(
     case "BinaryExpression":
       if (expr.op === "~")
         throw Error("Programming Error: `~` in child BinaryExpression");
-      return binopMap[expr.op] !== undefined
+      /*
+        return binopMap[expr.op] !== undefined
         ? {
             type: "BinaryOperator",
             name: binopMap[expr.op] as any,
@@ -703,7 +706,13 @@ export function childExprToAug(
             operator: expr.op as any,
             left: childExprToAug(expr.left),
             right: childExprToAug(expr.right),
-          };
+            }; */
+      return {
+        type: "BinaryOperator",
+        name: binopMap[expr.op] as any,
+        left: childExprToAug(expr.left),
+        right: childExprToAug(expr.right),
+      };
     case "PostfixExpression":
       return {
         type: "Factorial",
@@ -768,8 +777,8 @@ function callExpressionToAug(
       args: expr.arguments.map(childExprToAug),
     };
   else if (
-    expr.callee.type === "MemberExpression" &&
-    expr.callee.property.type === "Identifier"
+    expr.callee.type === "MemberExpression" /* &&
+    expr.callee.property.type === "Identifier" */
   )
     // Case e.g. L.random(5) or f(x).total()
     return {
@@ -811,7 +820,7 @@ function piecewiseInnerToAug(
   branches: TextAST.PiecewiseBranch[]
 ): Aug.Latex.AnyChild {
   const [firstBranch] = branches;
-  if (firstBranch === undefined) return constant(NaN);
+  // if (firstBranch === undefined) return constant(NaN);
   if (firstBranch.condition === null)
     return childExprToAug(firstBranch.consequent);
   const firstCond = childExprToAug(firstBranch.condition);

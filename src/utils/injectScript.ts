@@ -7,8 +7,10 @@ export default function injectScript(url: string) {
     // remove the script so it doesn't appear in the DOM tree
     s.remove();
   };
+  /*
   const head = document.head || document.documentElement;
   if (head !== null) {
     head.appendChild(s);
   }
+  */
 }

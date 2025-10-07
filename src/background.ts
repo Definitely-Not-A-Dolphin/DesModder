@@ -11,14 +11,14 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 
 // Open /calculator when the browser action is clicked.
 if (BROWSER === "chrome") {
-  chrome.action.onClicked?.addListener(() => {
+  chrome.action.onClicked.addListener(() => {
     void chrome.tabs.create({
       url: "https://www.desmos.com/calculator",
     });
   });
 } else {
   // MV2, see https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/API/browserAction
-  chrome.browserAction.onClicked?.addListener(() => {
+  chrome.browserAction.onClicked.addListener(() => {
     void chrome.tabs.create({
       url: "https://www.desmos.com/calculator",
     });

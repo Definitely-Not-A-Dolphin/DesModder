@@ -14,7 +14,7 @@ function typeInTextArea(
   const before = text.substring(0, start);
   const after = text.substring(end, text.length);
   el.value = before + newText + after;
-  el.selectionStart = el.selectionEnd = start + (newText?.length ?? 0);
+  el.selectionStart = el.selectionEnd = start + newText.length;
   el.focus();
 }
 
@@ -51,7 +51,7 @@ export default class WolframToDesmos extends PluginController<Config> {
 
   onFocus(e: FocusEvent) {
     const elem: HTMLElement | null | undefined = (e.target as HTMLElement)
-      ?.parentElement?.parentElement;
+      .parentElement?.parentElement;
     switch (e.type) {
       case "focusin":
         elem?.addEventListener("paste", this.pasteHandler, false);
@@ -69,8 +69,8 @@ export default class WolframToDesmos extends PluginController<Config> {
     const dcgCopyExprData = e.clipboardData.getData("dcg-copy-expression");
     if (dcgCopyExprData) return;
     if (
-      !(elem?.classList.contains("dcg-label-input") ?? true) &&
-      pasteData !== undefined &&
+      !elem.classList.contains("dcg-label-input") &&
+      // pasteData !== undefined &&
       pasteData !== "" &&
       this.cc.getItemModel(this.calc.selectedExpressionId)?.type ===
         "expression" &&

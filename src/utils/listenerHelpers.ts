@@ -71,6 +71,7 @@ export function hookIntoFunction<
       const handlersArray = (obj[prop] as HookedFunction<Fn>).handlers;
 
       for (const h of handlersArray) {
+        // Dunno how to fix this
         let stop = false;
         let ret: ReturnType<Fn> | undefined;
         h.fn(
@@ -80,6 +81,7 @@ export function hookIntoFunction<
           },
           ...args
         );
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         if (stop) return ret!;
       }
 

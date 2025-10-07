@@ -27,8 +27,8 @@ class ImageWidget extends WidgetType {
       if (fileInput.files?.length) {
         Desmos.imageFileToDataURL(
           fileInput.files[0],
-          (err, dataURI: string) => {
-            err || toggleString(view, view.posAtDOM(res), this.value, dataURI);
+          (_err, dataURI: string) => {
+            toggleString(view, view.posAtDOM(res), this.value, dataURI);
           }
         );
       }

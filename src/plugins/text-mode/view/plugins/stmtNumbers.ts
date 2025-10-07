@@ -48,7 +48,7 @@ function maxNumber(state: EditorState) {
   function _maxNumber(stmt: Folder | Table | Program): number {
     const children = stmt.type === "Table" ? stmt.columns : stmt.children;
     const last = children[children.length - 1];
-    if (!last) return stmt.type === "Program" ? 1 : stmt.index;
+    // if (!last) return stmt.type === "Program" ? 1 : stmt.index;
     if (last.type === "Folder" || last.type === "Table")
       return _maxNumber(last);
     else return last.index;

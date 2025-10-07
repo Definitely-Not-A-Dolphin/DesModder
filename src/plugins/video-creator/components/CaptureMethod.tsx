@@ -118,7 +118,7 @@ export default class SelectCapture extends Component<{
                   each={
                     // using an <If> here doesn't work because it doesn't update the StaticMathQuillView
                     () =>
-                      this.vc.getCurrentAction()?.latex !== undefined
+                      this.vc.getCurrentAction().latex !== undefined
                         ? [this.vc.getCurrentAction()]
                         : []
                   }
@@ -347,8 +347,8 @@ export default class SelectCapture extends Component<{
 
   setSelectedCaptureMethodIndex(i: number) {
     const name = this.validCaptureMethodNames()[i];
-    if (name !== undefined) {
-      this.vc.captureMethod = name;
-    }
+    //if (name !== undefined) {
+    this.vc.captureMethod = name;
+    //}
   }
 }

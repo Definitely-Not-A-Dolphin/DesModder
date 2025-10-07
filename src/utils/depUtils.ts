@@ -16,13 +16,14 @@ export function parseDesmosLatex(s: string) {
 export function EvaluateSingleExpression(calc: Calc, s: string): number {
   // may also return NaN (which is a number)
   return evaluateLatex(s, calc.controller.getDegreeMode());
+  // ah yes, Not a Number, my favorite number
 }
 
-export const autoCommands = Private?.MathquillConfig?.getAutoCommands?.();
-export const autoOperatorNames = Private?.MathquillConfig?.getAutoOperators?.();
+export const autoCommands = Private.MathquillConfig.getAutoCommands();
+export const autoOperatorNames = Private.MathquillConfig.getAutoOperators();
 
 export function getCurrentGraphTitle(calc: Calc): string | undefined {
-  return calc._calc.globalHotkeys?.mygraphsController?.graphsController?.getCurrentGraphTitle?.();
+  return calc._calc.globalHotkeys.mygraphsController.graphsController.getCurrentGraphTitle();
 }
 
 export const { List } = Fragile;

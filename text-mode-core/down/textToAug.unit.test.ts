@@ -50,19 +50,15 @@ declare module "expect" {
 const expect = _expect as typeof _expect & (() => { ok: (s: string) => void });
 
 function testPosNesting(node: TextAST.Node, okNoPos = false) {
-  if (node?.type === undefined) return;
-  const childPos = Object.values(node)
-    .map((x) => x?.pos as TextAST.Pos)
-    .filter((x) => x);
+  const childPos = Object.values(node).map((x) => x?.pos as TextAST.Pos);
   if (!okNoPos) expect(node.pos).ok(`Type ${node.type} should have a pos`);
-  if (node.pos) {
-    expect(childPos.every((x) => x.from >= node.pos.from)).ok(
-      `Type ${node.type} .pos.from should not exceed child.pos.from`
-    );
-    expect(childPos.every((x) => x.to <= node.pos.to)).ok(
-      `Type ${node.type} .pos.to should not be less than child.pos.to`
-    );
-  }
+  expect(childPos.every((x) => x.from >= node.pos.from)).ok(
+    `Type ${node.type} .pos.from should not exceed child.pos.from`
+  );
+  expect(childPos.every((x) => x.to <= node.pos.to)).ok(
+    `Type ${node.type} .pos.to should not be less than child.pos.to`
+  );
+
   Object.values(node)
     .flat(1)
     .forEach((x) => testPosNesting(x, node.type === "PiecewiseBranch"));

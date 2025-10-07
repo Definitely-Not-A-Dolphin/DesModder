@@ -33,7 +33,7 @@ function symbolCount(el: Element) {
     (el.textContent?.replace(
       /\s|[\u00A0\u1680\u2000-\u200B\u202F\u205F\u3000]/g,
       ""
-    )?.length ?? 0)
+    ).length ?? 0)
   );
 }
 
@@ -41,7 +41,7 @@ function calcSymbolCount(el?: HTMLElement) {
   const rootblock = el?.querySelector(".dcg-mq-root-block");
   if (!rootblock) return 0;
 
-  return rootblock ? symbolCount(rootblock) : 0;
+  return /*rootblock ?*/ symbolCount(rootblock) /*: 0*/;
 }
 
 export interface GoodGolfStats {
@@ -219,7 +219,7 @@ function golfStatsForExpr(cc: CalcController, latex: string): GolfStats {
   fakeContainer.style.transform = `scale(${1 / 0.75})`;
 
   mountToNode(InlineMathInputView, fakeContainer, {
-    latex: () => latex ?? "",
+    latex: () => latex /* ?? ""*/,
     isFocused: () => false,
     selectOnFocus: () => false,
     // eslint-disable-next-line @typescript-eslint/no-empty-function

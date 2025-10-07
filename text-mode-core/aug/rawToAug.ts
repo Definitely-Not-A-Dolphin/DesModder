@@ -187,10 +187,10 @@ function tryRawNonFolderToAug(
           loopMode: item.slider?.loopMode,
           playDirection: item.slider?.playDirection,
           isPlaying: item.slider?.isPlaying,
-          min: item.slider?.min ? parseLatex(cfg, item.slider?.min) : undefined,
-          max: item.slider?.max ? parseLatex(cfg, item.slider?.max) : undefined,
+          min: item.slider?.min ? parseLatex(cfg, item.slider.min) : undefined,
+          max: item.slider?.max ? parseLatex(cfg, item.slider.max) : undefined,
           step: item.slider?.step
-            ? parseLatex(cfg, item.slider?.step)
+            ? parseLatex(cfg, item.slider.step)
             : undefined,
         },
         glesmos: dsmMetadata.expressions[item.id]?.glesmos ?? false,
@@ -244,7 +244,7 @@ function tryRawNonFolderToAug(
     case "table": {
       const longestColumnLength = Math.max(
         ...item.columns.map((col) =>
-          (col.values ?? []).map((e) => e !== "").lastIndexOf(true)
+          col.values.map((e) => e !== "").lastIndexOf(true)
         )
       );
       return {
@@ -255,7 +255,7 @@ function tryRawNonFolderToAug(
           .map((column) => ({
             type: "column",
             id: column.id,
-            values: (column.values ?? [])
+            values: column.values
               .slice(0, longestColumnLength + 1)
               .map((s) => parseLatex(cfg, s)),
             ...columnExpressionCommon(cfg, column),
@@ -277,7 +277,7 @@ function vizPropsAug(
   item: Graph.ExpressionState
 ): Aug.ExpressionAug["vizProps"] {
   const viz = item.vizProps ?? {};
-  if (!viz) return {};
+  // if (!viz) return {};
   const res: Aug.ExpressionAug["vizProps"] = {
     dotplotMode: viz.dotplotXMode,
     binAlignment: viz.binAlignment,

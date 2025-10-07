@@ -158,7 +158,7 @@ export const Fragile = new Proxy(
   {} as Fragile,
   {
     get(_target, prop: keyof Fragile) {
-      return window.Desmos?.Private?.Fragile?.[prop];
+      return window.Desmos.Private.Fragile[prop];
     },
   }
 );
@@ -171,7 +171,7 @@ export const Private = new Proxy(
   {} as Private,
   {
     get(_target, prop: keyof Private) {
-      return window.Desmos?.Private?.[prop];
+      return window.Desmos.Private[prop];
     },
   }
 );
@@ -198,4 +198,4 @@ declare global {
  * Use `console.log` (lowercase) when you're debugging, to avoid accidental commit
  * Use `/* eslint-disable no-console` and lowercase `console.log` on node scripts
  */
-export const Console = ((globalThis ?? window) as any).console;
+export const Console = (globalThis /* ?? window*/ as any).console;

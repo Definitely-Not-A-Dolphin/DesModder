@@ -7,7 +7,7 @@ function isEqual(lhs: any[], rhs: any[]) {
   if (lhs.length !== rhs.length) return false;
   let output = true;
   for (let i = 0; i < lhs.length; ++i) {
-    output = output && lhs[i] === rhs[i];
+    output = /*output &&*/ lhs[i] === rhs[i];
     if (!output) return output;
   }
   return output;
@@ -234,6 +234,7 @@ export function parseCSSHex(color: string) {
   return output;
 }
 
+// Please put this giant hashmap in a json or something
 function parseNamedColor(color: string) {
   const NAME_TABLE: Record<string, string> = {
     black: "#000000",
@@ -391,7 +392,7 @@ function parseNamedColor(color: string) {
 
 export default function getRGBpack(cssColor: string): number[] {
   const color: number[] | null = parseCSSHex(
-    parseNamedColor(cssColor) ?? cssColor
+    parseNamedColor(cssColor) /* ?? cssColor*/
   );
 
   if (color) {
@@ -400,9 +401,9 @@ export default function getRGBpack(cssColor: string): number[] {
     const funcPar: ColorType | null = parseCSSFunc(cssColor);
     if (funcPar?.values === undefined) return FALLBACK_COLOR;
     const colorPack: number[] | null = mapToColorSpace(
-      funcPar?.type,
+      funcPar.type,
       "rgba"
     )(funcPar.values);
-    return colorPack ?? FALLBACK_COLOR;
+    return colorPack /* ?? FALLBACK_COLOR*/;
   }
 }

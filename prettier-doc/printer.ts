@@ -283,7 +283,8 @@ function fits(
 
         case DT.IfBreak: {
           const groupMode = doc.groupId
-            ? groupModeMap[doc.groupId] || MODE_FLAT
+            ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+              groupModeMap[doc.groupId] || MODE_FLAT
             : mode;
           const contents =
             groupMode === MODE_BREAK ? doc.breakContents : doc.flatContents;
@@ -345,7 +346,8 @@ export function printDocToString(doc: Doc, options: Options): PrintedDoc {
     const { ind, mode, doc } = cmds.pop()!;
 
     if (typeof doc === "string") {
-      const formatted = newLine !== "\n" ? doc.replace(/\n/g, newLine) : doc;
+      const formatted =
+        /* newLine !== "\n" ? doc.replace(/\n/g, newLine) :*/ doc;
       out.push(formatted);
       // Plugins may print single string, should skip measure the width
       if (cmds.length > 0) {

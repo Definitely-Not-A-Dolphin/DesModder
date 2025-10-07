@@ -325,7 +325,7 @@ function numberOption(
   const numItem = item as ConfigItemNumber;
 
   const inputHandler = (e: InputEvent) => {
-    const value = Number((e.target as HTMLInputElement)?.value);
+    const value = Number((e.target as HTMLInputElement).value);
     if (!isNaN(value)) {
       pm.expandedPlugin &&
         pm.dsm.setPluginSetting(pm.expandedPlugin, item.key, value);
@@ -371,7 +371,7 @@ function booleanOption(
     <div class="dsm-settings-item dsm-settings-boolean">
       <Checkbox
         onChange={toggle}
-        checked={() => (settings[item.key] as boolean) ?? false}
+        checked={() => settings[item.key] as boolean /* ?? false */}
         ariaLabel={() => item.key}
       ></Checkbox>
       <Tooltip tooltip={configItemDesc(plugin, item)} gravity="n">

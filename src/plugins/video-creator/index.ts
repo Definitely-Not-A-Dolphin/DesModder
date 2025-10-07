@@ -408,7 +408,7 @@ export default class VideoCreator extends PluginController {
       .filter(
         (e) =>
           e.type === "expression" &&
-          e?.formula?.typed_constant_value?.valueType === ValueType.Action
+          e.formula?.typed_constant_value?.valueType === ValueType.Action
       ) as ExpressionModel[];
   }
 
@@ -420,9 +420,9 @@ export default class VideoCreator extends PluginController {
     const model = this.cc.getItemModel(this.currentActionID);
     if (model === undefined) {
       const [action] = this.getActions();
-      if (action !== undefined) {
-        this.currentActionID = action.id;
-      }
+      // if (action !== undefined) {
+      this.currentActionID = action.id;
+      //}
       return action;
     } else {
       return model as ExpressionModel;
@@ -437,9 +437,9 @@ export default class VideoCreator extends PluginController {
     // add actions.length to handle (-1) % n = -1
     const action =
       actions[(currentActionIndex + actions.length + dx) % actions.length];
-    if (action !== undefined) {
-      this.currentActionID = action.id;
-    }
+    //if (action !== undefined) {
+    this.currentActionID = action.id;
+    //}
     this.updateView();
   }
 
@@ -528,10 +528,7 @@ export default class VideoCreator extends PluginController {
   }
 
   async pushFrame(frame: string) {
-    if (
-      !this.cc.is3dProduct() &&
-      this.cc.graphSettings?.config?.invertedColors
-    ) {
+    if (!this.cc.is3dProduct() && this.cc.graphSettings.config.invertedColors) {
       // Invert colors in 2d.
       // 3d already inverts the canvas screenshots, so no need to invert.
       frame = await this.invertImage(frame);

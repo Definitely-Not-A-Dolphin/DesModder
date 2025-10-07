@@ -7,7 +7,7 @@ export function ErrorTriangle(hideErrors: HideErrors, id: string, inner: any) {
     <div
       // Use onClick instead of onTap to allow propagating the event
       onClick={(event: MouseEvent) =>
-        event.shiftKey && hideErrors?.toggleErrorHidden(id)
+        event.shiftKey && hideErrors.toggleErrorHidden(id)
       }
       class={() => ({
         "dsm-he-error-hidden": hideErrors.isErrorHidden(id),

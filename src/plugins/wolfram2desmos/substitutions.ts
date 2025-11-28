@@ -51,13 +51,13 @@ export const functionSubs: Substitution[] = [
   [/(?<![A-Za-zΑ-ω])sec/g, "Ⓦ"],
   [/(?<![A-Za-zΑ-ω])cot/g, "Ⓧ"],
   [/(?<![A-Za-zΑ-ω])log|ln/g, "Ⓩ"],
-  [/int(egral|)(?!\S)/g, "Ａ"],
-  [/int(egral|)(?=_)/g, "Ｂ"],
+  [/int(egral)?(?!\S)/g, "Ａ"],
+  [/int(egral)?(?=_)/g, "Ｂ"],
   [/sum(?=_)/g, "Ｃ"],
-  [/prod(uct|)(?=_)/g, "Ｄ"],
+  [/prod(uct)?(?=_)/g, "Ｄ"],
 ];
 
-export const functionFinalSubs: Substitution[] = [
+export const finalFunctionSubs: Substitution[] = [
   [/Ⓐ/g, "arcsinh"],
   [/Ⓑ/g, "arccosh"],
   [/Ⓒ/g, "arctanh"],
@@ -148,7 +148,7 @@ export const greekSubs: Substitution[] = [
   [/(?<![A-Za-zΑ-ω])constant/g, "C"],
 ];
 
-export const greekFinalSubs: Substitution[] = [
+export const finalGreekSubs: Substitution[] = [
   [/α/g, "\\alpha"],
   [/β/g, "\\beta"],
   [/Γ/g, "\\Gamma"],
@@ -186,7 +186,7 @@ export const greekFinalSubs: Substitution[] = [
   [/polygamma/g, "\\psi_{poly}"],
 ];
 
-export const bracketFinalSubs: Substitution[] = [
+export const finalBracketSubs: Substitution[] = [
   [/\(/g, "\\left("],
   [/\)/g, "\\right)"],
   [/«/g, "\\left|"],

@@ -370,3 +370,7 @@ quake-pro-name = Quake Pro
 quake-pro-desc = Allows you to increase the Field of View beyond the 3D calculator's regular limit.
 quake-pro-opt-magnification-name = Zoom Multiplier
 quake-pro-opt-magnification-desc = Increase the viewport's zoom limit by using this as the multiplier.
+
+## Change Username
+change-username-name = Change Username
+change-username-desc = Renames the displayed username in the top-right

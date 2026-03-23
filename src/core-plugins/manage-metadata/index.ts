@@ -2,7 +2,7 @@ import { PluginController } from "../../plugins/PluginController";
 import GraphMetadata, {
   Expression as MetadataExpression,
 } from "#metadata/interface.ts";
-import { getBlankMetadata, changeExprInMetadata } from "#metadata/manage.ts";
+import { changeExprInMetadata, getBlankMetadata } from "#metadata/manage.ts";
 import {
   deleteJunkMetadataNotes,
   getMetadataFromListModel,
@@ -53,7 +53,7 @@ export default class ManageMetadata extends PluginController {
       if (
         Object.entries(newMetadata.expressions).some(
           ([id, e]) =>
-            e?.glesmos && !this.graphMetadata.expressions[id]?.glesmos
+            e?.glesmos && !this.graphMetadata.expressions[id]?.glesmos,
         )
       ) {
         // list of glesmos expressions changed
@@ -135,7 +135,7 @@ export default class ManageMetadata extends PluginController {
   transferMetadata(
     currentList: ItemState[],
     newList: ItemState[],
-    oldIdToNewId: Map<string, string>
+    oldIdToNewId: Map<string, string>,
   ) {
     transferMetadata(currentList, newList, oldIdToNewId);
   }

@@ -1,7 +1,7 @@
 import { buildConfigFromGlobals, rawToText } from "../../../text-mode-core";
 import { DCGView } from "../../DCGView";
 import { Inserter, PluginController } from "../PluginController";
-import { onCalcEvent, analysisStateField, tmPlugin } from "./LanguageServer";
+import { analysisStateField, onCalcEvent, tmPlugin } from "./LanguageServer";
 import { TextModeToggle } from "./components/TextModeToggle";
 import { initView, startState } from "./view/editor";
 import { EditorView, ViewUpdate } from "@codemirror/view";
@@ -106,20 +106,22 @@ export default class TextMode extends PluginController {
     this.view.scrollDOM.addEventListener(
       "scroll",
       () => this.cc.dispatch({ type: "close-item-settings-menu" }),
-      { signal: this.abortScrollListenerController.signal }
+      { signal: this.abortScrollListenerController.signal },
     );
-    if (hasError)
+    if (hasError) {
       this.conversionError(() =>
         this.cc.dispatch({ type: "dsm-text-mode-toggle", inTextMode: false })
       );
+    }
     container.appendChild(this.view.dom);
     this.preventPropagation(container);
     this.dispatchListenerID = this.cc.dispatcher.register((event) => {
       // setTimeout to avoid dispatch-in-dispatch from handlers responding to
       // calc state changing by dispatching an event
       setTimeout(() => {
-        if (event.type === "set-state" && !event.opts.fromTextMode)
+        if (event.type === "set-state" && !event.opts.fromTextMode) {
           this.onSetState();
+        }
         if (this.view) onCalcEvent(this.view, event);
       });
     });
@@ -174,7 +176,7 @@ export default class TextMode extends PluginController {
   conversionError(undoCallback?: () => void) {
     this.toastError(
       "Automatic conversion to text encountered errors in some expressions.",
-      undoCallback
+      undoCallback,
     );
   }
 
@@ -199,7 +201,7 @@ export default class TextMode extends PluginController {
       "keydown",
       (e) =>
         (keys.isUndo(e) || keys.isRedo(e) || keys.isHelp(e)) &&
-        e.stopPropagation()
+        e.stopPropagation(),
     );
   }
 
@@ -239,7 +241,7 @@ function getSelectedItem(view: EditorView): string | undefined {
       ([_id, stmt]) =>
         stmt.type !== "Folder" &&
         stmt.pos.from <= selection.from &&
-        stmt.pos.to >= selection.to
+        stmt.pos.to >= selection.to,
     );
     return containingPairs[0]?.[0];
   }

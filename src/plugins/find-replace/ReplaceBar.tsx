@@ -45,7 +45,7 @@ export default class ReplaceBar extends Component<{
               }}
               onFocusedChanged={(focused) => {
                 this.isFocused = focused;
-                if (focused)
+                if (focused) {
                   this.fr.cc.dispatch({
                     type: "set-focus-location",
                     // This is an invalid focus location, so this is really setting
@@ -54,13 +54,16 @@ export default class ReplaceBar extends Component<{
                       type: "invalid-focus-location",
                     },
                   });
+                }
               }}
               hasError={false}
               selectOnFocus
               noFadeout
             />
-            {/* dcg-icon-search applies placement + icon, and
-              dcg-icon-caret-right overrides icon to be the caret */}
+            {
+              /* dcg-icon-search applies placement + icon, and
+              dcg-icon-caret-right overrides icon to be the caret */
+            }
             <i class="dcg-icon-search dcg-icon-caret-right" />
           </div>
           {/* Using a standard Button looks horrible on the gray background */}

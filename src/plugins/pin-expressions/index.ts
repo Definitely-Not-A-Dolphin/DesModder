@@ -27,12 +27,13 @@ export default class PinExpressions extends PluginController {
   ];
 
   pinExpression(id: string) {
-    if (this.cc.getItemModel(id)?.type !== "folder")
+    if (this.cc.getItemModel(id)?.type !== "folder") {
       this.cc.dispatch({
         type: "dsm-manage-metadata-update-for-expr",
         id,
         obj: { pinned: true },
       });
+    }
   }
 
   isExpressionPinned(id: string) {

@@ -12,7 +12,7 @@ function insertPanicElement() {
     .getElementById("dsm-panic-apply-reload-btn")!
     .addEventListener("click", () => {
       const inputs: HTMLInputElement[] = Array.from(
-        document.querySelectorAll("#dsm-panic-popover ul input")
+        document.querySelectorAll("#dsm-panic-popover ul input"),
       );
       const newPluginsForceDisabled = inputs
         .filter((el) => el.checked)
@@ -20,7 +20,7 @@ function insertPanicElement() {
         .filter((n): n is PluginID => n !== undefined);
       if (window.DesModderPreload) {
         window.DesModderPreload.pluginsForceDisabled = new Set(
-          newPluginsForceDisabled
+          newPluginsForceDisabled,
         );
       }
       postMessageUp({
@@ -57,7 +57,7 @@ function addLabelledCheckboxItem(list: Element, plugin: string) {
       <label>
         <input type="checkbox" />
       </label>
-    </li>`)
+    </li>`),
   );
   const li = list.lastElementChild!;
   // We're panicking anyways. Don't worry about language changing.

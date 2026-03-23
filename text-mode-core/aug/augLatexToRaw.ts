@@ -35,7 +35,7 @@ function childNodeToString(
   cfg: Config,
   e: Aug.Latex.AnyChild,
   parent: Aug.Latex.AnyRootOrChild | null,
-  path?: string
+  path?: string,
 ): string {
   const inner = childNodeToStringNoParen(cfg, e, path);
   if (rawNeedsParens(e, parent, path)) return wrapParen(inner);
@@ -45,7 +45,7 @@ function childNodeToString(
 function childNodeToStringNoParen(
   cfg: Config,
   e: Aug.Latex.AnyChild,
-  path: string | undefined
+  path: string | undefined,
 ): string {
   switch (e.type) {
     case "Constant": {
@@ -81,7 +81,7 @@ function childNodeToStringNoParen(
       return wrapBracket(
         bareSeq(cfg, e.start, e, { alwaysBeforeComma: true }) +
           "..." +
-          bareSeq(cfg, e.end, e)
+          bareSeq(cfg, e.end, e),
       );
     case "ListAccess":
       return (
@@ -117,13 +117,12 @@ function childNodeToStringNoParen(
           (open[0] ? "<" : "\\le ") +
           childNodeToString(cfg, identifier, e) +
           (open[1] ? "<" : "\\le ") +
-          childNodeToString(cfg, max, e)
+          childNodeToString(cfg, max, e),
       );
       if (assignments.length + parameters.length === 0) {
         throw new Error("Programming error: empty 'for' RHS.");
       }
-      const unwrapped =
-        childNodeToString(cfg, e.expr, e) +
+      const unwrapped = childNodeToString(cfg, e.expr, e) +
         "\\operatorname{for}" +
         [...parameters, ...assignments].join(",");
       return e.bracketWrapped ? wrapBracket(unwrapped) : unwrapped;
@@ -144,16 +143,15 @@ function childNodeToStringNoParen(
         }
         let part = childNodeToString(cfg, curr.condition, curr);
         if (!Aug.Latex.isConstant(curr.consequent, 1)) {
-          part +=
-            ":" +
+          part += ":" +
             childNodeToString(
               cfg,
               curr.consequent,
               curr,
               beforeComma(
                 curr.alternate.type === "Piecewise" ||
-                  !Aug.Latex.isConstant(curr.alternate, NaN)
-              )
+                  !Aug.Latex.isConstant(curr.alternate, NaN),
+              ),
             );
         }
         piecewiseParts.push(part);
@@ -162,10 +160,11 @@ function childNodeToStringNoParen(
       if (!Aug.Latex.isConstant(curr, NaN)) {
         if (piecewiseParts.length === 0) {
           // check handles trivial piecewise {}
-          if (!Aug.Latex.isConstant(curr, 1))
+          if (!Aug.Latex.isConstant(curr, 1)) {
             throw new Error(
-              "Programming error: first branch in Aug piecewise is unconditional but not 1."
+              "Programming error: first branch in Aug piecewise is unconditional but not 1.",
             );
+          }
         } else piecewiseParts.push(childNodeToString(cfg, curr, e));
       }
       return "\\left\\{" + piecewiseParts.join(",") + "\\right\\}";
@@ -187,11 +186,13 @@ function childNodeToStringNoParen(
       const prefix = e.name === "Product" ? "\\prod" : "\\sum";
       return (
         prefix +
-        `_{${identifierToString(cfg, e.index)}=${childNodeToString(
-          cfg,
-          e.start,
-          e
-        )}}` +
+        `_{${identifierToString(cfg, e.index)}=${
+          childNodeToString(
+            cfg,
+            e.start,
+            e,
+          )
+        }}` +
         `^{${childNodeToString(cfg, e.end, e)}}` +
         childNodeToString(cfg, e.expression, e, "term")
       );
@@ -231,7 +232,7 @@ function childNodeToStringNoParen(
           cfg,
           e.right,
           e,
-          path === "top" && e.operator === "=" ? "top-level-eq" : undefined
+          path === "top" && e.operator === "=" ? "top-level-eq" : undefined,
         )
       );
     case "ComparatorChain": {
@@ -253,7 +254,7 @@ function childNodeToStringNoParen(
     default:
       e satisfies never;
       throw new Error(
-        `Programming Error: Unexpected Aug node ${(e as any).type}`
+        `Programming Error: Unexpected Aug node ${(e as any).type}`,
       );
   }
 }
@@ -270,7 +271,7 @@ function bareSeq(
   cfg: Config,
   e: Aug.Latex.AnyChild[],
   parent: Aug.Latex.AnyRootOrChild,
-  { alwaysBeforeComma } = { alwaysBeforeComma: false }
+  { alwaysBeforeComma } = { alwaysBeforeComma: false },
 ): string {
   return e
     .map((f, i) =>
@@ -278,7 +279,7 @@ function bareSeq(
         cfg,
         f,
         parent,
-        beforeComma(alwaysBeforeComma || i < e.length - 1)
+        beforeComma(alwaysBeforeComma || i < e.length - 1),
       )
     )
     .join(",");
@@ -292,17 +293,19 @@ function funcToString(
   cfg: Config,
   callee: Aug.Latex.Identifier,
   args: Aug.Latex.AnyChild[],
-  parent: Aug.Latex.AnyRootOrChild
+  parent: Aug.Latex.AnyRootOrChild,
 ): string {
   if (callee.symbol === "sqrt" && args.length === 1) {
     return `\\sqrt{${bareSeq(cfg, args, parent)}}`;
   } else if (callee.symbol === "nthroot" && [1, 2].includes(args.length)) {
     if (args.length === 1) return `\\sqrt{${bareSeq(cfg, args, parent)}}`;
-    return `\\sqrt[${childNodeToString(cfg, args[1], parent)}]{${bareSeq(
-      cfg,
-      [...args.slice(0, 1), ...args.slice(2)],
-      parent
-    )}}`;
+    return `\\sqrt[${childNodeToString(cfg, args[1], parent)}]{${
+      bareSeq(
+        cfg,
+        [...args.slice(0, 1), ...args.slice(2)],
+        parent,
+      )
+    }}`;
   } else if (callee.symbol === "logbase" && args.length === 2) {
     return (
       `\\log_{${childNodeToString(cfg, args[args.length - 1], parent)}}` +
@@ -317,7 +320,7 @@ function funcToString(
 
 export function identifierToString(
   cfg: Config,
-  id: Aug.Latex.Identifier
+  id: Aug.Latex.Identifier,
 ): string {
   const tokenMatch = /^\$(\d+)$/.exec(id.symbol);
   if (tokenMatch) return `\\token{${tokenMatch[1]}}`;
@@ -332,12 +335,11 @@ export function identifierToString(
       throw new Error(`Unexpected character in ${symbol}`);
     }
   }
-  const start =
-    main.length === 1
-      ? main
-      : cfg.commandNames.has(main)
-        ? "\\" + main
-        : `\\operatorname{${main}}`;
+  const start = main.length === 1
+    ? main
+    : cfg.commandNames.has(main)
+    ? "\\" + main
+    : `\\operatorname{${main}}`;
   const end = subscript ? `_{${subscript}}` : "";
   return start + end;
 }

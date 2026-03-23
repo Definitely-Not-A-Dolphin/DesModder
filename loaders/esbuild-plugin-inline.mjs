@@ -1,5 +1,6 @@
 import esbuild from "esbuild";
 import path from "path";
+import { Buffer } from "node:buffer";
 
 export const esbuildPluginInline = () => ({
   name: "inline",
@@ -20,16 +21,19 @@ export const esbuildPluginInline = () => ({
         return {
           errors: [
             {
-              detail: `[esbuild-plugin-inline] No output from build of '${workerPath}'.`,
+              detail:
+                `[esbuild-plugin-inline] No output from build of '${workerPath}'.`,
             },
           ],
         };
       }
 
       return {
-        contents: `export default ${JSON.stringify(
-          Buffer.from(out.contents).toString("utf-8")
-        )};`,
+        contents: `export default ${
+          JSON.stringify(
+            Buffer.from(out.contents).toString("utf-8"),
+          )
+        };`,
         loader: "js",
       };
     });

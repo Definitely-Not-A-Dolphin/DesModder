@@ -8,7 +8,7 @@ import { BlockInfo } from "@codemirror/view";
 
 export function statementContainingLine(
   analysis: ProgramAnalysis,
-  b: BlockInfo
+  b: BlockInfo,
 ) {
   const stmts = statementsIntersecting(analysis.program, b.from, b.to);
   for (const stmt of stmts) {
@@ -19,7 +19,7 @@ export function statementContainingLine(
 export function statementsIntersecting(
   p: Program,
   from: number,
-  to: number = from
+  to: number = from,
 ) {
   function* _statementsIntersecting(s: Statement[]): Iterable<Statement> {
     const fromIndex = binarySearchFirstAfter(s, from);

@@ -35,8 +35,7 @@ export class PillboxButton extends Component<{
               class={() =>
                 this.horizontal
                   ? "dcg-icon-btn dcg-pillbox-element"
-                  : "dcg-btn-flat-gray dcg-settings-pillbox dcg-action-settings dcg-pillbox-btn-interior dsm-action-menu dcg-pillbox-element"
-              }
+                  : "dcg-btn-flat-gray dcg-settings-pillbox dcg-action-settings dcg-pillbox-btn-interior dsm-action-menu dcg-pillbox-element"}
               data-buttonId={id}
               role="button"
               tabIndex={0}
@@ -54,8 +53,7 @@ export class PillboxButton extends Component<{
             >
               <Switch key={this.props.buttonId}>
                 {() =>
-                  this.pm.pillboxButtons[this.props.buttonId()].popup(this.pm)
-                }
+                  this.pm.pillboxButtons[this.props.buttonId()].popup(this.pm)}
               </Switch>
             </div>
           )}
@@ -63,8 +61,7 @@ export class PillboxButton extends Component<{
             setDropdownOpen: (isOpen) => {
               this.pm.toggleMenu(this.props.buttonId(), isOpen);
             },
-            isOpen:
-              this.pm.pillboxMenuOpen === this.props.buttonId() &&
+            isOpen: this.pm.pillboxMenuOpen === this.props.buttonId() &&
               this.pm.showHorizontalPillboxMenu() === this.horizontal,
           })}
         />

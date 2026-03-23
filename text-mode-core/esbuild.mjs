@@ -46,7 +46,7 @@ Object.assign(pkg, {
 
 await fs.writeFile(
   path.join(outdir, "package.json"),
-  JSON.stringify(pkg, null, 2)
+  JSON.stringify(pkg, null, 2),
 );
 
 await fs.cp("./README.md", "./dist/README.md");

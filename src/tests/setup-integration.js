@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
+import process from "node:process";
 const { mkdir, writeFile } = require("fs").promises;
 const os = require("os");
 const path = require("path");

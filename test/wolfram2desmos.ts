@@ -1,12 +1,16 @@
-import { isIllegalASCIIMath, wolfram2desmos } from "./wolfram2desmos";
+import {
+  isIllegalASCIIMath,
+  wolfram2desmos,
+} from "../src/plugins/wolfram2desmos/wolfram2desmos.ts";
+import { assertEquals } from "@std/assert";
 
-describe("Wolfram To Desmos (Default Config)", () => {
+Deno.test("Wolfram To Desmos (Default Config)", () => {
   const w2d = (s: string) =>
     isIllegalASCIIMath(s)
       ? wolfram2desmos(s, {
-          reciprocalExponents2Surds: true,
-          derivativeLoopLimit: false,
-        })
+        reciprocalExponents2Surds: true,
+        derivativeLoopLimit: false,
+      })
       : "illegal";
 
   const cases: [from: string, to: string][] = [
@@ -96,19 +100,17 @@ describe("Wolfram To Desmos (Default Config)", () => {
 
   for (const [from, expected] of cases) {
     const actual = w2d(from);
-    test(`from ${JSON.stringify(from)}`, () => {
-      expect(actual).toEqual(expected);
-    });
+    assertEquals(actual, expected);
   }
 });
 
-describe("Wolfram To Desmos (reciprocalExponents2Surds false)", () => {
+Deno.test("Wolfram To Desmos (reciprocalExponents2Surds false)", () => {
   const w2d = (s: string) =>
     isIllegalASCIIMath(s)
       ? wolfram2desmos(s, {
-          reciprocalExponents2Surds: false,
-          derivativeLoopLimit: false,
-        })
+        reciprocalExponents2Surds: false,
+        derivativeLoopLimit: false,
+      })
       : "illegal";
   const cases: [from: string, to: string][] = [
     ["x^(1/2)", "x^{\\frac{1}{2}}"],
@@ -117,19 +119,17 @@ describe("Wolfram To Desmos (reciprocalExponents2Surds false)", () => {
 
   for (const [from, expected] of cases) {
     const actual = w2d(from);
-    test(`from ${JSON.stringify(from)}`, () => {
-      expect(actual).toEqual(expected);
-    });
+    assertEquals(actual, expected);
   }
 });
 
-describe("Wolfram To Desmos (derivativeLoopLimit true)", () => {
+Deno.test("Wolfram To Desmos (derivativeLoopLimit true)", () => {
   const w2d = (s: string) =>
     isIllegalASCIIMath(s)
       ? wolfram2desmos(s, {
-          reciprocalExponents2Surds: true,
-          derivativeLoopLimit: true,
-        })
+        reciprocalExponents2Surds: true,
+        derivativeLoopLimit: true,
+      })
       : "illegal";
   const cases: [from: string, to: string][] = [
     ["d^2/dx^2(xy)", "\\frac{d}{dx}\\frac{d}{dx}\\left(xy\\right)"],
@@ -139,8 +139,6 @@ describe("Wolfram To Desmos (derivativeLoopLimit true)", () => {
 
   for (const [from, expected] of cases) {
     const actual = w2d(from);
-    test(`from ${JSON.stringify(from)}`, () => {
-      expect(actual).toEqual(expected);
-    });
+    assertEquals(actual, expected);
   }
 });

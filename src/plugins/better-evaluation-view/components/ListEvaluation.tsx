@@ -6,20 +6,19 @@ import { zipWith } from "#utils/utils.ts";
 import { NormalListValueType } from "..";
 import {
   complexNumberLabel,
-  pointLabel,
   point3dLabel,
+  pointLabel,
   truncatedLatexLabel,
 } from "../label";
 
-type TypedConstantIteratorValue<T extends NormalListValueType> = T extends T
-  ? {
-      valueType: T;
-      iterator: ArrayIterator<ValueTypeMap[T][number]>;
-    }
+type TypedConstantIteratorValue<T extends NormalListValueType> = T extends T ? {
+    valueType: T;
+    iterator: ArrayIterator<ValueTypeMap[T][number]>;
+  }
   : never;
 
 function formatLabels<T extends NormalListValueType>(
-  typedConstantValue: TypedConstantValue<T>
+  typedConstantValue: TypedConstantValue<T>,
 ): IteratorObject<string> {
   // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
   const { valueType, iterator } = {
@@ -43,58 +42,66 @@ function formatLabels<T extends NormalListValueType>(
       return iterator;
     case ValueType.ListOfPolygon:
       return iterator.map(
-        (points) => `polygon\\left(${points.map(pointLabel).join(",")}\\right)`
+        (points) => `polygon\\left(${points.map(pointLabel).join(",")}\\right)`,
       );
     case ValueType.ListOfSegment:
       return iterator.map(
-        (points) => `segment\\left(${points.map(pointLabel).join(",")}\\right)`
+        (points) => `segment\\left(${points.map(pointLabel).join(",")}\\right)`,
       );
     case ValueType.ListOfCircle:
       return iterator.map(
         ([center, radius]) =>
-          `circle\\left(${pointLabel(center)},${truncatedLatexLabel(radius)}\\right)`
+          `circle\\left(${pointLabel(center)},${
+            truncatedLatexLabel(radius)
+          }\\right)`,
       );
     case ValueType.ListOfArc:
       return iterator.map(
-        (points) => `arc\\left(${points.map(pointLabel).join(",")}\\right)`
+        (points) => `arc\\left(${points.map(pointLabel).join(",")}\\right)`,
       );
     case ValueType.ListOfLine:
       return iterator.map(
-        (points) => `line\\left(${points.map(pointLabel).join(",")}\\right)`
+        (points) => `line\\left(${points.map(pointLabel).join(",")}\\right)`,
       );
     case ValueType.ListOfRay:
       return iterator.map(
-        (points) => `ray\\left(${points.map(pointLabel).join(",")}\\right)`
+        (points) => `ray\\left(${points.map(pointLabel).join(",")}\\right)`,
       );
     case ValueType.ListOfVector:
       return iterator.map(
         ([vector, start]) =>
-          `vector\\left(${pointLabel(start)},${pointLabel(zipWith((a, b) => a + b, start, vector))}\\right)`
+          `vector\\left(${pointLabel(start)},${
+            pointLabel(zipWith((a, b) => a + b, start, vector))
+          }\\right)`,
       );
     case ValueType.ListOfSegment3D:
       return iterator.map(
         (points) =>
-          `segment\\left(${points.map(point3dLabel).join(",")}\\right)`
+          `segment\\left(${points.map(point3dLabel).join(",")}\\right)`,
       );
     case ValueType.ListOfTriangle3D:
       return iterator.map(
         (points) =>
-          `triangle\\left(${points.map(point3dLabel).join(",")}\\right)`
+          `triangle\\left(${points.map(point3dLabel).join(",")}\\right)`,
       );
     case ValueType.ListOfSphere3D:
       return iterator.map(
         ([center, radius]) =>
-          `sphere\\left(${point3dLabel(center)},${truncatedLatexLabel(radius)}\\right)`
+          `sphere\\left(${point3dLabel(center)},${
+            truncatedLatexLabel(radius)
+          }\\right)`,
       );
     case ValueType.ListOfVector3D:
       return iterator.map(
         ([vector, start]) =>
-          `vector\\left(${point3dLabel(start)},${point3dLabel(zipWith((a, b) => a + b, start, vector))}\\right)`
+          `vector\\left(${point3dLabel(start)},${
+            point3dLabel(zipWith((a, b) => a + b, start, vector))
+          }\\right)`,
       );
     case ValueType.ListOfTone:
       return iterator.map(
         (values) =>
-          `tone\\left(${values.map(truncatedLatexLabel).join(",")}\\right)`
+          `tone\\left(${values.map(truncatedLatexLabel).join(",")}\\right)`,
       );
     default:
       return (iterator satisfies never as ArrayIterator<unknown>).map(String);
@@ -114,7 +121,7 @@ function* reusableTake<T>(iterable: Iterator<T>, limit: number) {
 }
 
 export function ListEvaluation(
-  typedConstantValue: TypedConstantValue<NormalListValueType>
+  typedConstantValue: TypedConstantValue<NormalListValueType>,
 ) {
   return (
     <div class="dcg-evaluation-view__wrapped-value">
@@ -127,13 +134,16 @@ export function ListEvaluation(
 
           return `\\left[${labelsToShow.join(",")}${
             listLength > truncationLength
-              ? `\\textcolor{gray}{...\\mathit{${listLength - truncationLength}\\ more}}`
+              ? `\\textcolor{gray}{...\\mathit{${
+                listLength - truncationLength
+              }\\ more}}`
               : ""
           }\\right]`;
         }}
         config={{
           autoCommands,
-          autoOperatorNames: `${autoOperatorNames} polygon segment circle arc line ray vector sphere tone triangle`,
+          autoOperatorNames:
+            `${autoOperatorNames} polygon segment circle arc line ray vector sphere tone triangle`,
         }}
       />
     </div>

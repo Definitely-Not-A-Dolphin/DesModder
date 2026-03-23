@@ -211,7 +211,8 @@ export interface ValueTypeMap {
     sweepRad: number,
     trigAngleMultiplier: number,
   ];
-  [ValueType.ListOfDirectedAngleMarker]: ValueTypeMap[ValueType.DirectedAngleMarker][];
+  [ValueType.ListOfDirectedAngleMarker]:
+    ValueTypeMap[ValueType.DirectedAngleMarker][];
   [ValueType.Transformation]: [
     linear: ValueTypeMap[ValueType.Complex],
     translate: ValueTypeMap[ValueType.Complex],
@@ -247,14 +248,16 @@ export interface ValueTypeMap {
     standardError: number,
     dof: number,
   ];
-  [ValueType.ListOfConfidenceInterval]: ValueTypeMap[ValueType.ConfidenceInterval][];
+  [ValueType.ListOfConfidenceInterval]:
+    ValueTypeMap[ValueType.ConfidenceInterval][];
   [ValueType.OneSampleTInference]: [
     count: number,
     mean: number,
     stdev: number,
     dof: number,
   ];
-  [ValueType.ListOfOneSampleTInference]: ValueTypeMap[ValueType.OneSampleTInference][];
+  [ValueType.ListOfOneSampleTInference]:
+    ValueTypeMap[ValueType.OneSampleTInference][];
   [ValueType.TwoSampleTInference]: [
     count1: number,
     mean1: number,
@@ -264,19 +267,22 @@ export interface ValueTypeMap {
     stdev2: number,
     dof: number,
   ];
-  [ValueType.ListOfTwoSampleTInference]: ValueTypeMap[ValueType.TwoSampleTInference][];
+  [ValueType.ListOfTwoSampleTInference]:
+    ValueTypeMap[ValueType.TwoSampleTInference][];
   [ValueType.RegressionTInference]: [
     pointEstimate: number,
     standardError: number,
     dof: number,
   ];
-  [ValueType.ListOfRegressionTInference]: ValueTypeMap[ValueType.RegressionTInference][];
+  [ValueType.ListOfRegressionTInference]:
+    ValueTypeMap[ValueType.RegressionTInference][];
   [ValueType.OneSampleZInference]: [
     count: number,
     mean: number,
     stdevp: number,
   ];
-  [ValueType.ListOfOneSampleZInference]: ValueTypeMap[ValueType.OneSampleZInference][];
+  [ValueType.ListOfOneSampleZInference]:
+    ValueTypeMap[ValueType.OneSampleZInference][];
   [ValueType.TwoSampleZInference]: [
     count1: number,
     mean1: number,
@@ -285,16 +291,19 @@ export interface ValueTypeMap {
     mean2: number,
     stdevp2: number,
   ];
-  [ValueType.ListOfTwoSampleZInference]: ValueTypeMap[ValueType.TwoSampleZInference][];
+  [ValueType.ListOfTwoSampleZInference]:
+    ValueTypeMap[ValueType.TwoSampleZInference][];
   [ValueType.OneProportionZInference]: [successes: number, count: number];
-  [ValueType.ListOfOneProportionZInference]: ValueTypeMap[ValueType.OneProportionZInference][];
+  [ValueType.ListOfOneProportionZInference]:
+    ValueTypeMap[ValueType.OneProportionZInference][];
   [ValueType.TwoProportionZInference]: [
     successes1: number,
     count1: number,
     successes2: number,
     count2: number,
   ];
-  [ValueType.ListOfTwoProportionZInference]: ValueTypeMap[ValueType.TwoProportionZInference][];
+  [ValueType.ListOfTwoProportionZInference]:
+    ValueTypeMap[ValueType.TwoProportionZInference][];
   [ValueType.ChiSquareGoodnessOfFit]: [
     p: number,
     score: number,
@@ -304,7 +313,8 @@ export interface ValueTypeMap {
     contributions: number[],
     total: number,
   ];
-  [ValueType.ListOfChiSquareGoodnessOfFit]: ValueTypeMap[ValueType.ChiSquareGoodnessOfFit][];
+  [ValueType.ListOfChiSquareGoodnessOfFit]:
+    ValueTypeMap[ValueType.ChiSquareGoodnessOfFit][];
   [ValueType.ChiSquareIndependence]: [
     p: number,
     score: number,
@@ -318,7 +328,8 @@ export interface ValueTypeMap {
     columnTotals: number[],
     total: number,
   ];
-  [ValueType.ListOfChiSquareIndependence]: ValueTypeMap[ValueType.ChiSquareIndependence][];
+  [ValueType.ListOfChiSquareIndependence]:
+    ValueTypeMap[ValueType.ChiSquareIndependence][];
   [ValueType.ZSignificanceTest]: [
     p: number,
     score: number,
@@ -326,7 +337,8 @@ export interface ValueTypeMap {
     pleft: number,
     pright: number,
   ];
-  [ValueType.ListOfZSignificanceTest]: ValueTypeMap[ValueType.ZSignificanceTest][];
+  [ValueType.ListOfZSignificanceTest]:
+    ValueTypeMap[ValueType.ZSignificanceTest][];
   [ValueType.TSignificanceTest]: [
     p: number,
     score: number,
@@ -335,7 +347,8 @@ export interface ValueTypeMap {
     pright: number,
     dof: number,
   ];
-  [ValueType.ListOfTSignificanceTest]: ValueTypeMap[ValueType.TSignificanceTest][];
+  [ValueType.ListOfTSignificanceTest]:
+    ValueTypeMap[ValueType.TSignificanceTest][];
   // [ValueType.MapIntervalPoint]: unknown;
   // [ValueType.MapIntervalComplex]: unknown;
   // [ValueType.MapIntervalPoint3D]: unknown;
@@ -353,32 +366,31 @@ export interface ValueTypeMap {
 export type ConstantValueType = keyof ValueTypeMap;
 export type TypedConstantValue<
   T extends ConstantValueType = ConstantValueType,
-> = T extends T
-  ? {
-      valueType: T;
-      value: ValueTypeMap[T];
-    }
+> = T extends T ? {
+    valueType: T;
+    value: ValueTypeMap[T];
+  }
   : never;
 
 export type ActionRHSValueType =
   | ValueType.EmptyList
   | OrListType<
-      | ValueType.Number
-      | ValueType.Complex
-      | ValueType.Point
-      | ValueType.Point3D
-      | ValueType.RGBColor
-      | ValueType.Polygon
-      | ValueType.Segment
-      | ValueType.Line
-      | ValueType.Ray
-      | ValueType.Vector
-      | ValueType.Circle
-      | ValueType.Arc
-      | ValueType.AngleMarker
-      | ValueType.Tone
-      | ValueType.DirectedAngleMarker
-    >;
+    | ValueType.Number
+    | ValueType.Complex
+    | ValueType.Point
+    | ValueType.Point3D
+    | ValueType.RGBColor
+    | ValueType.Polygon
+    | ValueType.Segment
+    | ValueType.Line
+    | ValueType.Ray
+    | ValueType.Vector
+    | ValueType.Circle
+    | ValueType.Arc
+    | ValueType.AngleMarker
+    | ValueType.Tone
+    | ValueType.DirectedAngleMarker
+  >;
 
 type OrListType<T extends ListElementValueType> =
   | T

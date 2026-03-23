@@ -1,7 +1,7 @@
-export * from "./desmosComponents";
-export { default as InlineMathInputView } from "./InlineMathInputView";
-export { default as SegmentedControl } from "./SegmentedControl";
-export { default as StaticMathQuillView } from "./StaticMathQuillView";
-export { default as Button } from "./Button";
-export { default as Toggle } from "./Toggle";
-export { default as IconButton } from "./IconButton";
+export * from "./desmosComponents.ts";
+export { default as InlineMathInputView } from "./InlineMathInputView.tsx";
+export { default as SegmentedControl } from "./SegmentedControl.tsx";
+export { default as StaticMathQuillView } from "./StaticMathQuillView.tsx";
+export { default as Button } from "./Button.tsx";
+export { default as Toggle } from "./Toggle.tsx";
+export { default as IconButton } from "./IconButton.tsx";

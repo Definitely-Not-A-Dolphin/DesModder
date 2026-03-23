@@ -1,4 +1,4 @@
-import { insertSemi, spaces, newline } from "./syntax.grammar";
+import { insertSemi, newline, spaces } from "./syntax.grammar";
 import { ContextTracker, ExternalTokenizer } from "@lezer/lr";
 
 /**
@@ -41,8 +41,9 @@ export const insertSemicolon = new ExternalTokenizer(
       // don't insert semicolon before # (regression params)
       next !== hash &&
       stack.canShift(insertSemi)
-    )
+    ) {
       input.acceptToken(insertSemi);
+    }
   },
-  { contextual: true, fallback: true }
+  { contextual: true, fallback: true },
 );

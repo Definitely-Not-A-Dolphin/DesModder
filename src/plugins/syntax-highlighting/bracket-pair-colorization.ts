@@ -18,24 +18,26 @@ export function generateBracketPairColorizationCSS(settings: Config) {
 
   const colors = bpcColors.map(hex2rgb);
 
-  const colorMaker = `rgb(${[0, 1, 2]
-    .map(
-      (i) =>
-        `calc(${
-          colors
-            .map((col, colindex) => {
-              const channel = col[i];
-              // Uses the periodic nature of mod to only color every Nth bracket a given color
+  const colorMaker = `rgb(${
+    [0, 1, 2]
+      .map(
+        (i) =>
+          `calc(${
+            colors
+              .map((col, colindex) => {
+                const channel = col[i];
+                // Uses the periodic nature of mod to only color every Nth bracket a given color
 
-              // All colors are multiplied by this "mod factor" and then added together
-              // to only "pick" the correct color.
+                // All colors are multiplied by this "mod factor" and then added together
+                // to only "pick" the correct color.
 
-              return `${channel} * pow(0, mod(var(--bracket-depth2) - ${colindex}, ${colors.length}))`;
-            })
-            .join(" + ") ?? 0
-        })`
-    )
-    .join(", ")})`;
+                return `${channel} * pow(0, mod(var(--bracket-depth2) - ${colindex}, ${colors.length}))`;
+              })
+              .join(" + ") ?? 0
+          })`,
+      )
+      .join(", ")
+  })`;
 
   /*
     Colorization exceptions:
@@ -55,7 +57,9 @@ export function generateBracketPairColorizationCSS(settings: Config) {
         &:not(.dcg-mq-textcolor *, .dcg-base-case-btn *) {
           .dcg-mq-paren,
           .dsm-mq-syntax-comma,
-          *${colorInText ? "" : ":not(.dcg-mq-bracket-middle, .dcg-mq-bracket-middle *)"} {
+          *${
+    colorInText ? "" : ":not(.dcg-mq-bracket-middle, .dcg-mq-bracket-middle *)"
+  } {
             color: ${colorMaker};
           }
         }

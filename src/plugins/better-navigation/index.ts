@@ -61,7 +61,8 @@ const NavigationTable: Record<
   "Ctrl-Del": { dir: R, mode: "delete" },
 };
 
-export default class BetterNavigation extends PluginController<BetterNavSettings> {
+export default class BetterNavigation
+  extends PluginController<BetterNavSettings> {
   static id = "better-navigation" as const;
   static enabledByDefault = true;
   static config = [
@@ -86,11 +87,11 @@ export default class BetterNavigation extends PluginController<BetterNavSettings
   afterConfigChange(): void {
     document.body.classList.toggle(
       "dsm-better-nav-scrollable-expressions",
-      this.settings.scrollableExpressions
+      this.settings.scrollableExpressions,
     );
     document.body.classList.toggle(
       "dsm-better-nav-hide-scroll-bar",
-      !this.settings.showScrollbar
+      !this.settings.showScrollbar,
     );
   }
 
@@ -136,8 +137,9 @@ export default class BetterNavigation extends PluginController<BetterNavSettings
       (next && isWordMQElem(next._el))
     ) {
       // leave start/end of sub/sup
-      if (isAtStartOrEndOfASubscriptOrSuperscript(mq, dir))
+      if (isAtStartOrEndOfASubscriptOrSuperscript(mq, dir)) {
         mq.keystroke(arrowOp);
+      }
 
       let i = 0;
       while (isWordMQElem(ctrlr.cursor?.[dir]?._el) && i < 1000) {
@@ -171,7 +173,7 @@ export default class BetterNavigation extends PluginController<BetterNavSettings
     this.afterConfigChange();
     this.dsm.overrideKeystroke?.setMQKeystrokeListener(
       "better-navigation",
-      this.onMQKeystroke.bind(this)
+      this.onMQKeystroke.bind(this),
     );
   }
 }

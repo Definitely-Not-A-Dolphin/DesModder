@@ -63,7 +63,13 @@
 }
 
 /* prettier-ignore */
-.dsm-vc-popover .dsm-suffix-radian-per-sec .dcg-mq-placeholder ~ .dcg-math-field,
-.dsm-vc-popover .dsm-suffix-degree-per-sec .dcg-mq-placeholder ~ .dcg-math-field {
+.dsm-vc-popover
+  .dsm-suffix-radian-per-sec
+  .dcg-mq-placeholder
+  ~ .dcg-math-field,
+.dsm-vc-popover
+  .dsm-suffix-degree-per-sec
+  .dcg-mq-placeholder
+  ~ .dcg-math-field {
   min-width: 90px;
 }

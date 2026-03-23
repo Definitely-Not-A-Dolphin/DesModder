@@ -13,10 +13,9 @@ export default class DuplicateHotkey extends PluginController {
       const selectedItem = this.cc.getSelectedItem();
       if (!selectedItem) return;
       this.cc.dispatch({
-        type:
-          selectedItem.type === "folder"
-            ? "duplicate-folder"
-            : "duplicate-expression",
+        type: selectedItem.type === "folder"
+          ? "duplicate-folder"
+          : "duplicate-expression",
         id: this.calc.selectedExpressionId,
       });
     }

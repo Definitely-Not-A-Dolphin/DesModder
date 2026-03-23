@@ -69,7 +69,7 @@ const imageDefaults = {
 function testExprPlain(
   desc: string,
   expected: string,
-  expr: Aug.Latex.AnyRootOrChild
+  expr: Aug.Latex.AnyRootOrChild,
 ) {
   testStmt(desc, { ...exprDefaults, latex: expr }, expected);
 }
@@ -85,7 +85,7 @@ describe("Basic exprs", () => {
     testExpr(
       "scientific notation",
       "4.230000000000001e25",
-      number(4.23 * 10 ** 25)
+      number(4.23 * 10 ** 25),
     );
     testExpr("between 0 and 1", "0.25", number(0.25));
     testExpr("large with decimal", "123.456", number(123.456));
@@ -131,7 +131,7 @@ describe("Basic exprs", () => {
     testExpr(
       "three elements",
       "[1, 2, x]",
-      list(number(1), number(2), id("x"))
+      list(number(1), number(2), id("x")),
     );
     testExpr("simple range", "[1 ... 10]", range([number(1)], [number(10)]));
     testExpr(
@@ -139,8 +139,8 @@ describe("Basic exprs", () => {
       "[1, 2, 3 ... 10, 11, 12]",
       range(
         [number(1), number(2), number(3)],
-        [number(10), number(11), number(12)]
-      )
+        [number(10), number(11), number(12)],
+      ),
     );
   });
   describe("ListComprehension", () => {
@@ -184,7 +184,7 @@ describe("Basic exprs", () => {
           },
         ],
         bracketWrapped: true,
-      }
+      },
     );
   });
   describe("Substitution", () => {
@@ -192,7 +192,7 @@ describe("Basic exprs", () => {
     testExpr(
       "simple sub",
       "(a with a = 3)",
-      substitution(id("a"), assignmentExpr(id("a"), number(3)))
+      substitution(id("a"), assignmentExpr(id("a"), number(3))),
     );
     testExpr(
       "simple sub",
@@ -200,8 +200,8 @@ describe("Basic exprs", () => {
       binop(
         "Add",
         number(2),
-        substitution(id("a"), assignmentExpr(id("a"), number(3)))
-      )
+        substitution(id("a"), assignmentExpr(id("a"), number(3))),
+      ),
     );
     testExpr(
       "multiple subs",
@@ -209,8 +209,8 @@ describe("Basic exprs", () => {
       substitution(
         id("a"),
         assignmentExpr(id("a"), number(3)),
-        assignmentExpr(id("b"), number(3))
-      )
+        assignmentExpr(id("b"), number(3)),
+      ),
     );
     testExpr(
       "sub precedence with arrow",
@@ -219,9 +219,9 @@ describe("Basic exprs", () => {
         updateRule(id("a"), id("b")),
         updateRule(
           id("c"),
-          substitution(id("b"), assignmentExpr(id("b"), number(3)))
-        )
-      )
+          substitution(id("b"), assignmentExpr(id("b"), number(3))),
+        ),
+      ),
     );
     testExpr(
       "sub precedence with leq",
@@ -229,8 +229,8 @@ describe("Basic exprs", () => {
       comparator(
         "<=",
         substitution(id("b"), assignmentExpr(id("b"), number(3))),
-        number(4)
-      )
+        number(4),
+      ),
     );
     testExpr("sub precedence with derivative", "((d/d x) (f with b = 3))", {
       type: "Derivative",
@@ -242,16 +242,16 @@ describe("Basic exprs", () => {
       "[(a with a = 3), (b with b = 4)]",
       list(
         substitution(id("a"), assignmentExpr(id("a"), number(3))),
-        substitution(id("b"), assignmentExpr(id("b"), number(4)))
-      )
+        substitution(id("b"), assignmentExpr(id("b"), number(4))),
+      ),
     );
     testExpr(
       "sub precedence with range",
       "[(a with a = 3) ... (b with b = 4)]",
       range(
         [substitution(id("a"), assignmentExpr(id("a"), number(3)))],
-        [substitution(id("b"), assignmentExpr(id("b"), number(4)))]
-      )
+        [substitution(id("b"), assignmentExpr(id("b"), number(4)))],
+      ),
     );
   });
   describe("Piecewise", () => {
@@ -301,7 +301,7 @@ describe("Basic exprs", () => {
     testExpr(
       "negative factorial",
       "-(x!)",
-      negative(functionCall(id("factorial"), [id("x")]))
+      negative(functionCall(id("factorial"), [id("x")])),
     );
   });
   describe("ParenthesizedExpression", () => {
@@ -334,7 +334,7 @@ describe("Basic exprs", () => {
     testExprPlain(
       "BinaryExpression UpdateRule",
       "A = a -> b",
-      comparator("=", id("A"), updateRule(id("a"), id("b")))
+      comparator("=", id("A"), updateRule(id("a"), id("b"))),
     );
     testExpr("Piecewise UpdateRule", "{a = b: a -> 3, a -> b}", {
       type: "Piecewise",
@@ -351,11 +351,11 @@ describe("Basic exprs", () => {
           description: "",
           latex: bareSeq(
             updateRule(id("a"), number(3)),
-            updateRule(id("b"), number(5))
+            updateRule(id("b"), number(5)),
           ),
         },
       },
-      'P @{ color: "", fill: 0, onClick: (a -> 3, b -> 5), clickDescription: "" }'
+      'P @{ color: "", fill: 0, onClick: (a -> 3, b -> 5), clickDescription: "" }',
     );
   });
   describe("MemberExpression", () => {
@@ -380,12 +380,12 @@ describe("Basic exprs", () => {
     testExpr(
       "filter",
       "L[L > 5]",
-      listAccess(id("L"), comparator(">", id("L"), number(5)))
+      listAccess(id("L"), comparator(">", id("L"), number(5))),
     );
     testExpr(
       "range",
       "L[1 ... 5]",
-      listAccess(id("L"), range([number(1)], [number(5)]))
+      listAccess(id("L"), range([number(1)], [number(5)])),
     );
   });
   describe("BinaryExpression", () => {
@@ -394,12 +394,12 @@ describe("Basic exprs", () => {
     testExpr(
       "multiplication",
       "2 * 3",
-      binop("Multiply", number(2), number(3))
+      binop("Multiply", number(2), number(3)),
     );
     testExpr(
       "scientific notation notation",
       "2e25",
-      binop("Multiply", number(2), binop("Exponent", number(10), number(25)))
+      binop("Multiply", number(2), binop("Exponent", number(10), number(25))),
     );
     testExpr("division", "2 / 3", binop("Divide", number(2), number(3)));
     testExpr("exponents", "2 ^ 3", binop("Exponent", number(2), number(3)));
@@ -439,7 +439,7 @@ describe("Styles", () => {
       "  center: (0, 0),",
       "  opacity: 0,",
       "}",
-    ].join("\n")
+    ].join("\n"),
   );
 });
 
@@ -454,12 +454,15 @@ describe("Parens", () => {
       start: number(1),
       end: number(5),
       expression: binop("Add", id("i"), number(2)),
-    })
+    }),
   );
   testExpr(
     "BinaryOperator[any]",
     "(L1 + L2)[a + b]",
-    listAccess(binop("Add", id("L1"), id("L2")), binop("Add", id("a"), id("b")))
+    listAccess(
+      binop("Add", id("L1"), id("L2")),
+      binop("Add", id("a"), id("b")),
+    ),
   );
   // TODO: don't need parens here
   testExpr("Derivative BinaryOperator", "((d/d x) (x + y))", {
@@ -471,7 +474,7 @@ describe("Parens", () => {
     testExpr(
       "(-a) ^ b",
       "(-a) ^ b",
-      binop("Exponent", negative(id("a")), id("b"))
+      binop("Exponent", negative(id("a")), id("b")),
     );
     testExpr("(-x)[any]", "(-a)[b]", listAccess(negative(id("a")), id("b")));
     testExpr("-(-x)", "-(-x)", negative(negative(id("x"))));
@@ -482,37 +485,37 @@ describe("Parens", () => {
     testExpr(
       "(+)*",
       "(a + b) * c",
-      binop("Multiply", binop("Add", id("a"), id("b")), id("c"))
+      binop("Multiply", binop("Add", id("a"), id("b")), id("c")),
     );
     testExpr(
       "(+)-",
       "a + b - c",
-      binop("Subtract", binop("Add", id("a"), id("b")), id("c"))
+      binop("Subtract", binop("Add", id("a"), id("b")), id("c")),
     );
     testExpr(
       "-(+)",
       "a - (b + c)",
-      binop("Subtract", id("a"), binop("Add", id("b"), id("c")))
+      binop("Subtract", id("a"), binop("Add", id("b"), id("c"))),
     );
     testExpr(
       "(*)/",
       "(a * b) / c",
-      binop("Divide", binop("Multiply", id("a"), id("b")), id("c"))
+      binop("Divide", binop("Multiply", id("a"), id("b")), id("c")),
     );
     testExpr(
       "(/)*",
       "(a / b) * c",
-      binop("Multiply", binop("Divide", id("a"), id("b")), id("c"))
+      binop("Multiply", binop("Divide", id("a"), id("b")), id("c")),
     );
     testExpr(
       "(^)^",
       "(a ^ b) ^ c",
-      binop("Exponent", binop("Exponent", id("a"), id("b")), id("c"))
+      binop("Exponent", binop("Exponent", id("a"), id("b")), id("c")),
     );
     testExpr(
       "^(^)",
       "a ^ (b ^ c)",
-      binop("Exponent", id("a"), binop("Exponent", id("b"), id("c")))
+      binop("Exponent", id("a"), binop("Exponent", id("b"), id("c"))),
     );
   });
   testExpr(
@@ -521,6 +524,6 @@ describe("Parens", () => {
     functionCall(id("f"), [
       substitution(id("c"), assignmentExpr(id("c"), number(4))),
       number(6),
-    ])
+    ]),
   );
 });

@@ -58,27 +58,27 @@ interface CachedGLesmosProgram {
 type UniformType = "1f" | "2fv" | "3fv" | "4fv" | "1i"; // TODO: this isn't very typesafe!
 type UniformSetter = (
   location: WebGLUniformLocation | null,
-  v: number | number[]
+  v: number | number[],
 ) => void;
 export function setUniform(
   gl: WebGL2RenderingContext,
   program: GLesmosProgram,
   uniformName: string,
   uniformType: UniformType,
-  uniformValue: number | number[]
+  uniformValue: number | number[],
 ) {
   const uniformSetterKey: keyof WebGLRenderingContext = ("uniform" +
     uniformType) as keyof WebGLRenderingContext;
   (gl[uniformSetterKey] as UniformSetter)(
     gl.getUniformLocation(program.glProgram, uniformName),
-    uniformValue
+    uniformValue,
   );
 }
 
 function compileShader(
   gl: WebGL2RenderingContext,
   shaderCode: string,
-  type: number
+  type: number,
 ) {
   const shader: WebGLShader | null = gl.createShader(type);
   if (shader === null) {
@@ -94,7 +94,7 @@ function compileShader(
       `While compiling ${
         type === gl.VERTEX_SHADER ? "vertex" : "fragment"
       } shader:
-      ${shaderInfoLog ?? ""}`
+      ${shaderInfoLog ?? ""}`,
     );
   }
   return shader;
@@ -103,7 +103,7 @@ function compileShader(
 function buildShaderProgram(
   gl: WebGL2RenderingContext,
   vert: string,
-  frag: string
+  frag: string,
 ) {
   const shaderProgram = gl.createProgram();
   if (shaderProgram === null) {
@@ -125,7 +125,7 @@ const shaderCache = new Map<string, CachedGLesmosProgram>();
 function getShaderProgram(
   gl: WebGL2RenderingContext,
   vertexSource: string,
-  fragment: FragmentSource
+  fragment: FragmentSource,
 ): GLesmosProgram {
   const key = vertexSource + fragment.source;
   const cachedShader = shaderCache.get(key); // TODO: hashing this whole thing is probably slow
@@ -159,7 +159,7 @@ function getShaderProgram(
 
 function populateProgram(
   cached: CachedGLesmosProgram,
-  fragment: FragmentSource
+  fragment: FragmentSource,
 ): GLesmosProgram {
   return {
     ...cached,
@@ -225,7 +225,7 @@ export const GLESMOS_SHARED = `
 export function glesmosGetCacheShader(
   gl: WebGL2RenderingContext,
   chunk: GLesmosShaderChunk,
-  deps: string
+  deps: string,
 ): GLesmosProgram {
   const source = `${environment(chunk)}
     // dependencies
@@ -254,7 +254,7 @@ export function glesmosGetCacheShader(
 export function glesmosGetSDFShader(
   gl: WebGL2RenderingContext,
   chunk: GLesmosShaderChunk,
-  deps: string
+  deps: string,
 ): GLesmosProgram {
   const source = `${environment(chunk)}
     uniform sampler2D iChannel0; // storage
@@ -477,7 +477,7 @@ export function glesmosGetSDFShader(
 
 export function glesmosGetFinalPassShader(
   gl: WebGL2RenderingContext,
-  chunk: GLesmosShaderChunk
+  chunk: GLesmosShaderChunk,
 ): GLesmosProgram {
   const source = `${environment(chunk)}
 
@@ -511,12 +511,8 @@ export function glesmosGetFinalPassShader(
 
       float dist = LineSDF( seed * vec4(warp,warp), texCoord * warp ) * max(iResolution.x, iResolution.y);
 
-      float alpha = smoothstep(0.0, 1.0, clamp( dist - float(${
-        chunk.line_width
-      }) * 0.5 + 0.5, 0.0, 1.0 ));
-      outColor = mixColor(outColor, ${
-        chunk.line_color
-      } * vec4(1.0,1.0,1.0,1.0 - alpha));
+      float alpha = smoothstep(0.0, 1.0, clamp( dist - float(${chunk.line_width}) * 0.5 + 0.5, 0.0, 1.0 ));
+      outColor = mixColor(outColor, ${chunk.line_color} * vec4(1.0,1.0,1.0,1.0 - alpha));
     }
   `;
 
@@ -534,7 +530,7 @@ export function glesmosGetFinalPassShader(
 export function glesmosGetFastFillShader(
   gl: WebGL2RenderingContext,
   chunk: GLesmosShaderChunk,
-  deps: string
+  deps: string,
 ): GLesmosProgram {
   const mains = `float f_xy(float x, float y){ ${chunk.main} }`;
 

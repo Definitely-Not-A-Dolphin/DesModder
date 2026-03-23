@@ -33,12 +33,10 @@ class EmitContext {
       ? ";"
       : [builders.hardline, builders.hardline];
     this.line = noOptionalSpaces
-      ? noNewlines
-        ? []
-        : builders.softline
+      ? noNewlines ? [] : builders.softline
       : noNewlines
-        ? " "
-        : builders.line;
+      ? " "
+      : builders.line;
     this.hardline = noNewlines ? [] : builders.hardline;
     this.softline = noNewlines ? [] : builders.softline;
     this.optionalSpace = noOptionalSpaces ? [] : " ";
@@ -67,7 +65,7 @@ function astToTextDoc(ctx: EmitContext, path: TextAST.NodePath) {
         ctx.statementSep,
         path.node.children.map((child, i) =>
           astItemToText(ctx, path.withChild(child, "child." + i.toString()))
-        )
+        ),
       );
     case "ExprStatement":
     case "Table":
@@ -80,12 +78,12 @@ function astToTextDoc(ctx: EmitContext, path: TextAST.NodePath) {
     case "RegressionParameters":
       return regressionParamsToText(
         ctx,
-        path as TextAST.NodePath<typeof path.node>
+        path as TextAST.NodePath<typeof path.node>,
       );
     case "RegressionEntry":
       return regressionEntryToText(
         ctx,
-        path as TextAST.NodePath<typeof path.node>
+        path as TextAST.NodePath<typeof path.node>,
       );
     case "StyleMapping":
       return styleMapToText(ctx, path as TextAST.NodePath<typeof path.node>);
@@ -94,7 +92,7 @@ function astToTextDoc(ctx: EmitContext, path: TextAST.NodePath) {
     case "PiecewiseBranch":
       return piecewiseBranchToText(
         ctx,
-        path as TextAST.NodePath<typeof path.node>
+        path as TextAST.NodePath<typeof path.node>,
       );
     case "Identifier":
     case "Number":
@@ -129,7 +127,7 @@ function astToTextDoc(ctx: EmitContext, path: TextAST.NodePath) {
 
 function astItemToText(
   ctx: EmitContext,
-  path: NodePath<TextAST.Statement>
+  path: NodePath<TextAST.Statement>,
 ): Doc {
   const item = path.node;
   switch (item.type) {
@@ -138,18 +136,18 @@ function astItemToText(
       return [
         item.residualVariable
           ? [
-              item.residualVariable.name,
-              ctx.optionalSpace,
-              "=",
-              ctx.optionalSpace,
-            ]
+            item.residualVariable.name,
+            ctx.optionalSpace,
+            "=",
+            ctx.optionalSpace,
+          ]
           : "",
         exprToText(ctx, path.withChild(item.expr, "expr")),
         item.parameters
           ? trailingRegressionParams(
-              ctx,
-              path.withChild(item.parameters, "parameters")
-            )
+            ctx,
+            path.withChild(item.parameters, "parameters"),
+          )
           : "",
         trailingStyleMap(ctx, path, item.style),
       ];
@@ -171,7 +169,7 @@ function astItemToText(
             ctx.statementSep,
             item.columns.map((col, i) =>
               columnToText(ctx, path.withChild(col, "column." + i.toString()))
-            )
+            ),
           ),
         ]),
         ctx.hardline,
@@ -193,7 +191,7 @@ function astItemToText(
             ctx.statementSep,
             item.children.map((child, i) =>
               astItemToText(ctx, path.withChild(child, "child." + i.toString()))
-            )
+            ),
           ),
         ]),
         ctx.hardline,
@@ -208,7 +206,7 @@ function astItemToText(
           ctx,
           "ticker",
           " ",
-          exprToText(ctx, path.withChild(item.handler, "handler"))
+          exprToText(ctx, path.withChild(item.handler, "handler")),
         ),
         trailingStyleMap(ctx, path, item.style),
       ];
@@ -217,7 +215,7 @@ function astItemToText(
 
 function columnToText(
   ctx: EmitContext,
-  path: NodePath<TextAST.TableColumn>
+  path: NodePath<TextAST.TableColumn>,
 ): Doc {
   return [
     exprToText(ctx, path.withChild(path.node.expr, "expr")),
@@ -228,7 +226,7 @@ function columnToText(
 function trailingStyleMap(
   ctx: EmitContext,
   parentPath: NodePath,
-  node: TextAST.StyleMapping | null
+  node: TextAST.StyleMapping | null,
 ): Doc {
   if (node === null) return [];
   return [
@@ -239,7 +237,7 @@ function trailingStyleMap(
 
 function styleMapToText(
   ctx: EmitContext,
-  path: NodePath<TextAST.StyleMapping>
+  path: NodePath<TextAST.StyleMapping>,
 ): Doc {
   // TODO: handle quotes/unquotes for property names
   // TODO: remove newlines when only 1 or zero entries
@@ -257,7 +255,7 @@ function styleMapToText(
 
 function styleEntryToText(
   ctx: EmitContext,
-  path: NodePath<TextAST.MappingEntry>
+  path: NodePath<TextAST.MappingEntry>,
 ) {
   const entry = path.node;
   return [
@@ -272,27 +270,27 @@ function styleEntryToText(
 
 function trailingRegressionParams(
   ctx: EmitContext,
-  path: NodePath<TextAST.RegressionParameters>
+  path: NodePath<TextAST.RegressionParameters>,
 ): Doc {
   return [ctx.optionalSpace, regressionParamsToText(ctx, path)];
 }
 
 function regressionParamsToText(
   ctx: EmitContext,
-  path: NodePath<TextAST.RegressionParameters>
+  path: NodePath<TextAST.RegressionParameters>,
 ): Doc {
   const lines = join(
     ctx.line,
     path.node.entries.map((entry, i) =>
       regressionEntryToText(ctx, path.withChild(entry, "entry." + i.toString()))
-    )
+    ),
   );
   return ["#{", indent([ctx.line, lines]), ctx.line, "}"];
 }
 
 function regressionEntryToText(
   ctx: EmitContext,
-  path: NodePath<TextAST.RegressionEntry>
+  path: NodePath<TextAST.RegressionEntry>,
 ): Doc {
   return [
     exprToText(ctx, path.withChild(path.node.variable, "variable")),
@@ -310,7 +308,7 @@ function stringToText(str: string): Doc {
 function primeOrCallToText(
   ctx: EmitContext,
   path: NodePath<TextAST.CallExpression>,
-  primeOrder: number
+  primeOrder: number,
 ): Doc {
   return group([
     exprToText(ctx, path.withChild(path.node.callee, "callee")),
@@ -321,8 +319,8 @@ function primeOrCallToText(
         [",", ctx.line],
         path.node.arguments.map((e, i) =>
           exprToText(ctx, path.withChild(e, "argument." + i.toString()))
-        )
-      )
+        ),
+      ),
     ),
   ]);
 }
@@ -350,7 +348,7 @@ function maybeRequiredSpace(
   ctx: EmitContext,
   left: Doc,
   space: Doc,
-  right: Doc
+  right: Doc,
 ) {
   if (
     !ctx.opts.noOptionalSpaces ||
@@ -364,7 +362,7 @@ function maybeRequiredSpace(
 
 function exprToTextNoParen(
   ctx: EmitContext,
-  path: NodePath<TextAST.Expression>
+  path: NodePath<TextAST.Expression>,
 ): Doc {
   const e = path.node;
   switch (e.type) {
@@ -378,7 +376,7 @@ function exprToTextNoParen(
       return primeOrCallToText(
         ctx,
         path as NodePath<TextAST.CallExpression>,
-        0
+        0,
       );
     case "PrimeExpression":
       return primeOrCallToText(ctx, path.withChild(e.expr, "expr"), e.order);
@@ -416,8 +414,8 @@ function exprToTextNoParen(
             ctx.comma,
             e.startValues.map((v, i) =>
               exprToText(ctx, path.withChild(v, "startValues." + i.toString()))
-            )
-          )
+            ),
+          ),
         ),
         ctx.line,
         "...",
@@ -427,8 +425,8 @@ function exprToTextNoParen(
             ctx.comma,
             e.endValues.map((v, i) =>
               exprToText(ctx, path.withChild(v, "endValues." + i.toString()))
-            )
-          )
+            ),
+          ),
         ),
       ]);
     case "ListAccessExpression": {
@@ -439,7 +437,7 @@ function exprToTextNoParen(
           e.index.type === "RangeExpression" ||
             e.index.type === "ListExpression"
             ? listAccessIndex
-            : bracketize(ctx, listAccessIndex)
+            : bracketize(ctx, listAccessIndex),
         ),
       ];
     }
@@ -468,7 +466,7 @@ function exprToTextNoParen(
       const assignments = e.assignments.map((assignment, i) =>
         assignmentExpressionToText(
           ctx,
-          path.withChild(assignment, `assignments.${i}`)
+          path.withChild(assignment, `assignments.${i}`),
         )
       );
       const intervalParameters = e.parameters.map(
@@ -483,14 +481,14 @@ function exprToTextNoParen(
             open[1] ? "<" : "<=",
             ctx.optionalSpace,
             exprToText(ctx, path.withChild(max, `param.${i}.max`)),
-          ])
+          ]),
       );
       const unwrapped = [
         maybeRequiredSpace(
           ctx,
           exprToText(ctx, path.withChild(e.expr, "expr")),
           " ",
-          "for"
+          "for",
         ),
         " ",
         join(ctx.comma, [...intervalParameters, ...assignments]),
@@ -503,7 +501,7 @@ function exprToTextNoParen(
           ctx,
           exprToText(ctx, path.withChild(e.body, "body")),
           ctx.opts.noNewlines ? " " : builders.line,
-          "with"
+          "with",
         ),
         " ",
         join(
@@ -511,9 +509,9 @@ function exprToTextNoParen(
           e.assignments.map((assignment, i) =>
             assignmentExpressionToText(
               ctx,
-              path.withChild(assignment, `assignments.${i}`)
+              path.withChild(assignment, `assignments.${i}`),
             )
-          )
+          ),
         ),
       ]);
     case "PiecewiseExpression":
@@ -526,9 +524,9 @@ function exprToTextNoParen(
             e.branches.map((branch, i) =>
               piecewiseBranchToText(
                 ctx,
-                path.withChild(branch, `branches.${i}`)
+                path.withChild(branch, `branches.${i}`),
               )
-            )
+            ),
           ),
         ]),
         ctx.softline,
@@ -571,7 +569,7 @@ function exprToTextNoParen(
       const g = [];
       for (let i = 0; i < e.args.length; i++) {
         g.push(
-          exprToText(ctx, path.withChild(e.args[i], "arg." + i.toString()))
+          exprToText(ctx, path.withChild(e.args[i], "arg." + i.toString())),
         );
         if (i < e.symbols.length) {
           g.push(ctx.optionalSpace, e.symbols[i], ctx.line);
@@ -590,29 +588,27 @@ function exprToTextNoParen(
     case "AssignmentExpression":
       return assignmentExpressionToText(
         ctx,
-        path as NodePath<TextAST.AssignmentExpression>
+        path as NodePath<TextAST.AssignmentExpression>,
       );
     default:
       e satisfies never;
       throw new Error(
-        `Programming Error: Unexpected AST node ${(e as any).type}`
+        `Programming Error: Unexpected AST node ${(e as any).type}`,
       );
   }
 }
 
 function piecewiseBranchToText(
   ctx: EmitContext,
-  path: NodePath<TextAST.PiecewiseBranch>
+  path: NodePath<TextAST.PiecewiseBranch>,
 ): Doc {
   const branch = path.node;
   return group([
-    branch.condition === null
-      ? []
-      : [
-          exprToText(ctx, path.withChild(branch.condition, "condition")),
-          ":",
-          ctx.line,
-        ],
+    branch.condition === null ? [] : [
+      exprToText(ctx, path.withChild(branch.condition, "condition")),
+      ":",
+      ctx.line,
+    ],
     indent([
       branch.consequent === null
         ? "1"
@@ -623,7 +619,7 @@ function piecewiseBranchToText(
 
 function assignmentExpressionToText(
   ctx: EmitContext,
-  path: NodePath<TextAST.AssignmentExpression>
+  path: NodePath<TextAST.AssignmentExpression>,
 ): Doc {
   return group([
     path.node.variable.name,
@@ -638,10 +634,10 @@ function numToText(num: number): Doc {
   return isFinite(num)
     ? num.toString().replace("e+", "e")
     : num > 0
-      ? "infty"
-      : num < 0
-        ? "-infty"
-        : "NaN";
+    ? "infty"
+    : num < 0
+    ? "-infty"
+    : "NaN";
 }
 
 function parenthesize(ctx: EmitContext, doc: Doc): Doc {
@@ -654,8 +650,8 @@ function bracketize(ctx: EmitContext, doc: Doc): Doc {
 
 function listToText(ctx: EmitContext, path: NodePath<TextAST.ListExpression>) {
   const { values } = path.node;
-  const printOneLineOnly =
-    values.length > 50 || values.every(isNumericOrNumericPoint);
+  const printOneLineOnly = values.length > 50 ||
+    values.every(isNumericOrNumericPoint);
   const inner = values.map((v, i) =>
     exprToText(ctx, path.withChild(v, "values." + i.toString()))
   );
@@ -696,8 +692,9 @@ function isUnsignedNumericLikeLiteral(node: TextAST.Expression) {
 function startsOrEndsWithWord(dir: 0 | -1) {
   function fn(doc: Doc | undefined): boolean {
     if (!doc) return false;
-    if (typeof doc === "string")
+    if (typeof doc === "string") {
       return /[a-zA-Z0-9_]/.test(dir === 0 ? doc[0] : doc[doc.length - 1]);
+    }
     if (Array.isArray(doc)) return fn(doc.at(dir));
 
     switch (doc.type) {

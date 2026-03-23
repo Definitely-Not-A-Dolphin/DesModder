@@ -2,12 +2,12 @@ import imageWidget from "./imageWidget";
 import inlineToggleWidget from "./inlineToggleWidget";
 import { syntaxTree } from "@codemirror/language";
 import {
-  WidgetType,
-  EditorView,
   Decoration,
-  ViewUpdate,
-  ViewPlugin,
   DecorationSet,
+  EditorView,
+  ViewPlugin,
+  ViewUpdate,
+  WidgetType,
 } from "@codemirror/view";
 import { SyntaxNode } from "@lezer/common";
 
@@ -27,18 +27,19 @@ export const styleMappingPlugin = ViewPlugin.fromClass(
     }
 
     update(update: ViewUpdate) {
-      if (update.docChanged || update.viewportChanged)
+      if (update.docChanged || update.viewportChanged) {
         this.decorations = getWidgets(update.view);
+      }
     }
   },
-  { decorations: (v) => v.decorations }
+  { decorations: (v) => v.decorations },
 );
 
 export function toggleString(
   view: EditorView,
   pos: number,
   from: string,
-  to: string
+  to: string,
 ) {
   const after = view.state.doc.sliceString(pos + 1, pos + from.length + 1);
   if (after === from) {
@@ -74,9 +75,9 @@ export function getWidgets(view: EditorView) {
                 const deco = Decoration.widget({
                   widget: new spec.Widget(
                     JSON.parse(
-                      view.state.doc.sliceString(value.from, value.to)
+                      view.state.doc.sliceString(value.from, value.to),
                     ),
-                    path
+                    path,
                   ),
                   side: -1,
                 });
@@ -95,8 +96,8 @@ function stylePath(view: EditorView, node: SyntaxNode): string {
   return node.name === "StyleMapping"
     ? stylePath(view, node.parent!)
     : node.name === "MappingEntry"
-      ? stylePath(view, node.parent!) +
-        "." +
-        view.state.doc.sliceString(node.firstChild!.from, node.firstChild!.to)
-      : "";
+    ? stylePath(view, node.parent!) +
+      "." +
+      view.state.doc.sliceString(node.firstChild!.from, node.firstChild!.to)
+    : "";
 }

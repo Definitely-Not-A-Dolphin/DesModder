@@ -42,9 +42,10 @@ fs.readdirSync("./calc_states").forEach((filename) => {
     crashes += 1;
   }
 });
-if (!printGraphs)
+if (!printGraphs) {
   console.log(
     `\nTesting finished: ${successes}/${total} version-${VERSION} graphs passed. Skipped ${
       wrongVersion + crashes
-    } graphs (${wrongVersion} incorrect versions and ${crashes} test runner exceptions).`
+    } graphs (${wrongVersion} incorrect versions and ${crashes} test runner exceptions).`,
   );
+}

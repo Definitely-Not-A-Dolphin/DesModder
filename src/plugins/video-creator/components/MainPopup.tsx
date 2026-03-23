@@ -1,11 +1,11 @@
 import VideoCreator from "..";
-import { OutFileType, cancelExport } from "../backend/export";
+import { cancelExport, OutFileType } from "../backend/export";
 import CaptureMethod from "./CaptureMethod";
 import LoadingPie from "./LoadingPie";
 import "./MainPopup.less";
 import PreviewCarousel from "./PreviewCarousel";
 import { Component, jsx } from "#DCGView";
-import { SegmentedControl, If, Input, Button, IfElse } from "#components";
+import { Button, If, IfElse, Input, SegmentedControl } from "#components";
 import { format } from "#i18n";
 import ManagedNumberInput from "./ManagedNumberInput";
 import { OrientationView } from "./OrientationView";
@@ -57,8 +57,7 @@ export default class MainPopup extends Component<{
             <LoadingPie
               progress={() => this.vc.exportProgress}
               isPending={() =>
-                this.vc.exportProgress < 0 || this.vc.exportProgress > 0.99
-              }
+                this.vc.exportProgress < 0 || this.vc.exportProgress > 0.99}
             />
           </div>
           <div class="dsm-vc-cancel-export-button">
@@ -114,8 +113,7 @@ export default class MainPopup extends Component<{
                 onTapEnd={(e: Event) =>
                   this.vc.isPlayPreviewExpanded &&
                   this.eventShouldCloseExpanded(e) &&
-                  this.vc.togglePreviewExpanded()
-                }
+                  this.vc.togglePreviewExpanded()}
               >
                 <div class="dsm-vc-preview-inner">
                   <PreviewCarousel vc={this.vc} />
@@ -146,7 +144,7 @@ export default class MainPopup extends Component<{
                   names={fileTypeNames}
                   selectedIndex={() => this.getSelectedFileTypeIndex()}
                   setSelectedIndex={(i) => this.setSelectedFileTypeIndex(i)}
-                  ariaGroupLabel={"Select export type"}
+                  ariaGroupLabel="Select export type"
                 />
               </div>
               <Input
@@ -169,14 +167,12 @@ export default class MainPopup extends Component<{
                     this.vc.frames.length === 0 ||
                     this.vc.isCapturing ||
                     this.vc.isExporting ||
-                    !this.vc.isFPSValid()
-                  }
+                    !this.vc.isFPSValid()}
                 >
                   {() =>
                     format("video-creator-export-as", {
                       fileType: this.vc.fileType,
-                    })
-                  }
+                    })}
                 </Button>
                 <If predicate={() => this.vc.fileType !== "zip"}>
                   {() => (

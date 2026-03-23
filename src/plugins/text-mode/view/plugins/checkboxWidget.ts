@@ -1,11 +1,11 @@
 import { syntaxTree } from "@codemirror/language";
 import {
-  WidgetType,
-  EditorView,
   Decoration,
-  ViewUpdate,
-  ViewPlugin,
   DecorationSet,
+  EditorView,
+  ViewPlugin,
+  ViewUpdate,
+  WidgetType,
 } from "@codemirror/view";
 
 /**
@@ -79,8 +79,9 @@ export const checkboxPlugin = ViewPlugin.fromClass(
     }
 
     update(update: ViewUpdate) {
-      if (update.docChanged || update.viewportChanged)
+      if (update.docChanged || update.viewportChanged) {
         this.decorations = checkboxes(update.view);
+      }
     }
   },
   {
@@ -98,16 +99,16 @@ export const checkboxPlugin = ViewPlugin.fromClass(
         }
       },
     },
-  }
+  },
 );
 
 function toggleBoolean(view: EditorView, pos: number) {
   const after = view.state.doc.sliceString(pos, pos + 5);
   let change;
   if (after === "false") change = { from: pos, to: pos + 5, insert: "true" };
-  else if (after.startsWith("true"))
+  else if (after.startsWith("true")) {
     change = { from: pos, to: pos + 4, insert: "false" };
-  else return false;
+  } else return false;
   view.dispatch({ changes: change });
   return true;
 }

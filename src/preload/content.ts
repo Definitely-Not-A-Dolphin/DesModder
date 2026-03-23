@@ -69,8 +69,9 @@ function pluginSettings(items: UntrustedInitialData) {
   const settingsDown: Record<PluginID, GenericSettings | undefined> =
     structuredClone(getItem(items, StorageKeys.pluginSettings));
   // Hide secret key from web page
-  if (settingsDown.wakatime?.secretKey)
+  if (settingsDown.wakatime?.secretKey) {
     settingsDown.wakatime.secretKey = "????????-????-????-????-????????????";
+  }
   return settingsDown;
 }
 
@@ -102,13 +103,13 @@ function _sendHeartbeat(options: WindowHeartbeatOptions) {
             if (e?.type === "heartbeat-error") {
               postMessageDown(e);
             }
-          }
+          },
         );
       } else {
         // Firefox can only send wakatime requests from the content script
         void sendHeartbeat(fullOptions, (e) => postMessageDown(e));
       }
-    }
+    },
   );
 }
 

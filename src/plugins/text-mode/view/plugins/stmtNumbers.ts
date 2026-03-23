@@ -4,10 +4,10 @@ import { statementsIntersecting } from "../statementIntersection";
 import { EditorState, Extension, RangeSet } from "@codemirror/state";
 import {
   EditorView,
-  GutterMarker,
-  ViewUpdate,
   gutter,
+  GutterMarker,
   gutters,
+  ViewUpdate,
 } from "@codemirror/view";
 
 export function stmtNumbers(): Extension {
@@ -49,9 +49,9 @@ function maxNumber(state: EditorState) {
     const children = stmt.type === "Table" ? stmt.columns : stmt.children;
     const last = children[children.length - 1];
     if (!last) return stmt.type === "Program" ? 1 : stmt.index;
-    if (last.type === "Folder" || last.type === "Table")
+    if (last.type === "Folder" || last.type === "Table") {
       return _maxNumber(last);
-    else return last.index;
+    } else return last.index;
   }
   return maxLineNumber(_maxNumber(analysis.program)).toString();
 }

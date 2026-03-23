@@ -8,6 +8,7 @@ import { copy } from "esbuild-plugin-copy";
 import { lessLoader } from "esbuild-plugin-less";
 import { promises as fs } from "fs";
 import parseArgs from "minimist-lite";
+import process from "node:process";
 
 const argv = parseArgs(process.argv.slice(2));
 
@@ -29,7 +30,7 @@ if (argv.help) {
     node esbuild.mjs --watch --browser=chrome
     
     # Final build for Firefox
-    node esbuild.mjs --browser=firefox`
+    node esbuild.mjs --browser=firefox`,
   );
   process.exit(0);
 }

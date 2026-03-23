@@ -22,7 +22,7 @@ import { error, warning } from "./diagnostics";
 import { IncrementalState, parse } from "./textToAST";
 import type { Diagnostic } from "@codemirror/lint";
 // eslint-disable-next-line @desmodder/eslint-rules/no-external-imports
-import { test, expect as _expect, describe } from "@jest/globals";
+import { describe, expect as _expect, test } from "@jest/globals";
 
 const cfg = buildConfig({});
 
@@ -57,10 +57,10 @@ function testPosNesting(node: TextAST.Node, okNoPos = false) {
   if (!okNoPos) expect(node.pos).ok(`Type ${node.type} should have a pos`);
   if (node.pos) {
     expect(childPos.every((x) => x.from >= node.pos.from)).ok(
-      `Type ${node.type} .pos.from should not exceed child.pos.from`
+      `Type ${node.type} .pos.from should not exceed child.pos.from`,
     );
     expect(childPos.every((x) => x.to <= node.pos.to)).ok(
-      `Type ${node.type} .pos.to should not be less than child.pos.to`
+      `Type ${node.type} .pos.to should not be less than child.pos.to`,
     );
   }
   Object.values(node)
@@ -256,7 +256,7 @@ describe("Basic exprs", () => {
         type: "Range",
         start: [number(1), number(2), number(3)],
         end: [number(10), number(11), number(12)],
-      }
+      },
     );
   });
   describe("ListComprehension", () => {
@@ -304,14 +304,14 @@ describe("Basic exprs", () => {
           },
         ],
         bracketWrapped: true,
-      }
+      },
     );
   });
   describe("Substitution", () => {
     testExpr(
       "simple sub",
       "a with a=3",
-      substitution(id("a"), assignmentExpr(id("a"), number(3)))
+      substitution(id("a"), assignmentExpr(id("a"), number(3))),
     );
     testExpr(
       "multiple subs",
@@ -319,8 +319,8 @@ describe("Basic exprs", () => {
       substitution(
         id("a"),
         assignmentExpr(id("a"), number(3)),
-        assignmentExpr(id("b"), number(3))
-      )
+        assignmentExpr(id("b"), number(3)),
+      ),
     );
     testExpr(
       "sub precedence with arrow",
@@ -329,9 +329,9 @@ describe("Basic exprs", () => {
         updateRule(id("a"), id("b")),
         updateRule(
           id("c"),
-          substitution(id("b"), assignmentExpr(id("b"), number(3)))
-        )
-      )
+          substitution(id("b"), assignmentExpr(id("b"), number(3))),
+        ),
+      ),
     );
     testDiagnostics("substitution precedence with comma", "[b with b=3, 5]", [
       error("Substitution must set variable = identifier", pos(13, 14)),
@@ -435,7 +435,7 @@ describe("Basic exprs", () => {
     testExpr(
       "update rule assignment",
       "A=a->7",
-      comparator("=", id("A"), rule)
+      comparator("=", id("A"), rule),
     );
   });
   describe("PrefixExpression", () => {
@@ -448,18 +448,21 @@ describe("Basic exprs", () => {
     const abc = bareSeq(
       updateRule(id("a"), number(2)),
       updateRule(id("b"), number(3)),
-      updateRule(id("c"), number(4))
+      updateRule(id("c"), number(4)),
     );
     testExpr("unwrapped action sequence", "a->2,b->3,c->4", abc);
     testExpr(
       "unwrapped action sequence on RHS of equality",
       "A=a->2,b->3,c->4",
-      comparator("=", id("A"), abc)
+      comparator("=", id("A"), abc),
     );
     testExpr(
       "wrapped action sequence",
       "(a->2,b->3)",
-      wrappedSeq(updateRule(id("a"), number(2)), updateRule(id("b"), number(3)))
+      wrappedSeq(
+        updateRule(id("a"), number(2)),
+        updateRule(id("b"), number(3)),
+      ),
     );
     testExpr(
       "function on points",
@@ -467,7 +470,7 @@ describe("Basic exprs", () => {
       functionCall(id("polygon"), [
         wrappedSeq(number(1), number(2)),
         wrappedSeq(number(3), number(4)),
-      ])
+      ]),
     );
   });
   describe("MemberExpression", () => {
@@ -659,7 +662,7 @@ describe("Statement metadata", () => {
           showOnHover: true,
           editableMode: "TEXT",
         },
-      }
+      },
     );
   });
   describe("Sliders", () => {
@@ -696,7 +699,7 @@ describe("Statement metadata", () => {
           max: number(20),
           step: number(1),
         },
-      }
+      },
     );
   });
   describe("Fill", () => {
@@ -739,7 +742,7 @@ describe("Statement metadata", () => {
           style: "CROSS",
           dragMode: "AUTO",
         },
-      }
+      },
     );
     testStmt("Points defaults", `1 @{points:@{}}`, {
       ...exprDefaults,
@@ -864,7 +867,7 @@ describe("Semicolons", () => {
       id: "2",
       color: "#2d70b3",
       latex: comparator("=", id("x"), number(1)),
-    }
+    },
   );
   testStmt("Insertion inside folder", `folder "" {\ny=x\n\nx=1}`, {
     ...folderDefaults,
@@ -960,7 +963,7 @@ describe("Image", () => {
       opacity: number(0.5),
       foreground: true,
       draggable: true,
-    }
+    },
   );
 });
 
@@ -979,7 +982,7 @@ describe("Folder", () => {
           id: "2",
         },
       ],
-    }
+    },
   );
   testStmt(
     "Folder options",
@@ -993,7 +996,7 @@ describe("Folder", () => {
       hidden: true,
       secret: true,
       children: [],
-    }
+    },
   );
 });
 
@@ -1006,7 +1009,7 @@ describe("Ticker", () => {
   testStmt("Ticker with comma", `ticker a -> a+1, A`, {
     handlerLatex: bareSeq(
       updateRule(id("a"), binop("Add", id("a"), number(1))),
-      id("A")
+      id("A"),
     ),
     minStepLatex: number(0),
     playing: false,
@@ -1164,11 +1167,11 @@ describe("Automatic IDs", () => {
           e.type === "folder"
             ? e.children.map((f) => f.id)
             : e.type === "table"
-              ? e.columns.map((f) => f.id)
-              : []
+            ? e.columns.map((f) => f.id)
+            : [],
         );
         return arr;
-      })
+      }),
     ).toEqual([
       "raw-0",
       ["raw-1"],
@@ -1241,7 +1244,7 @@ describe("Settings", () => {
       restrictGridToFirstQuadrant: true,
       polarMode: false,
       userLockedViewport: true,
-    }
+    },
   );
 });
 
@@ -1254,7 +1257,7 @@ describe("Diagnostics", () => {
       [
         warning("Property abc unexpected on settings", pos(17, 20)),
         warning("Property def unexpected on settings.viewport", pos(37, 40)),
-      ]
+      ],
     );
     testDiagnostics(
       "3D list settings",
@@ -1262,13 +1265,13 @@ describe("Diagnostics", () => {
       [
         error(
           "Expected settings.axis3D to evaluate to a list of 3 numbers, but got '[5]'",
-          pos(19, 22)
+          pos(19, 22),
         ),
         error(
           "Expected settings.worldRotation3D to evaluate to a list of 9 numbers, but got '7'",
-          pos(41, 42)
+          pos(41, 42),
         ),
-      ]
+      ],
     );
     testDiagnostics(
       "Expected style mapping, got primitive",
@@ -1276,9 +1279,9 @@ describe("Diagnostics", () => {
       [
         error(
           "Expected expression.points to be style mapping, but got primitive",
-          pos(14, 15)
+          pos(14, 15),
         ),
-      ]
+      ],
     );
     testDiagnostics(
       "Expected primitive, got style mapping",
@@ -1286,9 +1289,9 @@ describe("Diagnostics", () => {
       [
         error(
           "Expected expression.color to be primitive, but got style mapping",
-          pos(34, 37)
+          pos(34, 37),
         ),
-      ]
+      ],
     );
     testDiagnostics(
       "Unexpected enum value",
@@ -1296,13 +1299,13 @@ describe("Diagnostics", () => {
       [
         error(
           'Expected expression.points.style to be one of ["POINT","OPEN","CROSS"], but got "ABC" instead',
-          pos(23, 28)
+          pos(23, 28),
         ),
         error(
           'Expected expression.points.drag to be one of ["NONE","X","Y","XY","AUTO"], but got "DEF" instead',
-          pos(36, 41)
+          pos(36, 41),
         ),
-      ]
+      ],
     );
     // TODO: variable scoping, so `true` resolves to boolean
     testDiagnostics(
@@ -1311,17 +1314,17 @@ describe("Diagnostics", () => {
       [
         error(
           "Expected settings.squareAxes to evaluate to boolean, but got string",
-          pos(38, 43)
+          pos(38, 43),
         ),
         error(
           "Expected settings.randomSeed to evaluate to string, but got number",
-          pos(23, 24)
+          pos(23, 24),
         ),
         error(
           "Expected settings.xAxisStep to evaluate to number, but got boolean",
-          pos(56, 60)
+          pos(56, 60),
         ),
-      ]
+      ],
     );
   });
   describe("Evaluation diagnostics", () => {
@@ -1331,14 +1334,14 @@ describe("Diagnostics", () => {
       [
         error("Undefined identifier: TRUE", pos(23, 27)),
         error("Undefined identifier: b", pos(41, 42)),
-      ]
+      ],
     );
   });
   describe("General diagnostics", () => {
     testDiagnostics("Regression value type error", `a ~ 3 #{ a = true }`, [
       error(
         "Expected regression parameter to evaluate to number, but got boolean",
-        pos(13, 17)
+        pos(13, 17),
       ),
     ]);
     testDiagnostics(
@@ -1347,14 +1350,14 @@ describe("Diagnostics", () => {
       [
         error(
           "Expected column to assign to an identifier, but got CallExpression",
-          pos(8, 12)
+          pos(8, 12),
         ),
-      ]
+      ],
     );
     testDiagnostics("Table column non-list", `table { x1 = [1,2]; y1 = 42 }`, [
       error(
         "Expected table assignment to assign from a ListExpression, but got Number",
-        pos(25, 27)
+        pos(25, 27),
       ),
     ]);
     testDiagnostics("Settings in folder", `folder "title" { settings @{} }`, [
@@ -1363,7 +1366,7 @@ describe("Diagnostics", () => {
     testDiagnostics("Invalid id: digits", `y=x @{id: "1"}`, [
       error(
         "Specified id must include a character other than a digit",
-        pos(10, 13)
+        pos(10, 13),
       ),
     ]);
     testDiagnostics("Invalid id: dunder", `y=x @{id: "__thing"}`, [
@@ -1378,7 +1381,7 @@ describe("Diagnostics", () => {
       error("Invalid character @", pos(8, 9)),
       error(
         "Unexpected '!'. Did you mean to precede it by an expression, such as 'x!'?",
-        pos(9, 10)
+        pos(9, 10),
       ),
     ]);
     testDiagnostics("Multiple skips", `y=)x]`, [
@@ -1396,37 +1399,37 @@ describe("Diagnostics", () => {
     testDiagnostics("Invalid regression body", `a ~ 5 #{ "note" }`, [
       error(
         "Regression mapping entry must be of the form 'name = 123'",
-        pos(9, 15)
+        pos(9, 15),
       ),
     ]);
     testDiagnostics("Non-identifier residual variable", `f(x) = a ~ b`, [
       error(
         "Residual variable must be identifier, but got CallExpression",
-        pos(0, 4)
+        pos(0, 4),
       ),
     ]);
     testDiagnostics("Non-identifier update assignment", `f(x) -> 5`, [
       error(
         "Left side of update rule must be Identifier, but got CallExpression",
-        pos(0, 4)
+        pos(0, 4),
       ),
     ]);
     testDiagnostics("Non-expression dot access", `table{}.x`, [
       error(
         "Unexpected '.'. Did you mean to precede it by an expression, such as '(2,3).x'?",
-        pos(7, 8)
+        pos(7, 8),
       ),
     ]);
     testDiagnostics("Non-expression list", `[table{}]`, [
       error(
         "Expected item in sequence to be an expression. Did you mean to write something like '[1,2,3]'?",
-        pos(1, 8)
+        pos(1, 8),
       ),
     ]);
     testDiagnostics("Non-expression piecewise", `{x>5:table{}}`, [
       error(
         "Expected branch of piecewise to be an expression. Did you mean to write something like '{x>3:5}'?",
-        pos(5, 12)
+        pos(5, 12),
       ),
     ]);
     testDiagnostics("Invalid comparator chain", `{1>=x<3}`, [
@@ -1453,33 +1456,33 @@ describe("Operator precedence", () => {
         point: id("P"),
         index: "x",
       },
-      number(5)
-    )
+      number(5),
+    ),
   );
   testExpr(
     "postfix > exp",
     "x^y!",
-    binop("Exponent", id("x"), factorial(id("y")))
+    binop("Exponent", id("x"), factorial(id("y"))),
   );
   testExpr(
     "exp > exp",
     "x^y^z",
-    binop("Exponent", id("x"), binop("Exponent", id("y"), id("z")))
+    binop("Exponent", id("x"), binop("Exponent", id("y"), id("z"))),
   );
   testExpr(
     "exp > prefix",
     "-x^y",
-    negative(binop("Exponent", id("x"), id("y")))
+    negative(binop("Exponent", id("x"), id("y"))),
   );
   testExpr(
     "prefix > times",
     "-x*y",
-    binop("Multiply", negative(id("x")), id("y"))
+    binop("Multiply", negative(id("x")), id("y")),
   );
   testExpr(
     "times > plus",
     "x+y*z",
-    binop("Add", id("x"), binop("Multiply", id("y"), id("z")))
+    binop("Add", id("x"), binop("Multiply", id("y"), id("z"))),
   );
   // TODO: some of the more arcane ones: derivative, and lower
 });
@@ -1497,6 +1500,6 @@ describe("Funny spacing", () => {
       id: "2",
       color: "#2d70b3",
       latex: comparator("=", id("x"), number(3)),
-    }
+    },
   );
 });

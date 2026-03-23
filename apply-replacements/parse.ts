@@ -25,35 +25,39 @@ export interface Command {
 
 export default function parseFile(
   fileString: string,
-  filename: string
+  filename: string,
 ): Block[] {
   const tokens = tokenizeReplacement(fileString, filename);
-  if (tokens[0].tag !== "heading" || tokens[0].depth !== 1)
+  if (tokens[0].tag !== "heading" || tokens[0].depth !== 1) {
     throw new ReplacementError("First line must be a # Heading");
-  if (tokens[1].tag !== "emph" || tokens[1].command !== "plugin")
+  }
+  if (tokens[1].tag !== "emph" || tokens[1].command !== "plugin") {
     throw new ReplacementError("Second line must be *plugin* `plugin-name`");
+  }
   const plugins = tokens[1].args;
   const rules: Block[] = [];
   for (let i = 2; i < tokens.length; i++) {
     const token = tokens[i];
     if (token.tag === "emph" && token.command === "description") {
       const prevToken = tokens[i - 1];
-      if (prevToken.tag !== "heading")
+      if (prevToken.tag !== "heading") {
         throw new ReplacementError(
-          `*description* command must be preceded by a heading`
+          `*description* command must be preceded by a heading`,
         );
+      }
       const nextHeadingIndex = tokens.findIndex(
-        (t, j) => j > i && t.tag === "heading" && t.depth <= prevToken.depth
+        (t, j) => j > i && t.tag === "heading" && t.depth <= prevToken.depth,
       );
-      const blockEndIndex =
-        nextHeadingIndex < 0 ? tokens.length : nextHeadingIndex;
+      const blockEndIndex = nextHeadingIndex < 0
+        ? tokens.length
+        : nextHeadingIndex;
       const block = tokens.slice(i + 1, blockEndIndex);
       rules.push(parseBlock(prevToken, token, block, plugins, filename));
       i = blockEndIndex;
     } else if (token.tag === "emph") {
       throw new ReplacementError(
         `Command out of place: *${token.command}*.` +
-          ` Did you forget a *description* command?`
+          ` Did you forget a *description* command?`,
       );
     }
   }
@@ -66,22 +70,23 @@ export default function parseFile(
  * though; we require the the tokens array to contain no headings. In the
  * future, headings can represent scoping or something, so for future-
  * compatibility, just disallow all headings.
- **/
+ */
 function parseBlock(
   heading: ReplacementToken & { tag: "heading" },
   start: ReplacementToken & { tag: "emph" },
   tokens: ReplacementToken[],
   plugins: string[],
-  filename: string
+  filename: string,
 ): Block {
-  if (start.args.length !== 1)
+  if (start.args.length !== 1) {
     throw new ReplacementError(
-      `Command *description* must have exactly one argument`
+      `Command *description* must have exactly one argument`,
     );
+  }
   const commands: Command[] = [];
   let alternative: Block | undefined;
   let workerOnly = false;
-  for (let i = 0; i < tokens.length; ) {
+  for (let i = 0; i < tokens.length;) {
     const token = tokens[i];
     if (token.tag === "heading") {
       const next = tokens[i + 1];
@@ -95,7 +100,7 @@ function parseBlock(
           next,
           tokens.slice(i + 2),
           plugins,
-          filename
+          filename,
         );
         break;
       } else throw new ReplacementError("Subheadings not yet implemented");
@@ -128,7 +133,7 @@ function parseBlock(
 
 function getCommand(
   token: ReplacementToken & { tag: "emph" },
-  nextToken: (ReplacementToken & { tag: "code" }) | undefined
+  nextToken: (ReplacementToken & { tag: "code" }) | undefined,
 ): Command {
   return {
     command: token.command,

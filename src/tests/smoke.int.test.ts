@@ -6,7 +6,7 @@ describe("Initial load", () => {
   testWithPage("Shows DesModder Button", async (driver) => {
     await driver.assertSelector(".dsm-pillbox-and-popover");
     const panics = await driver.evaluate(
-      () => (window as any).DSM_panics ?? []
+      () => (window as any).DSM_panics ?? [],
     );
     expect(panics).toEqual([]);
     await driver.assertSelectorNot("#dsm-panic-popover");

@@ -1,5 +1,5 @@
 import ViewportTransforms from "./ViewportTransforms";
-import { initGLesmosCanvas, GLesmosCanvas } from "./glesmosCanvas";
+import { GLesmosCanvas, initGLesmosCanvas } from "./glesmosCanvas";
 import { glesmosError, GLesmosShaderPackage } from "./shaders";
 import { CalcController, Fragile, ShaderFunctions } from "#globals";
 import { EmittedGLSL } from "./exportAsGLesmos";
@@ -27,7 +27,7 @@ interface DrawCtx {
 export function drawGLesmosSketchToCtx(
   cc: CalcController,
   drawCtx: DrawCtx,
-  { id, branches }: GLesmosSketch
+  { id, branches }: GLesmosSketch,
 ) {
   branches = branches.filter((b) => b.graphMode === "GLesmos");
 
@@ -41,7 +41,7 @@ function drawOneGLesmosSketchToCtx(
   cc: CalcController,
   { ctx, projection }: DrawCtx,
   compiledGL: GLesmosShaderPackage[],
-  id: string
+  id: string,
 ) {
   // We persist canvas to fix #492 (some context gets messed up), so we
   // re-use the old canvas on a re-enable. This is a hacky fix.
@@ -75,7 +75,7 @@ function drawOneGLesmosSketchToCtx(
 }
 
 function joinShaderFunctions(
-  shaderFunctionsList: EmittedGLSL["shaderFunctions"][]
+  shaderFunctionsList: EmittedGLSL["shaderFunctions"][],
 ) {
   const dsmJoinShaderFunctions = Fragile.joinShaderFunctions;
   if (dsmJoinShaderFunctions) {

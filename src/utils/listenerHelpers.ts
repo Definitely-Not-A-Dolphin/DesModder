@@ -4,7 +4,7 @@
 export function attach<F extends (...args: any) => any>(
   getTarget: () => F,
   setTarget: (f: F) => void,
-  handler: (...params: Parameters<F>) => [false, ReturnType<F>] | undefined
+  handler: (...params: Parameters<F>) => [false, ReturnType<F>] | undefined,
 ): () => void {
   const oldTarget = getTarget();
 
@@ -24,7 +24,7 @@ export function attach<F extends (...args: any) => any>(
 // helper function for attach; makes a getter/setter for an object property
 export function propGetSet<Obj extends object, Key extends keyof Obj>(
   obj: Obj,
-  key: Key
+  key: Key,
 ) {
   return [() => obj[key], (v: Obj[Key]) => (obj[key] = v)] as const;
 }
@@ -47,8 +47,8 @@ type HookedFunction<Fn extends (...args: any[]) => any> = Fn & {
 type MaybeHookedFunction<Fn extends (...args: any[]) => any> =
   | HookedFunction<Fn>
   | (Fn & {
-      __isMonkeypatchedIn: undefined;
-    });
+    __isMonkeypatchedIn: undefined;
+  });
 
 export function hookIntoFunction<
   Key extends string,
@@ -59,7 +59,7 @@ export function hookIntoFunction<
   prop: Key,
   key: string,
   priority: number,
-  fn: HookedFunctionCallback<Fn>
+  fn: HookedFunctionCallback<Fn>,
 ) {
   const oldfn = obj[prop].bind(obj) as MaybeHookedFunction<Fn>;
 
@@ -78,7 +78,7 @@ export function hookIntoFunction<
             stop = true;
             ret = r;
           },
-          ...args
+          ...args,
         );
         if (stop) return ret!;
       }
@@ -116,7 +116,7 @@ export function hookIntoFunction<
   // function for removing this handler
   return () => {
     monkeypatchedFn.handlers = monkeypatchedFn.handlers.filter(
-      (h) => h.key !== key
+      (h) => h.key !== key,
     );
 
     if (monkeypatchedFn.handlers.length === 0) {

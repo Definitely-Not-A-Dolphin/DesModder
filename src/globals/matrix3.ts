@@ -15,7 +15,7 @@ export interface Matrix3 {
     n23: number,
     n31: number,
     n32: number,
-    n33: number
+    n33: number,
   ) => this;
   multiply: (m: Matrix3) => this;
   invert: () => this;
@@ -45,7 +45,7 @@ export function matrix3(
   n23: number,
   n31: number,
   n32: number,
-  n33: number
+  n33: number,
 ): Matrix3 {
   return grapher3d.controls.worldRotation3D
     .clone()
@@ -73,19 +73,19 @@ export function setOrientation(grapher3d: Grapher3d, m: Matrix3) {
 export function orientationFromEuler(
   grapher3d: Grapher3d,
   zTip: number,
-  xyRot: number
+  xyRot: number,
 ): Matrix3 {
   const zTipMat = matrix3Rows(
     grapher3d,
     [Math.cos(zTip), 0, -Math.sin(zTip)],
     [0, 1, 0],
-    [Math.sin(zTip), 0, Math.cos(zTip)]
+    [Math.sin(zTip), 0, Math.cos(zTip)],
   );
   const xyRotMat = matrix3Rows(
     grapher3d,
     [Math.sin(xyRot), Math.cos(xyRot), 0],
     [-Math.cos(xyRot), Math.sin(xyRot), 0],
-    [0, 0, 1]
+    [0, 0, 1],
   );
   // Should multiply out to the following, where cz=Math.cos(zTip) etc.
   // [ cz*sxy, cz*cxy, -sz ]

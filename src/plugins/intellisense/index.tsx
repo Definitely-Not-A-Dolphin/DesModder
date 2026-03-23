@@ -1,10 +1,10 @@
 import {
-  PartialFunctionCall,
-  TryFindMQIdentResult,
   getController,
   getCorrectableIdentifier,
   getMathquillIdentifierAtCursorPosition,
   getPartialFunctionCall,
+  PartialFunctionCall,
+  TryFindMQIdentResult,
 } from "./latex-parsing";
 import { IntellisenseState } from "./state";
 import { pendingIntellisenseTimeouts, setIntellisenseTimeout } from "./utils";
@@ -17,18 +17,18 @@ import { isDescendant } from "#utils/utils.ts";
 
 export type BoundIdentifier =
   | {
-      exprId: string;
-      variableName: string;
-      type:
-        | "variable"
-        | "function-param"
-        | "listcomp-param"
-        | "substitution"
-        | "derivative"
-        | "repeated-operator"
-        | "other";
-      id: number;
-    }
+    exprId: string;
+    variableName: string;
+    type:
+      | "variable"
+      | "function-param"
+      | "listcomp-param"
+      | "substitution"
+      | "derivative"
+      | "repeated-operator"
+      | "other";
+    id: number;
+  }
   | BoundIdentifierFunction;
 
 export interface BoundIdentifierFunction {
@@ -44,7 +44,7 @@ export interface BoundIdentifierFunction {
 
 export function getMQCursorPosition(focusedMQ: MathQuillField) {
   return getController(
-    focusedMQ
+    focusedMQ,
   ).cursor?.cursorElement?.getBoundingClientRect();
 }
 
@@ -141,8 +141,9 @@ export default class Intellisense extends PluginController<{
     if (focusedMQ) {
       // find the identifier the cursor is at
       this.latestIdent = getMathquillIdentifierAtCursorPosition(focusedMQ);
-      if (this.latestIdent)
+      if (this.latestIdent) {
         this.latestIdent.ident = this.latestIdent.ident.replace(/ /g, "");
+      }
 
       this.latestMQ = focusedMQ;
 
@@ -153,7 +154,7 @@ export default class Intellisense extends PluginController<{
         .find(
           (i) =>
             i.variableName === this.partialFunctionCall?.ident &&
-            i.type === "function"
+            i.type === "function",
         ) as BoundIdentifierFunction;
 
       // if the user is in a partial function call,
@@ -190,18 +191,18 @@ export default class Intellisense extends PluginController<{
           .filter(
             (g) =>
               g.variableName.startsWith(
-                this.latestIdent?.ident.replace(/[{} \\]/g, "") ?? ""
+                this.latestIdent?.ident.replace(/[{} \\]/g, "") ?? "",
               ) &&
               // don't include private expressions based on per-expression docs
               !this.intellisenseState.getIdentDoc(g)?.includes("@private") &&
               // don't include private expressions based on per-folder docs
               // unless you're in the same folder
               (this.cc.getSelectedItem()?.folderId ===
-                this.intellisenseState.getIdentFolderId(g) ||
+                  this.intellisenseState.getIdentFolderId(g) ||
                 !this.intellisenseState
                   .getIdentFolderDoc(g)
                   ?.includes("@private") ||
-                this.intellisenseState.getIdentDoc(g)?.includes("@public"))
+                this.intellisenseState.getIdentDoc(g)?.includes("@public")),
           );
 
         const intellisenseOptsMap = new Map<string, BoundIdentifier[]>();
@@ -217,7 +218,7 @@ export default class Intellisense extends PluginController<{
         this.intellisenseOpts = Array.from(intellisenseOptsMap.entries()).map(
           ([_, idents]) => ({
             idents,
-          })
+          }),
         );
 
         // sort the intellisense options so that closer ones appear first
@@ -227,12 +228,12 @@ export default class Intellisense extends PluginController<{
             const aMin = Math.min(
               ...a.idents.map((e) =>
                 Math.abs((this.getExpressionIndex(e.exprId) ?? 0) - myindex)
-              )
+              ),
             );
             const bMin = Math.min(
               ...b.idents.map((e) =>
                 Math.abs((this.getExpressionIndex(e.exprId) ?? 0) - myindex)
-              )
+              ),
             );
             return aMin - bMin;
           });
@@ -265,7 +266,7 @@ export default class Intellisense extends PluginController<{
 
     if (this.prevCursorPos && this.latestMQ) {
       const mqRootBlock = getController(this.latestMQ).container.querySelector(
-        ".dcg-mq-root-block"
+        ".dcg-mq-root-block",
       );
 
       if (!mqRootBlock) return;
@@ -275,16 +276,16 @@ export default class Intellisense extends PluginController<{
       // simulate a click to get cursor in the right spot
       const eventHandlerSettings = {
         bubbles: true,
-        clientX:
-          this.prevCursorPos.x - mqRootBlock.scrollLeft + mqRootBlockRect.x,
-        clientY:
-          this.prevCursorPos.y - mqRootBlock.scrollTop + mqRootBlockRect.y,
+        clientX: this.prevCursorPos.x - mqRootBlock.scrollLeft +
+          mqRootBlockRect.x,
+        clientY: this.prevCursorPos.y - mqRootBlock.scrollTop +
+          mqRootBlockRect.y,
       };
       getController(this.latestMQ).container.dispatchEvent(
-        new MouseEvent("mousedown", eventHandlerSettings)
+        new MouseEvent("mousedown", eventHandlerSettings),
       );
       getController(this.latestMQ).container.dispatchEvent(
-        new MouseEvent("mouseup", eventHandlerSettings)
+        new MouseEvent("mouseup", eventHandlerSettings),
       );
     }
   }
@@ -297,18 +298,18 @@ export default class Intellisense extends PluginController<{
     if (
       this.latestMQ &&
       document.body.contains(
-        getController(this.latestMQ).cursor.cursorElement ?? null
+        getController(this.latestMQ).cursor.cursorElement ?? null,
       )
     ) {
       // get cursor pos relative to the top left of the mathquill's root element
       const mqRootBlock = getController(this.latestMQ).container.querySelector(
-        ".dcg-mq-root-block"
+        ".dcg-mq-root-block",
       );
 
       if (!mqRootBlock) return;
       const mqRootBlockRect = mqRootBlock.getBoundingClientRect();
       const rect = getController(
-        this.latestMQ
+        this.latestMQ,
       ).cursor.cursorElement?.getBoundingClientRect();
       this.prevCursorPos = {
         x: rect?.x ?? 0 + mqRootBlock.scrollLeft - mqRootBlockRect.x,
@@ -327,7 +328,7 @@ export default class Intellisense extends PluginController<{
   goToNextIntellisenseCol() {
     this.intellisenseIndex = Math.min(
       this.intellisenseIndex + 1,
-      this.intellisenseOpts.length - 1
+      this.intellisenseOpts.length - 1,
     );
   }
 
@@ -343,7 +344,7 @@ export default class Intellisense extends PluginController<{
       ) {
         this.specialIdentifierNames = [
           ...Object.keys(
-            this.calc.focusedMathQuill.mq.__options.autoOperatorNames
+            this.calc.focusedMathQuill.mq.__options.autoOperatorNames,
           ),
           ...Object.keys(this.calc.focusedMathQuill.mq.__options.autoCommands),
         ];
@@ -356,8 +357,9 @@ export default class Intellisense extends PluginController<{
       // don't bother overriding keystroke if intellisense is offline
       !this.canHaveIntellisense ||
       this.intellisenseOpts.length === 0
-    )
+    ) {
       return;
+    }
 
     // navigating downward in the intellisense menu
     if (key === "Down") {
@@ -380,7 +382,7 @@ export default class Intellisense extends PluginController<{
     ) {
       if (this.intellisenseRow === 0) {
         this.doAutocomplete(
-          this.intellisenseOpts[this.intellisenseIndex].idents[0]
+          this.intellisenseOpts[this.intellisenseIndex].idents[0],
         );
         this.view?.update();
       } else {
@@ -414,8 +416,7 @@ export default class Intellisense extends PluginController<{
       }
       this.view?.update();
       return "cancel";
-    }
-    // close intellisense menu
+    } // close intellisense menu
     // or jump2def menu
     else if (key === "Esc") {
       this.canHaveIntellisense = false;
@@ -429,7 +430,7 @@ export default class Intellisense extends PluginController<{
     return (
       document.activeElement
         ?.closest(
-          ".yes-intellisense, .no-intellisense, .dcg-settings-view-container"
+          ".yes-intellisense, .no-intellisense, .dcg-settings-view-container",
         )
         ?.classList.contains("yes-intellisense") ?? true
     );
@@ -480,12 +481,12 @@ export default class Intellisense extends PluginController<{
       } else if (e.key === "ArrowDown" || e.key === "Tab") {
         this.jumpToDefIndex = Math.min(
           this.jumpToDefState.idents.length - 1,
-          this.jumpToDefIndex + 1
+          this.jumpToDefIndex + 1,
         );
         this.view?.update();
       } else if (e.key === "Enter") {
-        const id =
-          this.jumpToDefState.idents[this.jumpToDefIndex]?.sourceExprId;
+        const id = this.jumpToDefState.idents[this.jumpToDefIndex]
+          ?.sourceExprId;
         if (id) this.jumpToDefinitionById(id);
       }
     }
@@ -507,8 +508,9 @@ export default class Intellisense extends PluginController<{
       elem instanceof HTMLElement &&
       this.intellisenseMountPoint &&
       isDescendant(elem, this.intellisenseMountPoint)
-    )
+    ) {
       return;
+    }
 
     this.canHaveIntellisense = false;
     this.view?.update();
@@ -659,7 +661,7 @@ export default class Intellisense extends PluginController<{
 
     this.dsm.overrideKeystroke?.setMQKeystrokeListener(
       "intellisense",
-      this.onMQKeystroke.bind(this)
+      this.onMQKeystroke.bind(this),
     );
 
     // create initial intellisense window
@@ -689,7 +691,7 @@ export default class Intellisense extends PluginController<{
 
       if (e.type === "set-note-text") {
         this.updateCSSForDocstringExpression(
-          this.cc.getSelectedItem() as TextModel | undefined
+          this.cc.getSelectedItem() as TextModel | undefined,
         );
       }
 

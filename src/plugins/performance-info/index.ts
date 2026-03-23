@@ -39,7 +39,7 @@ export default class PerformanceInfo extends PluginController {
   getTimingData() {
     return (
       this.timingDataHistory[this.timingDataHistory.length - 1] ??
-      defaultTimingData
+        defaultTimingData
     );
   }
 

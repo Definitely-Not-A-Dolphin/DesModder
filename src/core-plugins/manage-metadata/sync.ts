@@ -53,16 +53,17 @@ export function getMetadataFromListModel(calc: Calc) {
 
 export function getMetadataFromListJSONMaybe(
   list: ItemState[],
-  mappedId: string
+  mappedId: string,
 ): Metadata | undefined {
   for (const item of list) {
-    if (item.id === mappedId && item.type === "text")
+    if (item.id === mappedId && item.type === "text") {
       return getMetadataFromTextMaybe(item.text);
+    }
   }
 }
 
 function getMetadataFromTextMaybe(
-  text: string | undefined
+  text: string | undefined,
 ): Metadata | undefined {
   if (!text) return undefined;
   if (!text.startsWith("{")) return undefined;
@@ -210,23 +211,23 @@ function idToDelete(cc: CalcController, item: ItemModel): string {
 export function transferMetadata(
   currentList: ItemState[],
   newList: ItemState[],
-  oldIdToNewId: Map<string, string>
+  oldIdToNewId: Map<string, string>,
 ) {
   const newMetadataID = oldIdToNewId.get(ID_METADATA);
   if (!newMetadataID) return;
   const newMetadataWithOldIDs = getMetadataFromListJSONMaybe(
     newList,
-    newMetadataID
+    newMetadataID,
   );
   if (!newMetadataWithOldIDs) return;
 
   const newMetadata = metadataWithIdsMapped(
     newMetadataWithOldIDs,
-    oldIdToNewId
+    oldIdToNewId,
   );
   const currentMetadata = getMetadataFromListJSONMaybe(
     currentList,
-    ID_METADATA
+    ID_METADATA,
   );
   const metadata = currentMetadata
     ? (mergeMetadata(currentMetadata, newMetadata), currentMetadata)

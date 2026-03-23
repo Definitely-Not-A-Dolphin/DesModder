@@ -2,13 +2,13 @@ import * as moo from "#moo";
 import { ProgramAnalysis } from "../ProgramAnalysis";
 import { TextAST } from "..";
 import {
-  Node,
   Expression,
   isExpression,
-  Pos,
   isStatement,
-  Statement,
+  Node,
   PiecewiseBranch,
+  Pos,
+  Statement,
 } from "../TextAST";
 import { Config } from "../TextModeConfig";
 import { ignoredID } from "../up/augToAST";
@@ -16,11 +16,35 @@ import { DiagnosticsState } from "./diagnostics";
 
 // prettier-ignore
 const punct = [
-  "<", "<=", "=", ">=", ">", "~",
-  "->", ",", ":", "...", ".", "'", "|",
-  "+", "-", "*", "/", "^", "!", "d/d", // '% of' TODO
-  "@{", "#{", "(",  ")", "[", "]", "{", "}",
-] as const
+  "<",
+  "<=",
+  "=",
+  ">=",
+  ">",
+  "~",
+  "->",
+  ",",
+  ":",
+  "...",
+  ".",
+  "'",
+  "|",
+  "+",
+  "-",
+  "*",
+  "/",
+  "^",
+  "!",
+  "d/d", // '% of' TODO
+  "@{",
+  "#{",
+  "(",
+  ")",
+  "[",
+  "]",
+  "{",
+  "}",
+] as const;
 
 type Punct = (typeof punct)[number];
 
@@ -33,8 +57,18 @@ const rules = {
     type: moo.keywords({
       // prettier-ignore
       keyword: [
-        "table", "image", "settings", "folder", "ticker",
-        "for", "integral", "sum", "product", "of", "with", "cross"
+        "table",
+        "image",
+        "settings",
+        "folder",
+        "ticker",
+        "for",
+        "integral",
+        "sum",
+        "product",
+        "of",
+        "with",
+        "cross",
       ],
     }),
   },
@@ -66,7 +100,7 @@ const _power = [
 ] as const;
 
 const Power = Object.fromEntries(
-  _power.map((k, i) => [k, (i * 10) as BindingPower])
+  _power.map((k, i) => [k, (i * 10) as BindingPower]),
 ) as Record<(typeof _power)[number], BindingPower>;
 
 type BindingPower = number & { __nominallyPower: undefined };
@@ -93,7 +127,7 @@ class ParseState extends DiagnosticsState {
   constructor(
     public cfg: Config,
     input: string,
-    incr: IncrementalState
+    incr: IncrementalState,
   ) {
     super();
     this.lexer = moo.compile(rules);
@@ -112,7 +146,7 @@ class ParseState extends DiagnosticsState {
     while (true) {
       const prev = this.prevToken;
       const t = this._next();
-      if (t === undefined)
+      if (t === undefined) {
         return {
           type: "eof",
           value: "",
@@ -122,8 +156,10 @@ class ParseState extends DiagnosticsState {
           line: prev ? prev.line + prev.lineBreaks : 0,
           col: prev ? prev.col + prev.text.length : 0,
         };
-      if (t.type === "invalid")
+      }
+      if (t.type === "invalid") {
         this.pushError(`Invalid character ${t.value}`, pos(t));
+      }
       if (!["space", "invalid", "comment"].includes(t.type)) return t;
     }
   }
@@ -156,7 +192,7 @@ class ParseState extends DiagnosticsState {
       if (expected === undefined || expected === c.value) return c;
       this.pushError(
         `Expected '${expected}' but got '${c.value}'. Skipping it.`,
-        pos(c)
+        pos(c),
       );
     }
   }
@@ -169,14 +205,15 @@ class ParseState extends DiagnosticsState {
       if (expected.includes(c.type)) return c;
       this.pushError(
         `Expected ${expected} but got '${c.value}'. Skipping it.`,
-        pos(c)
+        pos(c),
       );
     }
   }
 
   assertNotEOF(token: Token) {
-    if (token.type === "eof")
+    if (token.type === "eof") {
       throw this.pushFatalError("Unexpected end of file", pos(token));
+    }
   }
 
   pushFatalError(message: string, pos: TextAST.Pos | undefined) {
@@ -210,7 +247,7 @@ class ParseState extends DiagnosticsState {
   statementCommon(
     index: number,
     pos: TextAST.Pos,
-    defaultID: string
+    defaultID: string,
   ): Pick<Statement, StatementFinishKeys> {
     return {
       style: null,
@@ -221,7 +258,10 @@ class ParseState extends DiagnosticsState {
 
   finishStatement<T extends Statement>(
     stmt: DistributiveOmit<T, StatementFinishKeys>,
-    { index, defaultID } = { index: this.nextIndex(), defaultID: this.nextID() }
+    { index, defaultID } = {
+      index: this.nextIndex(),
+      defaultID: this.nextID(),
+    },
   ): T {
     const info = this.statementCommon(index, stmt.pos, defaultID);
     Object.assign(stmt, info);
@@ -233,8 +273,7 @@ class ParseState extends DiagnosticsState {
 type StatementFinishKeys = "id" | "style" | "index";
 
 // https://davidgomes.com/pick-omit-over-union-types-in-typescript/
-type DistributiveOmit<T, K extends string> = T extends unknown
-  ? Omit<T, K>
+type DistributiveOmit<T, K extends string> = T extends unknown ? Omit<T, K>
   : unknown;
 
 class ParseError extends Error {}
@@ -254,7 +293,7 @@ export interface IncrementalState {
 }
 
 function hydrateIncremental(
-  incr: Partial<IncrementalState> | undefined
+  incr: Partial<IncrementalState> | undefined,
 ): IncrementalState {
   incr ??= {};
   return {
@@ -265,20 +304,22 @@ function hydrateIncremental(
 export function parse(
   cfg: Config,
   input: string,
-  incr?: Partial<IncrementalState>
+  incr?: Partial<IncrementalState>,
 ): ProgramAnalysis {
   const ps = new ParseState(cfg, input, hydrateIncremental(incr));
   const children = parseStatements(ps, { isTop: true });
-  if (children.length === 0 && ps.diagnostics.length === 0)
+  if (children.length === 0 && ps.diagnostics.length === 0) {
     ps.pushWarning("Program is empty. Try typing: y=x", { from: 0, to: 0 });
-  if (ps.peek().type !== "eof")
+  }
+  if (ps.peek().type !== "eof") {
     ps.pushError("Didn't reach end", pos(ps.peek()));
+  }
   const program: TextAST.Program = {
     type: "Program",
     children,
     pos: posMany(
       children.map((x) => x.pos),
-      { from: 0, to: 0 }
+      { from: 0, to: 0 },
     ),
   };
 
@@ -293,15 +334,16 @@ export function parse(
 function parseMain(
   ps: ParseState,
   lastBindingPower: BindingPower,
-  { isStatementTop } = { isStatementTop: false }
+  { isStatementTop } = { isStatementTop: false },
 ): TextAST.Node {
   const firstToken = ps.consume();
   const initial = getInitialParselet(firstToken);
-  if (!initial)
+  if (!initial) {
     throw ps.pushFatalError(
       `Unexpected text: '${firstToken.value}'.`,
-      pos(firstToken)
+      pos(firstToken),
     );
+  }
   let leftNode = initial(ps, firstToken);
 
   while (true) {
@@ -321,14 +363,15 @@ function parseExpr(
   ps: ParseState,
   lastBindingPower: BindingPower,
   posMsg: string,
-  example: string
+  example: string,
 ): TextAST.Expression {
   const result = parseMain(ps, lastBindingPower);
-  if (!isExpression(result))
+  if (!isExpression(result)) {
     throw ps.pushFatalError(
       `Expected ${posMsg} to be an expression. Did you mean to write something like '${example}'?`,
-      pos(result)
+      pos(result),
     );
+  }
   return result;
 }
 
@@ -353,7 +396,7 @@ const initialParselets: TokenMap<InitialParselet> = {
           ps,
           Power.derivative,
           "argument of derivative",
-          "(d/d x) x^2"
+          "(d/d x) x^2",
         );
         return {
           type: "DerivativeExpression",
@@ -408,7 +451,7 @@ const initialParselets: TokenMap<InitialParselet> = {
           ps,
           Power.seq,
           "condition of piecewise",
-          "{x>3}"
+          "{x>3}",
         );
         const next = ps.consume();
         if (next.value === "}") {
@@ -417,17 +460,17 @@ const initialParselets: TokenMap<InitialParselet> = {
           branches.push(
             first || isComparison(curr)
               ? {
-                  type: "PiecewiseBranch",
-                  condition: curr,
-                  consequent: null,
-                  pos: pos(curr),
-                }
+                type: "PiecewiseBranch",
+                condition: curr,
+                consequent: null,
+                pos: pos(curr),
+              }
               : {
-                  type: "PiecewiseBranch",
-                  condition: null,
-                  consequent: curr,
-                  pos: pos(curr),
-                }
+                type: "PiecewiseBranch",
+                condition: null,
+                consequent: curr,
+                pos: pos(curr),
+              },
           );
           return finalizePiecewise(branches, pos(token, next));
         } else if (next.value === ":") {
@@ -435,7 +478,7 @@ const initialParselets: TokenMap<InitialParselet> = {
             ps,
             Power.seq,
             "branch of piecewise",
-            "{x>3:5}"
+            "{x>3:5}",
           );
           assertComparison(ps, curr);
           branches.push({
@@ -445,13 +488,14 @@ const initialParselets: TokenMap<InitialParselet> = {
             pos: pos(curr, consequent),
           });
           const next = ps.consume();
-          if (next.value === "}")
+          if (next.value === "}") {
             return finalizePiecewise(branches, pos(token, next));
-          else if (next.value !== ",")
+          } else if (next.value !== ",") {
             throw ps.pushFatalError(
               "Unexpected character in Piecewise",
-              pos(next)
+              pos(next),
             );
+          }
         } else if (next.value === ",") {
           assertComparison(ps, curr);
           branches.push({
@@ -463,7 +507,7 @@ const initialParselets: TokenMap<InitialParselet> = {
         } else {
           throw ps.pushFatalError(
             "Unexpected character in Piecewise",
-            pos(next)
+            pos(next),
           );
         }
       }
@@ -490,7 +534,7 @@ const initialParselets: TokenMap<InitialParselet> = {
         if (stmt.type !== "ExprStatement") {
           ps.pushError(
             "Expected a valid table column. Try: x1 = [1, 2, 3]",
-            stmt.pos
+            stmt.pos,
           );
           return [];
         } else return [stmt];
@@ -503,7 +547,7 @@ const initialParselets: TokenMap<InitialParselet> = {
           pos: pos(token, end),
           afterOpen: pos(open).to,
         },
-        { index, defaultID }
+        { index, defaultID },
       );
     },
     folder: (ps, token): Node => {
@@ -522,7 +566,7 @@ const initialParselets: TokenMap<InitialParselet> = {
           pos: pos(token, end),
           afterOpen: pos(open).to,
         },
-        { index, defaultID }
+        { index, defaultID },
       );
     },
     image: (ps, token): Node => {
@@ -551,11 +595,12 @@ const initialParselets: TokenMap<InitialParselet> = {
 
 function finalizePiecewise(
   branches: PiecewiseBranch[],
-  piecewisePos: Pos
+  piecewisePos: Pos,
 ): TextAST.PiecewiseExpression | TextAST.Restriction {
   if (branches.every((b) => b.consequent === null)) {
-    if (branches.length === 0)
+    if (branches.length === 0) {
       return { type: "Restriction", condition: true, pos: piecewisePos };
+    }
     const condition = branches
       .map((b) => b.condition)
       .reduceRight(
@@ -564,7 +609,7 @@ function finalizePiecewise(
           left,
           right,
           pos: pos(left, right),
-        })
+        }),
       );
     return { type: "Restriction", condition, pos: piecewisePos };
   }
@@ -580,8 +625,9 @@ function isComparisonOp(op: string): op is TextAST.CompareOp {
 }
 
 function assertComparison(ps: ParseState, node: TextAST.Expression) {
-  if (!isComparison(node))
+  if (!isComparison(node)) {
     throw ps.pushFatalError("Condition must be a comparison", node.pos);
+  }
 }
 
 function isComparison(node: TextAST.Expression) {
@@ -622,8 +668,9 @@ function normalizeID(ps: ParseState, token: Token): string {
       p.length === 1 ||
       ps.cfg.commandNames.has(p) ||
       ps.cfg.operatorNames.has(p)
-    )
+    ) {
       return p;
+    }
     return p[0] + "_" + p.slice(1);
   } else if (parts.length === 2) {
     const [main, subscript] = parts;
@@ -675,7 +722,7 @@ function stringParselet(_ps: ParseState, token: Token): TextAST.StringNode {
 }
 
 function repeatedOperatorParselet(
-  name: "sum" | "product" | "integral"
+  name: "sum" | "product" | "integral",
 ): InitialParselet {
   const ex = `(${name}=(1...5) x^2)`;
   return (ps, token): Node => {
@@ -711,11 +758,12 @@ const consequentParselets: Record<
   "^": binaryParselet(Power.pow, "^", { rightAssociative: true }),
   "(": consequentParselet(Power.call, parseFunctionCall),
   "'": consequentParselet(Power.call, (ps, left): Node => {
-    if (left.type !== "Identifier")
+    if (left.type !== "Identifier") {
       throw ps.pushFatalError(
         "Cannot use prime notation on a non-identifier",
-        pos(left)
+        pos(left),
       );
+    }
     let order = 1;
     while (true) {
       const next = ps.consume();
@@ -745,11 +793,12 @@ const consequentParselets: Record<
   ".": consequentParselet(Power.member, (ps, left, token): Node => {
     assertLeftIsExpression(ps, left, token, "(2,3).x");
     const right = parseMain(ps, Power.member);
-    if (right.type !== "Identifier")
+    if (right.type !== "Identifier") {
       throw ps.pushFatalError(
         `Member access name must be an identifier but got ${right.type}`,
-        pos(token)
+        pos(token),
       );
+    }
     return {
       type: "MemberExpression",
       object: left,
@@ -763,10 +812,9 @@ const consequentParselets: Record<
     return {
       type: "ListAccessExpression",
       expr: left,
-      index:
-        right.type === "ListExpression" && right.values.length === 1
-          ? right.values[0]
-          : right,
+      index: right.type === "ListExpression" && right.values.length === 1
+        ? right.values[0]
+        : right,
       pos: pos(left, right),
     };
   }),
@@ -776,16 +824,17 @@ const consequentParselets: Record<
   ">=": compareOpParselet(">="),
   ">": compareOpParselet(">"),
   "->": consequentParselet(Power.updateRule, (ps, left): Node => {
-    if (left.type !== "Identifier")
+    if (left.type !== "Identifier") {
       throw ps.pushFatalError(
         `Left side of update rule must be Identifier, but got ${left.type}`,
-        pos(left)
+        pos(left),
       );
+    }
     const right = parseExpr(
       ps,
       Power.updateRule,
       "right side of action update rule",
-      "a -> a+1"
+      "a -> a+1",
     );
     return {
       type: "UpdateRule",
@@ -840,11 +889,12 @@ const consequentParselets: Record<
       left.type !== "ExprStatement" ||
       left.expr.type !== "BinaryExpression" ||
       left.expr.op !== "~"
-    )
+    ) {
       throw ps.pushFatalError(
         "Regression Parameters '#{' must be preceded by a regression of the form `LHS ~ RHS`",
-        pos(token)
+        pos(token),
       );
+    }
     const seq = parseBareSeq(ps, "y1 ~ m * x1 + b #{ m = 1.5, b = 2.3 }");
     const end = ps.consume("}");
     const entries = seq.map((expr): TextAST.RegressionEntry => {
@@ -852,11 +902,12 @@ const consequentParselets: Record<
         expr.type !== "BinaryExpression" ||
         expr.op !== "=" ||
         expr.left.type !== "Identifier"
-      )
+      ) {
         throw ps.pushFatalError(
           "Regression mapping entry must be of the form 'name = 123'",
-          pos(expr)
+          pos(expr),
         );
+      }
       return {
         type: "RegressionEntry",
         variable: expr.left,
@@ -883,18 +934,19 @@ const consequentParselets: Record<
           item.type !== "BinaryExpression" ||
           item.op !== "=" ||
           item.left.type !== "Identifier"
-        )
+        ) {
           throw ps.pushFatalError(
             "Substitution must set variable = identifier",
-            pos(item)
+            pos(item),
           );
+        }
         return {
           type: "AssignmentExpression",
           variable: item.left,
           expr: item.right,
           pos: item.pos,
         };
-      }
+      },
     );
     return {
       type: "Substitution",
@@ -936,12 +988,13 @@ const consequentParselets: Record<
       } else {
         throw ps.pushFatalError(
           "List comprehension must set variable = identifier",
-          pos(item)
+          pos(item),
         );
       }
     }
-    if (last === null)
+    if (last === null) {
       throw ps.pushFatalError("Missing an assignment after 'for'", pos(token));
+    }
     return {
       type: "ListComprehension",
       expr: left,
@@ -984,16 +1037,18 @@ function parseList(ps: ParseState, token: Token): ListOrRange {
     const listcomps = startValues.filter((e) => e.type === "ListComprehension");
     if (listcomps.length > 0) {
       const [inner] = startValues;
-      if (listcomps.length > 1)
+      if (listcomps.length > 1) {
         throw ps.pushFatalError(
           "List comprehension can only have one 'for'",
-          pos(startValues[1])
+          pos(startValues[1]),
         );
-      if (inner.type !== "ListComprehension")
+      }
+      if (inner.type !== "ListComprehension") {
         throw ps.pushFatalError(
           "Expected exactly one expression before 'for'",
-          pos(next)
+          pos(next),
         );
+      }
       if (!inner.bracketWrapped) {
         return {
           ...inner,
@@ -1013,34 +1068,37 @@ function parseList(ps: ParseState, token: Token): ListOrRange {
 
 function getIDOverride(
   ps: ParseState,
-  style: TextAST.StyleMapping
+  style: TextAST.StyleMapping,
 ): string | undefined {
   let cnt = 0;
   let id: string | undefined;
-  for (const {
-    property: { value: key },
-    expr,
-  } of style.entries) {
+  for (
+    const {
+      property: { value: key },
+      expr,
+    } of style.entries
+  ) {
     if (key === "id") {
       cnt++;
       if (cnt > 1) {
         ps.pushError("Duplicate id field", expr.pos);
       } else if (expr.type === "String") {
         if (ignoredID(expr.value)) {
-          if (expr.value.startsWith("__"))
+          if (expr.value.startsWith("__")) {
             ps.pushError(`Specified id must not start with '__'`, expr.pos);
-          else
+          } else {
             ps.pushError(
               `Specified id must include a character other than a digit`,
-              expr.pos
+              expr.pos,
             );
+          }
         } else {
           id = expr.value;
         }
       } else {
         ps.pushError(
           `Expected id to be a string, but got ${expr.type}`,
-          expr.pos
+          expr.pos,
         );
       }
     }
@@ -1063,8 +1121,9 @@ function parseStyleMapping(ps: ParseState, token: Token): TextAST.StyleMapping {
     const key = ps.consumeType(["id", "keyword"]);
     ps.consume(":");
     const expr = parseMain(ps, Power.seq);
-    if (!isExpression(expr) && expr.type !== "StyleMapping")
+    if (!isExpression(expr) && expr.type !== "StyleMapping") {
       throw ps.pushFatalError("Expected value on the right of ':'", pos(expr));
+    }
     entries.push({
       type: "MappingEntry",
       property: {
@@ -1083,20 +1142,22 @@ function finalizeStatement(ps: ParseState, expr: Node): TextAST.Statement {
   if (isStatement(expr)) return expr;
   else if (isExpression(expr)) return exprToStatement(ps, expr);
   // Stuff like Program or StyleMapping that should not show up in this context
-  else
+  else {
     throw ps.pushFatalError(
       `I don't know how to finalize '${expr.type}'`,
-      pos(expr)
+      pos(expr),
     );
+  }
 }
 
 function exprToStatement(ps: ParseState, expr: Expression): TextAST.Statement {
-  if (expr.type === "String")
+  if (expr.type === "String") {
     return ps.finishStatement({
       type: "Text",
       text: expr.value,
       pos: expr.pos,
     });
+  }
   let residualVariable: TextAST.Identifier | undefined;
   // Convert `residualVariable = (LHS ~ RHS)` to appropriate form
   if (
@@ -1109,7 +1170,7 @@ function exprToStatement(ps: ParseState, expr: Expression): TextAST.Statement {
     if (left.type !== "Identifier") {
       throw ps.pushFatalError(
         `Residual variable must be identifier, but got ${left.type}`,
-        pos(left)
+        pos(left),
       );
     }
     expr = expr.right;
@@ -1119,10 +1180,9 @@ function exprToStatement(ps: ParseState, expr: Expression): TextAST.Statement {
   return ps.finishStatement({
     type: "ExprStatement",
     expr,
-    pos:
-      isRegression && residualVariable
-        ? pos(residualVariable, expr)
-        : pos(expr),
+    pos: isRegression && residualVariable
+      ? pos(residualVariable, expr)
+      : pos(expr),
     parameters: undefined,
     residualVariable: isRegression ? residualVariable : undefined,
   });
@@ -1146,8 +1206,9 @@ function parseBareSeq(ps: ParseState, example: string): TextAST.Expression[] {
 function parseFunctionCall(ps: ParseState, left: Node): TextAST.CallExpression {
   const args = ps.peek().value === ")" ? [] : parseBareSeq(ps, "f(x,y)");
   const next = ps.consume(")");
-  if (left.type !== "Identifier" && left.type !== "MemberExpression")
+  if (left.type !== "Identifier" && left.type !== "MemberExpression") {
     throw ps.pushFatalError("Function call must be an identifier", pos(left));
+  }
   return {
     type: "CallExpression",
     callee: left,
@@ -1161,14 +1222,14 @@ function extendComparison(
   left: TextAST.Expression,
   op: TextAST.CompareOp,
   opToken: Token,
-  right: TextAST.Expression
+  right: TextAST.Expression,
 ): TextAST.ComparatorChain | TextAST.BinaryExpression {
   if (left.type === "ComparatorChain") {
     const leftSymbol = left.symbols.at(-1)!;
     if (relopDir(leftSymbol) !== relopDir(op)) {
       throw ps.pushFatalError(
         `Cannot chain ${leftSymbol} with ${op}`,
-        pos(opToken)
+        pos(opToken),
       );
     }
     // Note: this might be quadratic time since the chain keeps building.
@@ -1182,7 +1243,7 @@ function extendComparison(
     if (relopDir(left.op) !== relopDir(op)) {
       throw ps.pushFatalError(
         `Cannot chain ${left.op} with ${op}`,
-        pos(opToken)
+        pos(opToken),
       );
     }
     return {
@@ -1229,7 +1290,7 @@ interface ConsequentParselet {
 
 function consequentParselet(
   bindingPower: BindingPower,
-  parse: (ps: ParseState, left: Node, token: Token, opts: CPOpts) => Node
+  parse: (ps: ParseState, left: Node, token: Token, opts: CPOpts) => Node,
 ): ConsequentParselet {
   return { bindingPower, parse };
 }
@@ -1237,7 +1298,7 @@ function consequentParselet(
 function binaryParselet(
   bp: BindingPower,
   op: TextAST.BinaryExpression["op"],
-  { rightAssociative }: { rightAssociative?: boolean } = {}
+  { rightAssociative }: { rightAssociative?: boolean } = {},
 ) {
   return consequentParselet(bp, (ps, left, token): Node => {
     const ex = op === "cross" ? `v ${op} u` : `2 ${op} x`;
@@ -1246,7 +1307,7 @@ function binaryParselet(
       ps,
       (rightAssociative ?? false) ? minus1(bp) : bp,
       `right side of ${op}`,
-      ex
+      ex,
     );
     return {
       type: "BinaryExpression",
@@ -1262,13 +1323,14 @@ function assertLeftIsExpression(
   ps: ParseState,
   node: TextAST.Node,
   posToken: Token,
-  example: string
+  example: string,
 ): asserts node is Expression {
-  if (!isExpression(node))
+  if (!isExpression(node)) {
     throw ps.pushFatalError(
       `Unexpected '${posToken.value}'. Did you mean to precede it by an expression, such as '${example}'?`,
-      pos(posToken)
+      pos(posToken),
     );
+  }
 }
 
 type PositionedOrToken = { pos: Pos } | { offset: number; text: string };
@@ -1283,6 +1345,6 @@ function pos(start: PositionedOrToken, end: PositionedOrToken = start): Pos {
 function posMany(arr: Pos[], initial: Pos) {
   return arr.reduce(
     (a, b) => ({ from: Math.min(a.from, b.from), to: Math.max(a.to, b.to) }),
-    initial
+    initial,
   );
 }

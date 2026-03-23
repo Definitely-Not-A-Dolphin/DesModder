@@ -1,8 +1,8 @@
 import { analysisStateField, tmPlugin } from "../../LanguageServer";
 import { statementsIntersecting } from "../statementIntersection";
 import StyleCircle from "./StyleCircle";
-import { RangeSet, Extension } from "@codemirror/state";
-import { GutterMarker, gutter, gutters } from "@codemirror/view";
+import { Extension, RangeSet } from "@codemirror/state";
+import { gutter, GutterMarker, gutters } from "@codemirror/view";
 import { DCGView } from "#DCGView";
 import type { ItemModel } from "#globals";
 
@@ -43,7 +43,7 @@ class StyleCircleMarker extends GutterMarker {
 
   constructor(
     readonly id: string,
-    readonly model: ItemModel
+    readonly model: ItemModel,
   ) {
     super();
   }

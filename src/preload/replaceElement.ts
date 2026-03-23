@@ -4,7 +4,7 @@ import { Replacer } from "../plugins/PluginController";
 
 export function createElementWrapped<Props>(
   el: ComponentConstructor<Props>,
-  props: OrConst<Props> & { children?: ComponentChild[] }
+  props: OrConst<Props> & { children?: ComponentChild[] },
 ) {
   const { DCGView } = (Desmos as any).Private.Fragile;
   return DCGView.createElement(el, props as any);
@@ -21,7 +21,7 @@ export function insertElement(creator: () => undefined | (() => any)) {
 export function replaceElement<T>(
   old: () => T,
   replacer: () => Replacer<T>,
-  key: () => unknown = () => !!replacer()
+  key: () => unknown = () => !!replacer(),
 ) {
   const { DCGView } = (Desmos as any).Private.Fragile;
   return DCGView.createElement(DCGView.Components.Switch, {

@@ -29,10 +29,11 @@ export function buildConfig(config: PublicConfig): Config {
     commandNames: split(config.commandNames ?? defaultCommandNames),
     colors: config.colors ?? defaultColors,
     parseDesmosLatex: function (s: string) {
-      if (!config.parseDesmosLatex)
+      if (!config.parseDesmosLatex) {
         throw new Error(
-          "Test Error: trying to parse LaTeX from Desmos, but the config does not define `parseDesmosLatex`."
+          "Test Error: trying to parse LaTeX from Desmos, but the config does not define `parseDesmosLatex`.",
         );
+      }
       return config.parseDesmosLatex(s, {
         allowDt: true,
         allowIndex: true,

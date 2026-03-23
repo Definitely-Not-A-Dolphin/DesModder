@@ -9,22 +9,21 @@ const labelOptions = {
 
 const { Label } = Private.Mathtools;
 
-const withUprightUndefined =
-  <T, R extends unknown[]>(
-    format: (label: T, labelOptions: LabelOptionsBase, ...rest: R) => string,
-    opts?: LabelOptionsBase,
-    ...rest: R
-  ) =>
-  (label: T) => {
-    const formatted = format(label, opts ?? labelOptions, ...rest);
-    return formatted === "undefined" ? "\\mathrm{undefined}" : formatted;
-  };
+const withUprightUndefined = <T, R extends unknown[]>(
+  format: (label: T, labelOptions: LabelOptionsBase, ...rest: R) => string,
+  opts?: LabelOptionsBase,
+  ...rest: R
+) =>
+(label: T) => {
+  const formatted = format(label, opts ?? labelOptions, ...rest);
+  return formatted === "undefined" ? "\\mathrm{undefined}" : formatted;
+};
 
 export const complexNumberLabel = withUprightUndefined(
-  Label.complexNumberLabel
+  Label.complexNumberLabel,
 );
 export const pointLabel = withUprightUndefined(Label.pointLabel);
 export const point3dLabel = withUprightUndefined(Label.point3dLabel);
 export const truncatedLatexLabel = withUprightUndefined(
-  Label.truncatedLatexLabel
+  Label.truncatedLatexLabel,
 );

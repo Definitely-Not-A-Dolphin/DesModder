@@ -4,7 +4,8 @@ This document describes DesModder's process for upgrading packages.
 2. In separate commits, update each group of packages, testing as you go.
 3. PR and merge.
 
-If any package update requires many file changes (such as some prettier updates), then split the package bump and file changes to separate commits.
+If any package update requires many file changes (such as some prettier
+updates), then split the package bump and file changes to separate commits.
 
 The groups of packages are:
 

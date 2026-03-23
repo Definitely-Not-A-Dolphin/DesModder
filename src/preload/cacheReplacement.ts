@@ -1,6 +1,6 @@
 import { fullReplacement } from "../../apply-replacements/applyReplacement";
 import { Block } from "../../apply-replacements/parse";
-import { IDBPDatabase, openDB, deleteDB } from "idb";
+import { deleteDB, IDBPDatabase, openDB } from "idb";
 import { Console } from "../globals";
 
 const CACHE_STORE = "replacement_store";
@@ -34,7 +34,7 @@ async function deleteOldDB() {
 export async function fullReplacementCached(
   calcDesktop: string,
   enabledReplacements: Block[],
-  replOpts: ReplacementOpts
+  replOpts: ReplacementOpts,
 ): Promise<string> {
   void deleteOldDB();
   const db = await openDB("cached-replacement-store", 1, {
@@ -68,13 +68,14 @@ export async function fullReplacementCached(
     replOpts.addPanic(b);
   }
   // cache if there's no panics
-  if (good)
+  if (good) {
     void setCache(db, {
       hashRepls,
       hashFile,
       hashAppend,
       result: result.newCode,
     });
+  }
   return result.newCode;
 }
 
@@ -100,7 +101,7 @@ async function setCache(db: IDBPDatabase, obj: Cached) {
   } catch {
     Console.warn(
       "Failed to cache replacement. This is expected in a Private Window " +
-        "but could indicate a problem in a regular window"
+        "but could indicate a problem in a regular window",
     );
   }
 }
@@ -120,11 +121,9 @@ function cyrb53(str: string, seed = 0) {
     h1 = Math.imul(h1 ^ ch, 2654435761);
     h2 = Math.imul(h2 ^ ch, 1597334677);
   }
-  h1 =
-    Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^
     Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-  h2 =
-    Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^
     Math.imul(h1 ^ (h1 >>> 13), 3266489909);
   return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 }

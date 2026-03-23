@@ -26,7 +26,7 @@ export class ManagedNumberInputModel {
   constructor(
     latex: string,
     private readonly calc: Calc,
-    private readonly opts?: ManagedNumberInputModelOpts
+    private readonly opts?: ManagedNumberInputModelOpts,
   ) {
     this.#latex = latex;
   }
@@ -59,12 +59,13 @@ export class ManagedNumberInputModel {
   getValue() {
     return EvaluateSingleExpression(
       this.calc,
-      this.getLatexPopulatingDefault()
+      this.getLatexPopulatingDefault(),
     );
   }
 }
 
-export default class ManagedNumberInput extends Component<ManagedNumberInputParams> {
+export default class ManagedNumberInput
+  extends Component<ManagedNumberInputParams> {
   vc!: VideoCreator;
 
   init() {

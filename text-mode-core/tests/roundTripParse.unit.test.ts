@@ -1,20 +1,20 @@
 // Following imports must go after Desmos loads.
 import { buildConfigFromGlobals } from "..";
-import { Expression, Concrete } from "../TextAST";
+import { Concrete, Expression } from "../TextAST";
 import { AnyRootOrChild } from "../aug/AugLatex";
 import { latexTreeToString as _latexTreeToString } from "../aug/augLatexToRaw";
 import { parseRootLatex as _parseRootLatex } from "../aug/rawToAug";
 import { childExprToAug } from "../down/astToAug";
 import { parse as _parse } from "../down/textToAST";
-import { TextEmitOptions, astToText } from "../up/astToText";
+import { astToText, TextEmitOptions } from "../up/astToText";
 import { rootLatexToAST } from "../up/augToAST";
 // eslint-disable-next-line @desmodder/eslint-rules/no-reach-past-exports
 import "../../src/tests/run_calc_for_tests";
 
-const Calc = window.Desmos.GraphingCalculator(
-  document.getElementById("graph-container")!
+const Calc = globalThis.Desmos.GraphingCalculator(
+  document.getElementById("graph-container")!,
 );
-const cfg = buildConfigFromGlobals(window.Desmos, Calc);
+const cfg = buildConfigFromGlobals(globalThis.Desmos, Calc);
 
 function parseRootLatex(s: string) {
   return _parseRootLatex(cfg, s);
@@ -350,7 +350,8 @@ describe("Same-parse round trips", () => {
 });
 
 describe("Ice castle", () => {
-  const raw = String.raw`0\le y\le \left[40,40,37,14,50,15,15,18,18\right]\cdot \left\{-2.4\le \frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}\le 0:3\cdot \operatorname{tan}\left(\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}+1\right),\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}\le -2.4:3\cdot \operatorname{sec}\left(-2.4+1\right)^{2}\cdot \left(\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}--2.4\right)+3\cdot \operatorname{tan}\left(-2.4+1\right),\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}\ge 2.4:-3\cdot \operatorname{sec}\left(-2.4+1\right)^{2}\cdot \left(\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}-2.4\right)+3\cdot \operatorname{tan}\left(-2.4+1\right)\cdot \left\{\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}\ge 2.4\right\},3\cdot \operatorname{tan}\left(-\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}+1\right)\right\}+\left[171,171,313,281,553,493,493,216,216\right]`;
+  const raw = String
+    .raw`0\le y\le \left[40,40,37,14,50,15,15,18,18\right]\cdot \left\{-2.4\le \frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}\le 0:3\cdot \operatorname{tan}\left(\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}+1\right),\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}\le -2.4:3\cdot \operatorname{sec}\left(-2.4+1\right)^{2}\cdot \left(\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}--2.4\right)+3\cdot \operatorname{tan}\left(-2.4+1\right),\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}\ge 2.4:-3\cdot \operatorname{sec}\left(-2.4+1\right)^{2}\cdot \left(\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}-2.4\right)+3\cdot \operatorname{tan}\left(-2.4+1\right)\cdot \left\{\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}\ge 2.4\right\},3\cdot \operatorname{tan}\left(-\frac{x-\left[-83,83,0,0,0,-41,41,-116,116\right]}{\left[6,6,55,32,15,5,5,5,5\right]}+1\right)\right\}+\left[171,171,313,281,553,493,493,216,216\right]`;
 
   testRoundTripIdenticalViaText(raw, {
     noNewlines: false,

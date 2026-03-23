@@ -1,9 +1,9 @@
 import VideoCreator from ".";
 import {
-  Matrix3,
   approx3su,
   eulerFromOrientation,
   getOrientation,
+  Matrix3,
   orientationFromEuler,
   setOrientation,
 } from "../../globals/matrix3";
@@ -43,7 +43,7 @@ export class Orientation {
         "setWorldRotation",
         "video-creator-rotation-listener",
         0,
-        () => this.updateLatexOrientationFromGraph()
+        () => this.updateLatexOrientationFromGraph(),
       );
       if (unhook) this.cleanupCallbacks.push(unhook);
       const keys = [
@@ -58,7 +58,7 @@ export class Orientation {
           k,
           "video-creator-spinning-listener-" + k,
           0,
-          () => this.applySpinningSpeedFromGraph()
+          () => this.applySpinningSpeedFromGraph(),
         );
         if (unhook) this.cleanupCallbacks.push(unhook);
       }
@@ -338,15 +338,20 @@ export class Orientation {
   }
 
   areCaptureSettingsValid() {
-    if (this.isCurrentOrientationRelevant())
-      if (!this.isCurrentXYRotValid() || !this.isCurrentZTipValid())
+    if (this.isCurrentOrientationRelevant()) {
+      if (!this.isCurrentXYRotValid() || !this.isCurrentZTipValid()) {
         return false;
-    if (this.isToOrientationRelevant())
+      }
+    }
+    if (this.isToOrientationRelevant()) {
       if (!this.isXYRotToValid() || !this.isZTipToValid()) return false;
-    if (this.isStepOrientationRelevant())
+    }
+    if (this.isStepOrientationRelevant()) {
       if (!this.isXYRotStepValid() || !this.isZTipStepValid()) return false;
-    if (this.isSpeedOrientationRelevant())
+    }
+    if (this.isSpeedOrientationRelevant()) {
       if (!this.isSpeedRotValid()) return false;
+    }
     return true;
   }
 }

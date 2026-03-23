@@ -3,7 +3,7 @@ import { PluginController } from "../../plugins/PluginController";
 
 type MQKeystrokeCallback = (
   key: string,
-  event: KeyboardEvent
+  event: KeyboardEvent,
 ) => undefined | "cancel";
 
 export default class OverrideKeystroke extends PluginController {

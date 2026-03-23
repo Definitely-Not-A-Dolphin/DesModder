@@ -1,5 +1,5 @@
 import { ReplacementError } from "./errors";
-import { Command, Block } from "./parse";
+import { Block, Command } from "./parse";
 import { PatternToken, patternTokens } from "./tokenize";
 import jsTokens, { Token } from "js-tokens";
 
@@ -18,7 +18,7 @@ export interface FullReplacementResult {
 
 export function fullReplacement(
   calcDesktop: string,
-  enabledReplacements: Block[]
+  enabledReplacements: Block[],
 ): FullReplacementResult {
   const tokens = Array.from(jsTokens(calcDesktop));
   const sharedModuleTokens = tokens.filter(
@@ -28,13 +28,13 @@ export function fullReplacement(
       // JS is sure to have &&. Protects against translations getting longer
       // than the length cutoff, which is intentionally low in case of huge
       // improvements in minification.
-      x.value.includes("&&")
+      x.value.includes("&&"),
   );
   let workerResult: ReplacementResult;
   const otherErrors = [];
   if (sharedModuleTokens.length !== 1) {
     otherErrors.push(
-      "More than one large JS string found, which is the shared module?"
+      "More than one large JS string found, which is the shared module?",
     );
     // no-op
     workerResult = {
@@ -42,8 +42,8 @@ export function fullReplacement(
       failed: new Map(
         enabledReplacements.map(
           (b) =>
-            [b, `Not reached: ${b.heading}. Maybe no worker builder?`] as const
-        )
+            [b, `Not reached: ${b.heading}. Maybe no worker builder?`] as const,
+        ),
       ),
       value: calcDesktop,
     };
@@ -55,21 +55,21 @@ export function fullReplacement(
       // js-tokens tokenized this as a string anyway, so it should be
       // safely eval'able to a string.
       // eslint-disable-next-line no-eval
-      (0, eval)(sharedModuleToken.value) as string
+      (0, eval)(sharedModuleToken.value) as string,
     );
     sharedModuleToken.value = JSON.stringify(workerResult.value);
   }
   const wbTokenHead = tokens.find(
     (x) =>
       x.type === "NoSubstitutionTemplate" &&
-      x.value.includes("const __dcg_worker_module__ =")
+      x.value.includes("const __dcg_worker_module__ ="),
   );
   const wbTokenTail = tokens.find(
     (x) =>
       x.type === "TemplateTail" &&
       x.value.includes(
-        "__dcg_worker_module__(__dcg_worker_shared_module_exports__);"
-      )
+        "__dcg_worker_module__(__dcg_worker_shared_module_exports__);",
+      ),
   );
   if (wbTokenTail === undefined || wbTokenHead === undefined) {
     otherErrors.push("Failed to find valid worker builder.");
@@ -78,13 +78,13 @@ export function fullReplacement(
       // eslint-disable-next-line no-template-curly-in-string
       "`function loadDesModderWorker(){${window.dsm_workerAppend}}" +
       wbTokenHead.value.slice(1);
-    wbTokenTail.value =
-      wbTokenTail.value.slice(0, -1) + "\n loadDesModderWorker();`";
+    wbTokenTail.value = wbTokenTail.value.slice(0, -1) +
+      "\n loadDesModderWorker();`";
   }
   const srcWithWorkerAppend = tokens.map((x) => x.value).join("");
   const mainResult = applyReplacements(
     enabledReplacements.filter((x) => !x.workerOnly),
-    srcWithWorkerAppend
+    srcWithWorkerAppend,
   );
   const blockFailures = [...workerResult.failed].concat([...mainResult.failed]);
 
@@ -155,8 +155,9 @@ class SymbolTable {
   /** get but throws an error if not found */
   getRequired(key: string) {
     const got = this.get(key);
-    if (got === undefined)
+    if (got === undefined) {
       throw new ReplacementError(`Binding not found: ${key}`);
+    }
     return got;
   }
 
@@ -172,14 +173,16 @@ function getSymbols(commands: Command[], str: Token[]): SymbolTable {
   for (const command of commands) {
     switch (command.command) {
       case "find": {
-        if (command.args.length > 1)
+        if (command.args.length > 1) {
           throw new ReplacementError(
-            `*find* command must have either 0 or 1 arguments. You passed ${command.args.length}`
+            `*find* command must have either 0 or 1 arguments. You passed ${command.args.length}`,
           );
-        if (command.patternArg === undefined)
+        }
+        if (command.patternArg === undefined) {
           throw new ReplacementError(
-            `*find* command missing a pattern argument.`
+            `*find* command missing a pattern argument.`,
           );
+        }
         const inside = command.args[0]
           ? table.getRequired(command.args[0])
           : { start: 0, length: table.str.length };
@@ -188,33 +191,37 @@ function getSymbols(commands: Command[], str: Token[]): SymbolTable {
           table,
         });
         table.merge(found.newBindings);
-        if (command.returns)
+        if (command.returns) {
           table.set(command.returns, {
             start: found.startIndex,
             length: found.length,
           });
+        }
         break;
       }
       case "find_surrounding_template": {
-        if (command.args.length > 1)
+        if (command.args.length > 1) {
           throw new ReplacementError(
-            `*find_surrounding_template* command must exactly 1 argument. You passed ${command.args.length}`
+            `*find_surrounding_template* command must exactly 1 argument. You passed ${command.args.length}`,
           );
-        if (command.patternArg !== undefined)
+        }
+        if (command.patternArg !== undefined) {
           throw new ReplacementError(
-            `*find_surrounding_template* should not have a pattern argument.`
+            `*find_surrounding_template* should not have a pattern argument.`,
           );
-        if (command.returns === undefined)
+        }
+        if (command.returns === undefined) {
           throw new ReplacementError(
-            `*find_surrounding_template* must have return value specified`
+            `*find_surrounding_template* must have return value specified`,
           );
+        }
         const around = table.getRequired(command.args[0]);
         const ts = findTemplateStartBefore(table, around.start);
         const found = findPattern(
           patternTokens("template() {__return__}", ""),
           table.str,
           { start: ts, length: table.str.length - ts - 1 },
-          { allowDuplicates: true, table: new SymbolTable(str) }
+          { allowDuplicates: true, table: new SymbolTable(str) },
         );
         table.set(command.returns, {
           start: found.startIndex,
@@ -224,7 +231,7 @@ function getSymbols(commands: Command[], str: Token[]): SymbolTable {
       }
       case "replace":
         throw new ReplacementError(
-          "Programming Error: *replace* where it shouldn't be"
+          "Programming Error: *replace* where it shouldn't be",
         );
     }
   }
@@ -234,7 +241,7 @@ function getSymbols(commands: Command[], str: Token[]): SymbolTable {
 /** Apply replacement to `str`, and returned the changed value */
 function applyStringReplacements(
   repls: Block[],
-  str: Token[]
+  str: Token[],
 ): {
   successful: Set<Block>;
   failed: Map<Block, string>;
@@ -242,8 +249,9 @@ function applyStringReplacements(
 } {
   const idTable = new Map<Block, string>();
   function getPrefix(r: Block): string {
-    if (!idTable.has(r))
+    if (!idTable.has(r)) {
       idTable.set(r, r.heading + "_" + Math.random().toString() + "_");
+    }
     return idTable.get(r)!;
   }
 
@@ -312,25 +320,27 @@ function isLongPattern(token: PatternToken) {
 function blockReplacements(
   r: Block,
   getPrefix: (r: Block) => string,
-  table: SymbolTable
+  table: SymbolTable,
 ): Replacement[] {
   const prefix = getPrefix(r);
   return r.replaceCommands.map((command) => {
-    if (command.command !== "replace")
+    if (command.command !== "replace") {
       throw new ReplacementError(
-        "Programming error: replaceCommand is not *replace*"
+        "Programming error: replaceCommand is not *replace*",
       );
-    if (command.args.length !== 1)
+    }
+    if (command.args.length !== 1) {
       throw new ReplacementError(
-        `*replace* command must have exactly 1 argument. You passed ${command.args.length}`
+        `*replace* command must have exactly 1 argument. You passed ${command.args.length}`,
       );
-    if (command.patternArg === undefined)
+    }
+    if (command.patternArg === undefined) {
       throw new ReplacementError(
-        `*replace* command missing a pattern argument.`
+        `*replace* command missing a pattern argument.`,
       );
+    }
     // skipFirst = this is just an append
-    const skipFirst =
-      isVariablePattern(command.patternArg[0]) &&
+    const skipFirst = isVariablePattern(command.patternArg[0]) &&
       symbolName(command.patternArg[0].value) === symbolName(command.args[0]);
     const from = table.getRequired(prefix + command.args[0]);
     const res: Replacement = {
@@ -349,10 +359,13 @@ function blockReplacements(
 function* withReplacements(tokens: readonly Token[], repls: Replacement[]) {
   repls.sort((a, b) => a.from.start - b.from.start);
   repls.forEach((e, i) => {
-    if (i > 0 && e.from.start + e.from.length <= repls[i - 1].from.start)
+    if (i > 0 && e.from.start + e.from.length <= repls[i - 1].from.start) {
       throw new Error(
-        `Overlapping replacements: "${repls[i - 1].heading}" and "${e.heading}"`
+        `Overlapping replacements: "${
+          repls[i - 1].heading
+        }" and "${e.heading}"`,
       );
+    }
   });
   let start = 0;
   for (const { from, to } of repls) {
@@ -382,8 +395,9 @@ function findTemplateStartBefore(table: SymbolTable, before: number) {
         type: "IdentifierName",
         value: "template",
       })
-    )
+    ) {
       return i - 1;
+    }
   }
   throw new ReplacementError(`Template not found before index ${before}`);
 }
@@ -392,36 +406,37 @@ function findPattern(
   pattern: PatternToken[],
   str: Token[],
   inside: Range,
-  { allowDuplicates, table }: { allowDuplicates: boolean; table: SymbolTable }
+  { allowDuplicates, table }: { allowDuplicates: boolean; table: SymbolTable },
 ): MatchResult {
   const fullPattern = pattern;
   // filter whitespace out of pattern
   pattern = pattern.filter((token) => !isIgnoredWhitespace(token));
   // find a forced token; used to optimize the search a little
   const fixedToken = pattern.find(
-    (x) => !x.type.startsWith("Pattern")
+    (x) => !x.type.startsWith("Pattern"),
   ) as Token;
-  if (fixedToken === undefined)
+  if (fixedToken === undefined) {
     throw new Error("Pattern Error: No fixed token found");
+  }
   const fixedTokenIdx = pattern.indexOf(fixedToken);
-  if (pattern.slice(0, fixedTokenIdx).some(isLongPattern))
+  if (pattern.slice(0, fixedTokenIdx).some(isLongPattern)) {
     throw new Error("First fixed token is after a variable-width span.");
+  }
 
   // search time!
   let found: MatchResult | null = null;
   const end = inside.start + inside.length - pattern.length;
-  for (let i = inside.start; i < end; ) {
+  for (let i = inside.start; i < end;) {
     if (!tokensEqual(str[i + fixedTokenIdx], fixedToken)) {
       i++;
       continue;
     }
-    const match =
-      patternMatch(pattern, str, i, inside, table, false) !== null
-        ? patternMatch(pattern, str, i, inside, table, true)
-        : null;
+    const match = patternMatch(pattern, str, i, inside, table, false) !== null
+      ? patternMatch(pattern, str, i, inside, table, true)
+      : null;
     if (match !== null) {
       if (allowDuplicates) return match;
-      if (found !== null)
+      if (found !== null) {
         throw new ReplacementError(
           `Duplicate pattern match.\n` +
             `Pattern: ${fullPattern.map((v) => v.value).join("")} \n` +
@@ -434,8 +449,9 @@ function findPattern(
             str
               .slice(found.startIndex, found.startIndex + found.length)
               .map((v) => v.value)
-              .join("")
+              .join(""),
         );
+      }
       found = match;
       i += match.length;
     } else {
@@ -445,8 +461,9 @@ function findPattern(
   if (found === null) {
     const s = inside.start;
     const len = inside.length;
-    const msg =
-      `Pattern not found: ${fullPattern.map((v) => v.value).join("")} ` +
+    const msg = `Pattern not found: ${
+      fullPattern.map((v) => v.value).join("")
+    } ` +
       `in {start: ${s}, length: ${len}}\n` +
       str
         .slice(s, s + 20)
@@ -513,7 +530,7 @@ function patternMatch(
   startIndex: number,
   inside: Range,
   outerTable: SymbolTable,
-  doTable: true
+  doTable: true,
 ): MatchResult | null;
 function patternMatch(
   pattern: PatternToken[],
@@ -521,7 +538,7 @@ function patternMatch(
   startIndex: number,
   inside: Range,
   outerTable: SymbolTable,
-  doTable: false
+  doTable: false,
 ): true | null;
 function patternMatch(
   pattern: PatternToken[],
@@ -538,7 +555,7 @@ function patternMatch(
    * then only run doTable=true if that passes. I'm somewhat surprised it's that
    * significant of a gain though.
    */
-  doTable: boolean
+  doTable: boolean,
 ): MatchResult | true | null {
   let table: SymbolTable | null = null;
   if (doTable) table = new SymbolTable(str);
@@ -589,11 +606,12 @@ function patternMatch(
         else if (openBraces.has(curr)) depth++;
       }
       // done scanning: currIndex points to a close brace in `str`
-      if (doTable)
+      if (doTable) {
         table!.set(expectedToken.value, {
           start: strIndex,
           length: currIndex - strIndex,
         });
+      }
       // while loop stops when currIndex points to the matching close brace
       // but patternIndex points to the <balanced> before it, so subtract 1
       strIndex = currIndex - 1;
@@ -604,12 +622,12 @@ function patternMatch(
       const nextPattern = patternQueue.peek();
       if (!nextPattern) {
         throw new Error(
-          `Non-greedy pattern ${expectedToken.value} cannot be the final pattern token.`
+          `Non-greedy pattern ${expectedToken.value} cannot be the final pattern token.`,
         );
       }
       if (isVariablePattern(nextPattern)) {
         throw new Error(
-          `Variable pattern token '${nextPattern.value}' cannot follow non-greedy pattern token ${expectedToken.value}.`
+          `Variable pattern token '${nextPattern.value}' cannot follow non-greedy pattern token ${expectedToken.value}.`,
         );
       }
       while (depth > 0) {
@@ -625,19 +643,21 @@ function patternMatch(
       }
       // done scanning: currIndex points to a close brace in `str`,
       // (or to something matching the next pattern token)
-      if (doTable)
+      if (doTable) {
         table!.set(expectedToken.value, {
           start: strIndex,
           length: currIndex - strIndex,
         });
+      }
       // while loop stops when currIndex points to the matching close brace
       // (or to something matching the next pattern token),
       // but patternIndex points to the <balanced> before it, so subtract 1
       strIndex = currIndex - 1;
     } else if (expectedToken.type === "PatternIdentifier") {
       if (foundToken.type !== "IdentifierName") return null;
-      if (doTable)
+      if (doTable) {
         table!.set(expectedToken.value, { start: strIndex, length: 1 });
+      }
     } else if (expectedToken.type === "PatternIdentifierDot") {
       if (foundToken.type !== "IdentifierName") return null;
       const startStrIndex = strIndex;
@@ -650,11 +670,12 @@ function patternMatch(
         strIndex += 2;
         if (foundToken.type !== "IdentifierName") return null;
       }
-      if (doTable)
+      if (doTable) {
         table!.set(expectedToken.value, {
           start: startStrIndex,
           length: strIndex - startStrIndex + 1,
         });
+      }
     } else if (!tokensEqual(expectedToken, foundToken)) {
       return null;
     }
@@ -662,13 +683,13 @@ function patternMatch(
     strIndex++;
     if (strIndex > inside.start + inside.length) return null;
   }
-  if (doTable)
+  if (doTable) {
     return {
       newBindings: table!,
       startIndex,
       length: strIndex - startIndex,
     };
-  else return true;
+  } else return true;
 }
 
 function tokensEqual(a: Token, b: Token) {

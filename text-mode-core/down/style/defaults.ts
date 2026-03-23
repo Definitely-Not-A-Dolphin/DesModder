@@ -30,9 +30,15 @@ export const settings: Hydrated.Settings = {
   axis3D: [0, 0, 1],
   speed3D: 0,
   worldRotation3D: [
-    -0.5132799671593364, -0.8314696123025455, -0.212607523691814,
-    0.7681777567114166, -0.555570233019602, 0.3181896451432085,
-    -0.3826834323650897, 0, 0.9238795325112867,
+    -0.5132799671593364,
+    -0.8314696123025455,
+    -0.212607523691814,
+    0.7681777567114166,
+    -0.555570233019602,
+    0.3181896451432085,
+    -0.3826834323650897,
+    0,
+    0.9238795325112867,
   ],
 };
 
@@ -143,7 +149,8 @@ export const image: Hydrated.Image = {
   opacity: constant(1),
   foreground: false,
   draggable: false,
-  url: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjYGBg+A8AAQQBAHAgZQsAAAAASUVORK5CYII=",
+  url:
+    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAA1JREFUGFdjYGBg+A8AAQQBAHAgZQsAAAAASUVORK5CYII=",
   hoveredImage: "",
   depressedImage: "",
 };

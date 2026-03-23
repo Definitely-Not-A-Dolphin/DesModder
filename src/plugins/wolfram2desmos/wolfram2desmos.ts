@@ -1,4 +1,4 @@
-import { Config } from "./config";
+import { Config } from "./config.ts";
 import {
   finalBracketSubs,
   finalFunctionSubs,
@@ -22,17 +22,15 @@ export function isIllegalASCIIMath(input: string) {
 
   return !(
     // checks for illegal characters
-    (
-      input.search(/\\/) !== -1 ||
-      input.search(/\n/) !== -1 ||
-      input.search(/(?<=_|\^|\\\w+|\S]|}){/) !== -1 ||
-      input.search(/\/\//) !== -1 ||
-      // determines if the brackets are correct
-      count(/\(/g) !== count(/\)/g) ||
-      count(/\{/g) !== count(/\}/g) ||
-      count(/\[/g) !== count(/\]/g) ||
-      count(/\|/g) % 2 === 1
-    )
+    input.search(/\\/) !== -1 ||
+    input.search(/\n/) !== -1 ||
+    input.search(/(?<=_|\^|\\\w+|\S]|}){/) !== -1 ||
+    input.search(/\/\//) !== -1 ||
+    // determines if the brackets are correct
+    count(/\(/g) !== count(/\)/g) ||
+    count(/\{/g) !== count(/\}/g) ||
+    count(/\[/g) !== count(/\]/g) ||
+    count(/\|/g) % 2 === 1
   );
 }
 
@@ -55,15 +53,14 @@ export function wolfram2desmos(input: string, config: Config): string {
   // inserts replacement at given index
   function insert(index: number, replacement: string): void {
     if (index >= 0) {
-      input =
-        input.slice(0, index) + replacement + input.slice(index, input.length);
+      input = input.slice(0, index) + replacement +
+        input.slice(index, input.length);
     }
   }
 
   // overwrites current index with replacement
   function overwrite(index: number, replacement: string): void {
-    input =
-      input.slice(0, index) +
+    input = input.slice(0, index) +
       replacement +
       input.slice(index + 1, input.length);
   }
@@ -361,8 +358,8 @@ export function wolfram2desmos(input: string, config: Config): string {
       selection !== "‹2›" &&
       (selection !== "‹-1›" || input[startingIndex - 2] === "Ⓩ")
     ) {
-      input =
-        input.slice(0, startingIndex - 1) + input.slice(i + 1, input.length);
+      input = input.slice(0, startingIndex - 1) +
+        input.slice(i + 1, input.length);
       i = startingIndex + 1;
       insert(i - 3, "(");
       bracket = -2;
@@ -521,8 +518,8 @@ export function wolfram2desmos(input: string, config: Config): string {
       bracketEvalFinal();
       if (bracket === 0) {
         selection = input.slice(startingIndex, i + 1);
-        input =
-          input.slice(0, startingIndex) + input.slice(i + 1, input.length);
+        input = input.slice(0, startingIndex) +
+          input.slice(i + 1, input.length);
         break;
       }
     }
@@ -537,16 +534,14 @@ export function wolfram2desmos(input: string, config: Config): string {
         if (bracket === 0) {
           overwrite(startingIndex - 1, "}");
           overwrite(i, "{");
-          const [match] =
-            selection.match(
-              /(?<=\^\{\\frac\{1\}\{)[A-z\d\s.\t+\-*]*(?=\}\})/
-            ) ?? [];
+          const [match] = selection.match(
+            /(?<=\^\{\\frac\{1\}\{)[A-z\d\s.\t+\-*]*(?=\}\})/,
+          ) ?? [];
           if (match) insert(i, "√[" + match + "]");
           break;
         }
       }
-    }
-    // preceded WITHOUT a ")" scenario
+    } // preceded WITHOUT a ")" scenario
     else {
       insert(startingIndex, "}");
 
@@ -554,10 +549,9 @@ export function wolfram2desmos(input: string, config: Config): string {
         bracketEvalFinal();
         if ((isOperator0(i) && bracket === 1) || bracket === 0) {
           insert(i + 1, "{");
-          const [match] =
-            selection.match(
-              /(?<=\^\{\\frac\{1\}\{)[A-z\d\s.\t+\-*]*(?=\}\})/
-            ) ?? [];
+          const [match] = selection.match(
+            /(?<=\^\{\\frac\{1\}\{)[A-z\d\s.\t+\-*]*(?=\}\})/,
+          ) ?? [];
           if (match) insert(i, "√[" + match + "]");
           break;
         }
@@ -577,8 +571,8 @@ export function wolfram2desmos(input: string, config: Config): string {
       if (input[i] === "," && bracket === -1) {
         overwrite(i, "");
         selection = input.slice(startingIndex + 1, i);
-        input =
-          input.slice(0, startingIndex + 1) + input.slice(i, input.length);
+        input = input.slice(0, startingIndex + 1) +
+          input.slice(i, input.length);
         insert(startingIndex, "_{" + selection + "}");
         break;
       }
@@ -624,8 +618,8 @@ export function wolfram2desmos(input: string, config: Config): string {
       bracketEvalFinal();
       if (bracket === 0) {
         selection = input.slice(startingIndex + 3, i);
-        input =
-          input.slice(0, startingIndex + 1) + input.slice(i + 1, input.length);
+        input = input.slice(0, startingIndex + 1) +
+          input.slice(i + 1, input.length);
         break;
       }
     }

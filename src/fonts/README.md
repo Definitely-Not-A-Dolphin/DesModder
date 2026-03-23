@@ -1,4 +1,5 @@
-Icons are from [Icomoon](https://icomoon.io/app/). The selection in `selection.json` can be loaded and extended through the "Import icons" button.
+Icons are from [Icomoon](https://icomoon.io/app/). The selection in
+`selection.json` can be loaded and extended through the "Import icons" button.
 
 ## Adding Icons
 
@@ -19,4 +20,5 @@ Do the following to export the icons from Icomoon:
 4. Replace the files in this directory:
    - `selection.json`: Apply Prettier and save.
    - `dsm-icons.woff`: Just swap in the new file
-   - `style.css`: Remove the other two font-face `src`s from style.css, as we only use the `.woff` one. Apply Prettier and save.
+   - `style.css`: Remove the other two font-face `src`s from style.css, as we
+     only use the `.woff` one. Apply Prettier and save.

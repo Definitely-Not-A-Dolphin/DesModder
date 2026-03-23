@@ -22,7 +22,8 @@ export const autoCommands = Private?.MathquillConfig?.getAutoCommands?.();
 export const autoOperatorNames = Private?.MathquillConfig?.getAutoOperators?.();
 
 export function getCurrentGraphTitle(calc: Calc): string | undefined {
-  return calc._calc.globalHotkeys?.mygraphsController?.graphsController?.getCurrentGraphTitle?.();
+  return calc._calc.globalHotkeys?.mygraphsController?.graphsController
+    ?.getCurrentGraphTitle?.();
 }
 
 export const { List } = Fragile;

@@ -4,6 +4,7 @@ import { GraphState } from "../../graph-state";
 import Intellisense from "#plugins/intellisense/index.tsx";
 import { Browser, Page } from "puppeteer";
 import { Calc as CalcType, DispatchedEvent } from "../globals/Calc";
+import process from "node:process";
 
 /** Calc is only available inside evaluate() callbacks and friends, since those
  * stringify the function and evaluate it inside the browser */
@@ -15,8 +16,8 @@ declare let DSM: DWindow["DSM"];
  * calculator tab. We introduce this state to avoid a bunch of reloads.
  * But it's slightly risky, if a page isn't quite cleaned up. */
 
-const defaultUrl =
-  process.env.DSM_TESTING_URL ?? "https://desmos.com/calculator";
+const defaultUrl = process.env.DSM_TESTING_URL ??
+  "https://desmos.com/calculator";
 
 function urlForPath(path: string) {
   return defaultUrl.replace(/\/calculator$/, path);
@@ -30,7 +31,7 @@ type Cleanliness = typeof clean;
 export function testWithPage(
   name: string,
   cb: (driver: Driver) => Promise<void> | Promise<Cleanliness>,
-  timeout?: number
+  timeout?: number,
 ) {
   testWithPageAndOpts(name, { timeout }, cb);
 }
@@ -38,7 +39,7 @@ export function testWithPage(
 export function testWithPageAndOpts(
   name: string,
   { path, timeout }: { path?: string; timeout?: number },
-  cb: (driver: Driver) => Promise<void> | Promise<Cleanliness>
+  cb: (driver: Driver) => Promise<void> | Promise<Cleanliness>,
 ) {
   test(
     name,
@@ -55,7 +56,7 @@ export function testWithPageAndOpts(
         await page.close();
       }
     },
-    timeout ?? 15000
+    timeout ?? 15000,
   );
 }
 
@@ -66,8 +67,8 @@ async function getPage(url: string) {
   // Assume that all Desmos pages are clean
   const isClean = await Promise.all(
     pages.map(
-      async (x) => x.url() === url && (await x.title()).includes("Desmos")
-    )
+      async (x) => x.url() === url && (await x.title()).includes("Desmos"),
+    ),
   );
   const cleanPages = pages.filter((_, i) => isClean[i]);
   const page = cleanPages.pop();
@@ -120,14 +121,14 @@ export class Driver {
       async () =>
         await (
           DSM.enabledPlugins.intellisense as Intellisense | undefined
-        )?.waitForCurrentIntellisenseTimeoutsToFinish()
+        )?.waitForCurrentIntellisenseTimeoutsToFinish(),
     );
   }
 
   async assertSelectedItemLatex(latex: string | undefined, msg?: string) {
     const actualLatex = await this.evaluate(
       () =>
-        (Calc.controller.getSelectedItem() as any)?.latex as string | undefined
+        (Calc.controller.getSelectedItem() as any)?.latex as string | undefined,
     );
     expect(actualLatex, msg).toEqual(latex);
   }
@@ -186,7 +187,7 @@ export class Driver {
       (id, key, value) => DSM.setPluginSetting(id, key, value),
       id,
       key,
-      value
+      value,
     );
   }
 
@@ -195,7 +196,7 @@ export class Driver {
       async () =>
         await new Promise<void>((resolve) => {
           Calc.controller.evaluator.notifyWhenSynced(() => resolve());
-        })
+        }),
     );
   }
 
@@ -235,19 +236,19 @@ export class Driver {
     const latexFoundList = await this.evaluate(() => {
       const { rootViewNode } = Calc.controller.getSelectedItem()!;
       const evaluationMqRoots = rootViewNode.querySelectorAll(
-        ".dcg-evaluation-container .dcg-mq-math-mode"
+        ".dcg-evaluation-container .dcg-mq-math-mode",
       );
       // Do a list in case of vanilla list output.
       const latexes = [...evaluationMqRoots].map(
         (x) =>
-          Desmos.MathQuill.getApiInstanceForElement(x)?.latex().trim() ?? ""
+          Desmos.MathQuill.getApiInstanceForElement(x)?.latex().trim() ?? "",
       );
       if (latexes[0] === "=") {
         latexes.shift();
       }
       if (latexes.length === 0) {
         throw new Error(
-          "Evaluation is not latex. Use `expectEvalPlain` instead to expect plaintext like 'undefined'."
+          "Evaluation is not latex. Use `expectEvalPlain` instead to expect plaintext like 'undefined'.",
         );
       }
       return latexes;
@@ -266,7 +267,7 @@ export class Driver {
       const { rootViewNode } = Calc.controller.getSelectedItem()!;
       // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style -- false positive
       const evaluationMqRoot = rootViewNode.querySelector(
-        ".dcg-evaluation-container"
+        ".dcg-evaluation-container",
       ) as HTMLElement;
       return evaluationMqRoot.innerText;
     });
@@ -277,11 +278,11 @@ export class Driver {
     await this.setBlank();
     await this.evaluate(
       (settings) => DSM.setAllPluginSettings(settings),
-      this.pluginSettingsStart
+      this.pluginSettingsStart,
     );
     await this.evaluate(
       (enabled) => DSM.togglePluginsTo(enabled),
-      this.enabledPluginsStart
+      this.enabledPluginsStart,
     );
     const exitELM = await this.page.$(EXIT_ELM);
     if (exitELM) await exitELM.click();
@@ -300,7 +301,7 @@ export class Driver {
 
   async assertPath(expected: string) {
     const pathAndQuery = await this.evaluate(() => {
-      const { href } = window.location;
+      const { href } = globalThis.location;
       const { origin } = new URL(href);
       return href.slice(origin.length);
     });
@@ -321,7 +322,7 @@ export class Driver {
 
   async assertClean() {
     const waitingToSendMessage = await this.page.evaluate(
-      () => DSM.delaySetPluginSettings
+      () => DSM.delaySetPluginSettings,
     );
     expect(waitingToSendMessage).toBeFalsy();
     // State is same
@@ -342,13 +343,13 @@ export class Driver {
       // Open-keypad button is visible
       ".dcg-show-keypad-container",
       // Keypad isn't open
-      ".dcg-keys-container[aria-hidden]"
+      ".dcg-keys-container[aria-hidden]",
     );
     // There's no visible mathquill, except those that are children of keypad
     // (which don't get removed from the DOM tree)
     const allMathquillAreInKeypad = await this.page.$$eval(
       ".dcg-mq-root-block:not(.dcg-mq-empty)",
-      (elems) => elems.every((e) => e.closest(".dcg-keypad"))
+      (elems) => elems.every((e) => e.closest(".dcg-keypad")),
     );
     expect(allMathquillAreInKeypad).toBeTruthy();
     // Menus aren't open
@@ -359,7 +360,7 @@ export class Driver {
       ".dcg-popover-interior",
       ".dcg-modal-container div *",
       // Edit List Mode is off
-      ".dcg-action-clearall"
+      ".dcg-action-clearall",
     );
   }
 }

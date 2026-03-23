@@ -9,7 +9,8 @@ New features:
 Bug fixes and enhancements:
 
 - (Text Mode) Fix formatting of long piecewises.
-- (Better Evaluation View) Display NaNs correctly in colors based on the "Advanced Floating Point" setting
+- (Better Evaluation View) Display NaNs correctly in colors based on the
+  "Advanced Floating Point" setting
 - DesModder now no longer tries to load on maintain.desmos.com.
 - Various DesModder clickable elements can now be tabbed to.
 
@@ -31,7 +32,8 @@ Bug fixes and enhancements:
 
 New features:
 
-- (Quake Pro) Add scalar cancellation to scale canvas while holding dolly zoom fixed.
+- (Quake Pro) Add scalar cancellation to scale canvas while holding dolly zoom
+  fixed.
 - (Code Golf) Add option to show/hide pixel width.
 - (Code Golf) Add option to disable when the page is reloaded.
 - (Code Golf) Add hotkey Alt+Q to toggle the code golf plugin.
@@ -40,26 +42,32 @@ New features:
 
 Bug fixes
 
-- Fix an error in Intellisense when switching between tools without navigating between pages (e.g. 2d to 3d).
+- Fix an error in Intellisense when switching between tools without navigating
+  between pages (e.g. 2d to 3d).
 - Avoid a replacement error with Quake Pro.
 
 ## 0.15.4
 
 Bug fixes
 
-- Fix crash when switching between tools without navigating between pages (e.g. 2d to 3d).
-- Fix display of toasts (such as WakaTime warning "Plugin has been deactivated").
+- Fix crash when switching between tools without navigating between pages (e.g.
+  2d to 3d).
+- Fix display of toasts (such as WakaTime warning "Plugin has been
+  deactivated").
 - Fix styling of popover titles.
 - (Text Mode) Fix components like the style circle.
-- (Find-Replace) Fix focus bug when typing into the "replace" field of the find-replace bar (Ctrl+F).
-- (Better Evaluation View) Fix extraneous scrollbar on 3d color map preview sphere.
+- (Find-Replace) Fix focus bug when typing into the "replace" field of the
+  find-replace bar (Ctrl+F).
+- (Better Evaluation View) Fix extraneous scrollbar on 3d color map preview
+  sphere.
 - (Set Primary Color) Fix a bunch of elements that were missing color overrides.
 
 ## 0.15.3
 
 Bug fixes
 
-- (GLesmos) Fix bug where a glesmos-enabled expression would render incorrectly as an implicit after editing.
+- (GLesmos) Fix bug where a glesmos-enabled expression would render incorrectly
+  as an implicit after editing.
 
 ## 0.15.2
 
@@ -73,7 +81,8 @@ Identical to 0.15.0 but it is compiled properly.
 
 ## 0.15.0
 
-(Miscompiled for Chrome, Do not install 0.15.0 for Chrome; install 0.15.1 instead.)
+(Miscompiled for Chrome, Do not install 0.15.0 for Chrome; install 0.15.1
+instead.)
 
 New features:
 
@@ -82,14 +91,18 @@ New features:
 
 Bug fixes and enhancements:
 
-- (Better Evaluation View) Fix display of various types, such as lists of polygons.
+- (Better Evaluation View) Fix display of various types, such as lists of
+  polygons.
 - (Better Evaluation View) Fix display of `\infty i`.
 - (Video Creator) Fix mosaic capture.
 - (Video Creator) Fix horizontal overflow of long actions in the capture menu.
 - (Syntax Highlighting) Fix styling of "add base case" suggestion in some cases.
-- (Pin Expressions) Fix ordering of pinned expressions and tickers after search bar closed.
-- (Code Golf) Keep code golf display under dropdowns like "cumulative probability."
-- (Hide Errors) Only hide errors with shift-enter if the selected expression currently has an error.
+- (Pin Expressions) Fix ordering of pinned expressions and tickers after search
+  bar closed.
+- (Code Golf) Keep code golf display under dropdowns like "cumulative
+  probability."
+- (Hide Errors) Only hide errors with shift-enter if the selected expression
+  currently has an error.
 
 Translations:
 
@@ -111,26 +124,31 @@ Translations:
 
 Bug fixes:
 
-- (Better Evaluation View) Stop crashing the page when a '0' is rendered when plugin is off.
+- (Better Evaluation View) Stop crashing the page when a '0' is rendered when
+  plugin is off.
 
 ## 0.14.7
 
 New features:
 
-- (Better Evaluation View) Allow toggling 'Advanced Floating Point' (previously always on, now default off).
+- (Better Evaluation View) Allow toggling 'Advanced Floating Point' (previously
+  always on, now default off).
 
 Bug fixes and tweaks:
 
 - (Compact View) Apply math font size to the ticker.
 - (Paste Image) Don't paste images into secret folders like the metadata folder.
-- (Better Evaluation View) Don't use 'Advanced Floating Point' when plugin is off.
-- (Better Evaluation View) Disable 'Show List Elements' for new installs by default.
+- (Better Evaluation View) Don't use 'Advanced Floating Point' when plugin is
+  off.
+- (Better Evaluation View) Disable 'Show List Elements' for new installs by
+  default.
 
 ## 0.14.6
 
 New features:
 
-- (Video Creator) Support exporting as WebP, an image format that happens to support video, similar to APNG and GIF.
+- (Video Creator) Support exporting as WebP, an image format that happens to
+  support video, similar to APNG and GIF.
 
 Bug fixes:
 
@@ -147,11 +165,13 @@ Translations:
 
 New features:
 
-- (Better Navigation) Add "Show Scrollbar" toggle when "Scrollable Expressions" is enabled.
+- (Better Navigation) Add "Show Scrollbar" toggle when "Scrollable Expressions"
+  is enabled.
 
 Bug fixes:
 
-- Fix broken replacements affecting Code Golf, GLesmos, Text Mode, and other plugins.
+- Fix broken replacements affecting Code Golf, GLesmos, Text Mode, and other
+  plugins.
 
 Translations:
 
@@ -161,8 +181,10 @@ Translations:
 
 Bug fixes
 
-- Fix broken replacements that removed the opacity and line width options in some situations.
-- Fix broken replacements affecting GLesmos, Better Evaluation View, and other plugins.
+- Fix broken replacements that removed the opacity and line width options in
+  some situations.
+- Fix broken replacements affecting GLesmos, Better Evaluation View, and other
+  plugins.
 
 ## 0.14.3
 
@@ -178,28 +200,37 @@ Translations:
 
 New features:
 
-- (Video Creator) Mosaic capture: Pick mosaic dimensions bigger than 1x1 to stitch together a large image from smaller captures.
+- (Video Creator) Mosaic capture: Pick mosaic dimensions bigger than 1x1 to
+  stitch together a large image from smaller captures.
   - Axis numbers may clutter the capture (disable in the wrench settings menu).
-- (Calculator Settings) Add "Show Performance Meter" (once enabled, click the meter in the bottom-right to toggle modes).
-- (Firefox) Click the DesModder icon to jump straight to the calculator. If it's not pinned to the toolbar, you can find it from the puzzle-piece "Extensions" button.
+- (Calculator Settings) Add "Show Performance Meter" (once enabled, click the
+  meter in the bottom-right to toggle modes).
+- (Firefox) Click the DesModder icon to jump straight to the calculator. If it's
+  not pinned to the toolbar, you can find it from the puzzle-piece "Extensions"
+  button.
 
 Bug fixes
 
 - (Better Evaluation View) Fix broken replacements
 - (GLesmos) Fix broken replacements
-- (Compact View) Show folder toggles (visible from author features) when checked even if "Hide Folder Toggles" is checked.
-- (Text Mode) Fix bug where style settings would sometimes be offset to the top of the page.
+- (Compact View) Show folder toggles (visible from author features) when checked
+  even if "Hide Folder Toggles" is checked.
+- (Text Mode) Fix bug where style settings would sometimes be offset to the top
+  of the page.
 - (Text Mode) Persist the complex mode toggle.
 - (Text Mode) Track 3d rotation slightly better.
-- (Builtin Settings) Prevent soft-lock from disabling both graphpaper and expressions.
-- (Find-Replace) Fix bug where Leibniz derivatives would be corrupted on find-replace.
+- (Builtin Settings) Prevent soft-lock from disabling both graphpaper and
+  expressions.
+- (Find-Replace) Fix bug where Leibniz derivatives would be corrupted on
+  find-replace.
 
 ## 0.14.1
 
 Bug fixes
 
 - Fix loading process in all calculators.
-- (Intellisense) Fix bug where the number before an identifier could be deleted with auto-subscriptify enabled.
+- (Intellisense) Fix bug where the number before an identifier could be deleted
+  with auto-subscriptify enabled.
 - (Intellisense) Include identifiers exported by tables or regressions
 - (GLesmos) Tweak behavior of showing warning that GLesmos is required.
 - (Video Creator) Avoid error message when a size field is empty.
@@ -208,32 +239,38 @@ Bug fixes
 
 New features:
 
-- New plugin: Paste image. Copy-paste images into the calculator. Enabled by default.
+- New plugin: Paste image. Copy-paste images into the calculator. Enabled by
+  default.
 
 Bug fixes:
 
 - (Video Creator) Fix default filename detection.
-- (Better Evaluation View) Show display for complex numbers. Note -0 and +0 are treated the same for complex numbers.
+- (Better Evaluation View) Show display for complex numbers. Note -0 and +0 are
+  treated the same for complex numbers.
 - (Code Golf) Fix replacement error.
 - (Code Golf) Avoid warning when opening a graph with many folders.
 - (Text Mode) Close expression tray when scrolling.
 - Store DesModder metadata inside a note, instead of a note inside a folder.
 - Merge DesModder metadata when pasting a link to a graph into another graph.
-- Delete invalid DesModder metadata notes/folders (which can come from pasting-by-link when DesModder is disabled).
+- Delete invalid DesModder metadata notes/folders (which can come from
+  pasting-by-link when DesModder is disabled).
 
 ## 0.13.11
 
 New features:
 
-- (Compact View) Add "Hide Folder Toggles" when author features or advanced styling are enabled.
+- (Compact View) Add "Hide Folder Toggles" when author features or advanced
+  styling are enabled.
 
 Bug fixes:
 
 - Fixes a whole bunch of loading errors.
 - (Intellisense) Sort suggestions by list order again.
-- (Video Creator) Fix sizing when screenshot width is smaller than viewport width.
+- (Video Creator) Fix sizing when screenshot width is smaller than viewport
+  width.
 - (Video Creator) Stop playing when all frames are deleted.
-- (Compact View) Default math size to the vanilla math size, instead of 10% bigger.
+- (Compact View) Default math size to the vanilla math size, instead of 10%
+  bigger.
 
 Translations:
 
@@ -244,7 +281,8 @@ Translations:
 
 Breaking Changes:
 
-- (Builtin Settings) Remove three settings: Border, QWERTY Keyboard, and Show Expressions Top Bar.
+- (Builtin Settings) Remove three settings: Border, QWERTY Keyboard, and Show
+  Expressions Top Bar.
 
 New Features:
 
@@ -277,7 +315,9 @@ Bug fixes
 Enhancements:
 
 - (GLesmos) Don't disable on page reloads.
-- (Video Creator) Add "fast screenshots" option in 2d calculators. The old approach (slow screenshots) will be removed eventually if there are no problems with "fast screenshots."
+- (Video Creator) Add "fast screenshots" option in 2d calculators. The old
+  approach (slow screenshots) will be removed eventually if there are no
+  problems with "fast screenshots."
 
 Bug fixes:
 
@@ -297,7 +337,8 @@ Bug Fixes
 
 - Fix CSS issues causing the expressions list to split in half.
 - Fix CSS issues affecting Set Primary Color and other plugins.
-- Fix bug where scrolling/zooming would jump to the selected expression when Video Creator was enabled.
+- Fix bug where scrolling/zooming would jump to the selected expression when
+  Video Creator was enabled.
 
 ## 0.13.5
 
@@ -330,9 +371,11 @@ Bug Fixes
 Bug Fixes
 
 - (Video Creator) Fix text wrapping in some buttons in Japanese language.
-- (Video Creator) The "cancel" button now always works, even when capturing a slow frame.
+- (Video Creator) The "cancel" button now always works, even when capturing a
+  slow frame.
 - (Performance View) Keep undo/redo history after using Refresh Graph
-- On a panic ("DesModder loading errors manager"), the home link at the top is now clickable.
+- On a panic ("DesModder loading errors manager"), the home link at the top is
+  now clickable.
 - Fix replacement error
 
 ## 0.13.0
@@ -341,7 +384,8 @@ Bug Fixes
 
 - (Text Mode) Fix error when opening Text Mode.
 - (Intellisense) Fix typing a "." after a subscript in some cases.
-- (Intellisense) Handle keys like "enter" even when Multiline or better Navigation are enabled.
+- (Intellisense) Handle keys like "enter" even when Multiline or better
+  Navigation are enabled.
 - (Intellisense) Show operatornames like "sin()" correctly instead of "n()."
 - (Right Click Tray) Close existing tray before opening a new one.
 - (Find-Replace) Avoid overwriting exponents in some cases.
@@ -395,8 +439,10 @@ Bug fixes:
 - (Text Mode) Fix restrictions producing errors.
 - (Text Mode) Fix associativity of exponent.
 - (Text Mode) Fix empty table conversion to Text Mode.
-- (Find Replace) Fix bug where a space was missing between a command and a letter.
-- (Find Replace) Apply replacements to 3D u/v/r/phi domains and some other scenarios.
+- (Find Replace) Fix bug where a space was missing between a command and a
+  letter.
+- (Find Replace) Apply replacements to 3D u/v/r/phi domains and some other
+  scenarios.
 - (Multiline) Map Ctrl+M to run multiline only, and not toggle muting.
 - (Syntax Highlighting) Don't override textcolor specified in LaTeX.
 
@@ -410,7 +456,8 @@ Bug fixes:
 
 Bug fixes:
 
-- Fix pillbox buttons on [https://desmos.com/geometry](https://desmos.com/geometry).
+- Fix pillbox buttons on
+  [https://desmos.com/geometry](https://desmos.com/geometry).
 - (Video Creator) Fix vertical stretching of captured frames in 3d.
 
 ## 0.12.2
@@ -431,7 +478,8 @@ New: support [https://desmos.com/3d](https://desmos.com/3d)!
 
 New Features:
 
-- Better Navigation plugin: use Ctrl+Arrow to jump along expression, and scroll expressions horizontally.
+- Better Navigation plugin: use Ctrl+Arrow to jump along expression, and scroll
+  expressions horizontally.
 - Multiline: support manual newline insertion.
 
 ## 0.11.11
@@ -476,9 +524,11 @@ New Features:
 Bug fixes:
 
 - (Custom MathQuill Config) Remove `nu` from "More greek letters"
-- (Custom MathQuill Config) Error no longer happens when changing settings with a table on the page.
+- (Custom MathQuill Config) Error no longer happens when changing settings with
+  a table on the page.
 - (Pin Expressions) Fix loading error.
-- (GLesmos) No longer re-renders highlighted expressions at the screen refresh rate
+- (GLesmos) No longer re-renders highlighted expressions at the screen refresh
+  rate
 - (Text Mode) Fix loading issue.
 - "Learn More" links now have color again.
 
@@ -598,7 +648,8 @@ Bug fixes and improvements:
 - (Text Mode) Your text does not get overwritten as you're writing it
 - (Text Mode) Requires double-newlines between expressions
 - (Text Mode) Reduced parentheses emitted to LaTeX
-- (Text Mode) Many other fixes: most graphs should work the same after converting through Text Mode
+- (Text Mode) Many other fixes: most graphs should work the same after
+  converting through Text Mode
 
 ## 0.10.3
 
@@ -606,11 +657,13 @@ New: translations for French!
 
 Bug fixes and improvements:
 
-- Fancier title for popover menus (DesModder menu, Video Creator menu, Performance View menu)
+- Fancier title for popover menus (DesModder menu, Video Creator menu,
+  Performance View menu)
 - Allow vertical scrollbar for the popover menus
 - Divide plugins into categories on the main menu
 - Automatically re-enable plugins when version is updated
-- (Better Evaluation View) Use horizontal scrollbar instead of overflowing output
+- (Better Evaluation View) Use horizontal scrollbar instead of overflowing
+  output
 - (Video Creator) Fix bug where the previewed frame would "jump around"
 - (Find and Replace) Fix bug where replacements would not work on tables
 - (Text Mode) Fix initialization error
@@ -664,7 +717,8 @@ Fixes a loading race condition introduced by the previous release.
 
 Another emergency bugfix; fixes the loading error.
 
-Also comes with some performance improvements from an overhaul of the patching system.
+Also comes with some performance improvements from an overhaul of the patching
+system.
 
 ## 0.8.7
 
@@ -724,7 +778,8 @@ Bug fixes and improvements:
 - (Video Creator) Fix inline math inputs
 - (Text Mode) Decrease unary minus precedence below exp
 - (Tips) New tips
-- (Calculator Settings) Follow Desmos rename to "Author features" where appropriate
+- (Calculator Settings) Follow Desmos rename to "Author features" where
+  appropriate
 - (Pin Expressions) Fill outside of bookmarks, following readonly button style
 - Prepare translations support
 
@@ -739,13 +794,15 @@ Bug fixes and improvements:
 - (Video Creator) Exported mp4s on Ubuntu and some Mac are no longer zero bytes
 - (Set Primary Color) Fix various styling issues
 - (Set Primary Color) Fix wrong favicon when plugin is disabled
-- (Find and Replace) Ctrl+F once again works when the expressions list is unfocused
+- (Find and Replace) Ctrl+F once again works when the expressions list is
+  unfocused
 - (GLesmos) Naming collisions (including `round`) avoided
 - (GLesmos) `median` function implemented
 
 ## 0.7.3
 
-Emergency bug fix because Desmos removed the `parser` module in favor of `core/math/parser`
+Emergency bug fix because Desmos removed the `parser` module in favor of
+`core/math/parser`
 
 Bug fixes and improvements:
 
@@ -779,7 +836,8 @@ This version is released only for Firefox as the first Firefox build.
 
 New features
 
-- GLesmos: use the GPU to render implicits via GLSL. Disabled by default: enable through the plugins list.
+- GLesmos: use the GPU to render implicits via GLSL. Disabled by default: enable
+  through the plugins list.
 
 Bug fixes and improvements:
 
@@ -789,38 +847,54 @@ Bug fixes and improvements:
 - (Folder Tools): fix undo-redo stack
 - (Tips): new tips
 - (Tips): move through tips in a stable order instead of random
-- (Improved Duplication → Duplicate Hotkey) cede control of duplication to new vanilla duplication
+- (Improved Duplication → Duplicate Hotkey) cede control of duplication to new
+  vanilla duplication
 - (Core) fix Desmos loading in iframes
 
 ## 0.6.1
 
 Bug fixes and improvements:
 
-- Pressing down arrow no longer moves the cursor to the bottom of the expressions list
-- Duplicating an expression now duplicates the associated metadata, such as pinned status or whether errors/sliders are hidden
-- (Wolfram To Desmos) Fix pasting of piecewises that contain division at the end of the condition
+- Pressing down arrow no longer moves the cursor to the bottom of the
+  expressions list
+- Duplicating an expression now duplicates the associated metadata, such as
+  pinned status or whether errors/sliders are hidden
+- (Wolfram To Desmos) Fix pasting of piecewises that contain division at the end
+  of the condition
 
 ## 0.6.0
 
 New features
 
-- Folder tools: dump a folder, merge a folder with subsequent unfoldered expressions, and convert a note into a table
-- Click on a warning triangle (or press shift+enter) to fade the warning and hide sliders
-- Show tips at the bottom of the expressions list. Hover to reveal more detail, and click for a new tip.
+- Folder tools: dump a folder, merge a folder with subsequent unfoldered
+  expressions, and convert a note into a table
+- Click on a warning triangle (or press shift+enter) to fade the warning and
+  hide sliders
+- Show tips at the bottom of the expressions list. Hover to reveal more detail,
+  and click for a new tip.
 - Debug mode: Replace expression indices with their internal IDs
 
 Bug fixes and improvements:
 
-- The DesModder settings icon now uses the DesModder logo instead of a generic cogwheel. This change was made to avoid confusion with the edit-list-mode cogwheel settings icon
+- The DesModder settings icon now uses the DesModder logo instead of a generic
+  cogwheel. This change was made to avoid confusion with the edit-list-mode
+  cogwheel settings icon
   - This change is more important in nographpaper mode
 - (Video Creator) Allow cancelling video export
-- (Video Creator) Let long action preview scroll horizontally instead of overflowing the popover
-- (Wolfram to Desmos) Fix pasting of piecewises, `mod`, and `abs` under certain conditions
-- (Improved Duplication) Headers in duplicated tables now keep the same root as the original table
-- (Improved Duplication) Duplicated folders are now placed after the original folder
-- (Improved Duplication) Table header subscripts are now correctly enclosed when longer than one digit
-- (Find and Replace) Fix error when a double inequality is present during a find-and-replace
-- (Pin expressions) Deleting the last pinned expressions now correctly removes the pinned expressions style
+- (Video Creator) Let long action preview scroll horizontally instead of
+  overflowing the popover
+- (Wolfram to Desmos) Fix pasting of piecewises, `mod`, and `abs` under certain
+  conditions
+- (Improved Duplication) Headers in duplicated tables now keep the same root as
+  the original table
+- (Improved Duplication) Duplicated folders are now placed after the original
+  folder
+- (Improved Duplication) Table header subscripts are now correctly enclosed when
+  longer than one digit
+- (Find and Replace) Fix error when a double inequality is present during a
+  find-and-replace
+- (Pin expressions) Deleting the last pinned expressions now correctly removes
+  the pinned expressions style
 
 ## 0.5.1
 
@@ -829,7 +903,9 @@ Adds back the pin-expressions and duplicate-expression-hotkey plugins
 Other improvements:
 
 - (Video Creator) Action capture added (including a step count latex)
-  - The old "while" latex from simulations can be replicated using action capture, which will pause if the action variable is undefined: [example](https://www.desmos.com/calculator/zsz8dwcp3j).
+  - The old "while" latex from simulations can be replicated using action
+    capture, which will pause if the action variable is undefined:
+    [example](https://www.desmos.com/calculator/zsz8dwcp3j).
 
 Fixes bugs introduced by 0.5.0 and the action release:
 
@@ -837,26 +913,38 @@ Fixes bugs introduced by 0.5.0 and the action release:
 - (Builtin Settings) No longer lets you toggle clickableObjects (simulations)
 - (Video Creator) Slider capture no longer crashes immediately
 
-Intentionally adds back the following issue because its previous fix is unmaintainable:
+Intentionally adds back the following issue because its previous fix is
+unmaintainable:
 
-- (Pin Expressions) Using up/down arrows when expressions are pinned can cause some jumping around ([#149](https://github.com/DesModder/DesModder/issues/149))
+- (Pin Expressions) Using up/down arrows when expressions are pinned can cause
+  some jumping around
+  ([#149](https://github.com/DesModder/DesModder/issues/149))
 
 ## 0.5.0
 
-Emergency bug fix because tickers got released, breaking some DesModder features because simulations were removed. Do not expect all features to work.
+Emergency bug fix because tickers got released, breaking some DesModder features
+because simulations were removed. Do not expect all features to work.
 
 ## 0.4.1
 
 Improvements and Bug Fixes:
 
-- (Video Creator) Fix bug where screenshot capture is distorted when the x and y axes have different scales
-- (Video Creator) Fix bug where simulations did not capture for more than a few frames
-- (Video Creator) Warning if FFMpeg cannot load, preventing someone from wasting time in capturing only for ffmpeg not to load
-- (Pin Expressions) Pinned expressions are now visible, even when a parent folder is collapsed
-- (Pin Expressions) Styling of pinned expressions tweaked to align with existing elements
-- (Wolfram To Desmos) Pasting URLS and subscript braces such as `a_{0}.x` no longer breaks the output
-- (Wolfram To Desmos) Fix rare condition where Wolfram To Desmos would enter an infinite loop
-- (Improved Duplication) Add the duplicate icon for non-expressions such as folders
+- (Video Creator) Fix bug where screenshot capture is distorted when the x and y
+  axes have different scales
+- (Video Creator) Fix bug where simulations did not capture for more than a few
+  frames
+- (Video Creator) Warning if FFMpeg cannot load, preventing someone from wasting
+  time in capturing only for ffmpeg not to load
+- (Pin Expressions) Pinned expressions are now visible, even when a parent
+  folder is collapsed
+- (Pin Expressions) Styling of pinned expressions tweaked to align with existing
+  elements
+- (Wolfram To Desmos) Pasting URLS and subscript braces such as `a_{0}.x` no
+  longer breaks the output
+- (Wolfram To Desmos) Fix rare condition where Wolfram To Desmos would enter an
+  infinite loop
+- (Improved Duplication) Add the duplicate icon for non-expressions such as
+  folders
 
 ## 0.4.0
 
@@ -869,8 +957,10 @@ New features:
 Improvements and Bug Fixes:
 
 - Pillbox buttons no longer cover up the expressions when graphpaper is disabled
-- (Builtin Settings) Extension no longer overrides query parameters such as [?nographpaper](https://www.desmos.com/calculator?nographpaper)
-- (Duplicate Hotkey) You can duplicate folders, images, and more using Ctrl+Q while selecting them
+- (Builtin Settings) Extension no longer overrides query parameters such as
+  [?nographpaper](https://www.desmos.com/calculator?nographpaper)
+- (Duplicate Hotkey) You can duplicate folders, images, and more using Ctrl+Q
+  while selecting them
 - (Wolfram To Desmos) Improvements in handling pasted tables and more
 - (Video Creator) Prevent screenshot from capturing before simulation tick
 - (Video Creator) Prevent starting a new export while exporting
@@ -883,7 +973,8 @@ Improvements and Bug Fixes:
 
 Improvements and Bug Fixes:
 
-- Narrow scope of the COEB override, which previously broke sites like teacher.desmos.com under the same domain name but which are not the calculator
+- Narrow scope of the COEB override, which previously broke sites like
+  teacher.desmos.com under the same domain name but which are not the calculator
 - Clarify descriptions of the builtin-settings plugin
 - Remove git submodules, which should make development easier
 
@@ -915,7 +1006,8 @@ Improvements and Bug Fixes:
 
 Plugin API:
 
-- Allow easily creating pillbox popovers like the main DesModder settings or in Video Creator
+- Allow easily creating pillbox popovers like the main DesModder settings or in
+  Video Creator
 - Now require plugin IDs
 
 ## 0.2.0
@@ -929,17 +1021,20 @@ No graph-dependency plugins are included.
 Bug fixes:
 
 - Load correctly even if `Calc.controller` takes longer to be defined (#12)
-- Rework of find-replace UI to deal with breaking change introduced by Desmos modifying that interface (looks cleaner now)
+- Rework of find-replace UI to deal with breaking change introduced by Desmos
+  modifying that interface (looks cleaner now)
 - Many minor UI changes
 
 Plugin API:
 
 - Broaden `Calc` interface
-- Add a few components including `Button`, `SegmentedControl`, and `SmallMathQuillInput`
+- Add a few components including `Button`, `SegmentedControl`, and
+  `SmallMathQuillInput`
 
 ## 0.1.0
 
-First release. As this is an `0.*` release, expect features to change drastically in later releases.
+First release. As this is an `0.*` release, expect features to change
+drastically in later releases.
 
 Includes dev plugins:
 
@@ -951,5 +1046,6 @@ No graph-dependency plugins are included.
 
 API:
 
-- `window.DesModder.registerPlugin` is exposed to allow plugins to be registered in Tampermonkey userscripts, but consider it unstable for now.
+- `window.DesModder.registerPlugin` is exposed to allow plugins to be registered
+  in Tampermonkey userscripts, but consider it unstable for now.
 - other properties of `window.DesModder` should not be accessed.

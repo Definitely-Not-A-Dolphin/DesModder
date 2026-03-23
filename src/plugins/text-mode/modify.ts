@@ -1,13 +1,13 @@
 import {
+  astToText,
+  childExprToAug,
+  graphSettingsToText,
+  itemAugToAST,
+  itemToText,
+  ProgramAnalysis,
   rawNonFolderToAug,
   rawToAugSettings,
   rawToDsmMetadata,
-  ProgramAnalysis,
-  astToText,
-  childExprToAug,
-  itemAugToAST,
-  graphSettingsToText,
-  itemToText,
 } from "../../../text-mode-core";
 import { Settings, Statement } from "../../../text-mode-core/TextAST";
 import { TextAST } from "text-mode-core";
@@ -37,7 +37,7 @@ type ToChange = "table-columns" | "latex-only" | "image-pos" | "regression";
 export function eventSequenceChanges(
   view: EditorView,
   event: DispatchedEvent,
-  analysis: ProgramAnalysis
+  analysis: ProgramAnalysis,
 ): { changes: ChangeSpec[]; effects?: StateEffect<any>[] } {
   const tm = view.state.facet(tmPlugin);
   const state = tm.calc.getState();
@@ -53,8 +53,9 @@ export function eventSequenceChanges(
     if ("id" in event && event.id !== undefined) {
       res.push(metadataChange(analysis, state, dsmMetadata, view, event.id));
     } else if (event.type === "update-all-selected-items") {
-      for (const { id } of tm.cc.getAllSelectedItems())
+      for (const { id } of tm.cc.getAllSelectedItems()) {
         res.push(metadataChange(analysis, state, dsmMetadata, view, id));
+      }
     }
 
     if (
@@ -66,7 +67,7 @@ export function eventSequenceChanges(
         analysis,
         state,
         dsmMetadata,
-        view
+        view,
       );
       res.push(...changes);
       effects.push(...effects1);
@@ -85,7 +86,7 @@ function evaluatorChange(
   analysis: ProgramAnalysis,
   state: GraphState,
   view: EditorView,
-  event: DispatchedEvent & { type: "on-evaluator-changes" }
+  event: DispatchedEvent & { type: "on-evaluator-changes" },
 ): ChangeSpec[] {
   const changes: ChangeSpec[] = [];
   const itemsChanged: Record<string, ToChange> = {};
@@ -106,20 +107,22 @@ function evaluatorChange(
       // TODO: ignore the first move_strategy after an update from
       // the text because it's always no change
       change.move_strategy !== undefined
-    )
+    ) {
       // length 2 corresponds to dragging a point, which is latex only
       // otherwise (length 4), it is dragging an image
-      itemsChanged[changeID] =
-        change.move_strategy?.length === 2 ? "latex-only" : "image-pos";
-    else if (change.regression !== undefined)
+      itemsChanged[changeID] = change.move_strategy?.length === 2
+        ? "latex-only"
+        : "image-pos";
+    } else if (change.regression !== undefined) {
       itemsChanged[changeID] = "regression";
-    else if (change.column_data !== undefined)
+    } else if (change.column_data !== undefined) {
       itemsChanged[changeID] = "table-columns";
+    }
   }
   const dsmMetadata = rawToDsmMetadata(state);
   for (const [changeID, toChange] of Object.entries(itemsChanged)) {
     changes.push(
-      ...itemChange(analysis, state, dsmMetadata, changeID, toChange, view)
+      ...itemChange(analysis, state, dsmMetadata, changeID, toChange, view),
     );
   }
   return changes;
@@ -127,29 +130,29 @@ function evaluatorChange(
 
 function settingsChange(
   analysis: ProgramAnalysis,
-  state: GraphState
+  state: GraphState,
 ): ChangeSpec {
   const newSettingsText = graphSettingsToText(rawToAugSettings(state));
   const settingsNode = findStatement(
     analysis.program.children,
-    (stmt): stmt is Settings => stmt.type === "Settings"
+    (stmt): stmt is Settings => stmt.type === "Settings",
   );
   return settingsNode
     ? {
-        from: settingsNode.pos.from,
-        to: settingsNode.pos.to,
-        insert: newSettingsText,
-      }
+      from: settingsNode.pos.from,
+      to: settingsNode.pos.to,
+      insert: newSettingsText,
+    }
     : {
-        from: 0,
-        to: 0,
-        insert: newSettingsText + "\n\n",
-      };
+      from: 0,
+      to: 0,
+      insert: newSettingsText + "\n\n",
+    };
 }
 
 function findStatement<T extends Statement>(
   ast: Statement[],
-  func: (stmt: Statement) => stmt is T
+  func: (stmt: Statement) => stmt is T,
 ): T | null {
   for (const node of ast) {
     if (func(node)) return node;
@@ -166,14 +169,15 @@ function metadataChange(
   state: GraphState,
   dsmMetadata: Metadata,
   view: EditorView,
-  id: string
+  id: string,
 ): ChangeSpec {
   const oldNode = analysis.mapIDstmt[id];
   if (
     !oldNode ||
     (oldNode.type !== "ExprStatement" && oldNode.type !== "Image")
-  )
+  ) {
     return [];
+  }
   const expr = state.expressions.list.find((x) => x.id === id);
   if (!expr || (expr.type !== "expression" && expr.type !== "image")) return [];
   const tm = view.state.facet(tmPlugin);
@@ -193,7 +197,7 @@ function newItemsChange(
   analysis: ProgramAnalysis,
   state: GraphState,
   dsmMetadata: Metadata,
-  view: EditorView
+  view: EditorView,
 ) {
   let lastItem: NonFolderState | undefined;
   const out: ChangeSpec[] = [];
@@ -241,7 +245,7 @@ function newItemsChange(
 function deletedItemsChange(
   analysis: ProgramAnalysis,
   state: GraphState,
-  view: EditorView
+  view: EditorView,
 ) {
   const out: ChangeSpec[] = [];
   const unremoved = new Set(
@@ -250,8 +254,8 @@ function deletedItemsChange(
       .concat(
         state.expressions.list.flatMap((x) =>
           x.type === "table" ? x.columns.map((c) => c.id) : []
-        )
-      )
+        ),
+      ),
   );
   for (const [id, stmt] of Object.entries(analysis.mapIDstmt)) {
     if (
@@ -279,7 +283,7 @@ function itemChange(
   dsmMetadata: Metadata,
   changeID: string,
   toChange: ToChange,
-  view: EditorView
+  view: EditorView,
 ): ChangeSpec[] {
   const newStateItem = state.expressions.list.find((e) => e.id === changeID);
   if (!newStateItem || newStateItem.type === "folder") return [];
@@ -289,7 +293,7 @@ function itemChange(
   const itemAug = rawNonFolderToAug(
     tm.getTextModeConfig(),
     newStateItem,
-    dsmMetadata
+    dsmMetadata,
   );
   if (itemAug.error) return [];
   switch (toChange) {
@@ -300,35 +304,41 @@ function itemChange(
       //   - point dragging can only occur when editor is unfocused
       //   - overwriting is not harmful when the editor is unfocused
       if (view.hasFocus) return [];
-      if (oldNode.type !== "Table" || itemAug.type !== "table")
+      if (oldNode.type !== "Table" || itemAug.type !== "table") {
         throw new Error(
-          "Programming Error: expected table on a table-columns change"
+          "Programming Error: expected table on a table-columns change",
         );
+      }
       const ast = itemAugToAST(itemAug) as TextAST.Table | null;
-      if (ast === null)
+      if (ast === null) {
         throw new Error(
-          "Programming error: expect new table item to always be parseable"
+          "Programming error: expect new table item to always be parseable",
         );
-      if (ast.columns.length < oldNode.columns.length)
+      }
+      if (ast.columns.length < oldNode.columns.length) {
         throw new Error(
-          "Programming error: expect no fewer new table columns than old"
+          "Programming error: expect no fewer new table columns than old",
         );
+      }
       return oldNode.columns.map((e, i) =>
         insertWithIndentation(view, e.expr.pos, astToText(ast.columns[i].expr))
       );
     }
     case "latex-only": {
-      if (oldNode.type !== "ExprStatement" || itemAug.type !== "expression")
+      if (oldNode.type !== "ExprStatement" || itemAug.type !== "expression") {
         throw new Error(
-          "Programming Error: expected expression on a latex-only change"
+          "Programming Error: expected expression on a latex-only change",
         );
+      }
       const ast = itemAugToAST(itemAug) as TextAST.ExprStatement | null;
-      if (ast === null)
+      if (ast === null) {
         throw new Error(
-          "Programming error: expect new expr item to always be parseable"
+          "Programming error: expect new expr item to always be parseable",
         );
-      if (childExprAugString(oldNode.expr) === childExprAugString(ast.expr))
+      }
+      if (childExprAugString(oldNode.expr) === childExprAugString(ast.expr)) {
         return [];
+      }
       return [
         insertWithIndentation(view, oldNode.expr.pos, astToText(ast.expr)),
       ];
@@ -340,22 +350,24 @@ function itemChange(
       //   - image dragging/resizing can only occur when editor is unfocused
       //   - overwriting is not harmful when the editor is unfocused
       if (view.hasFocus) return [];
-      if (oldNode.type !== "Image" || itemAug.type !== "image")
+      if (oldNode.type !== "Image" || itemAug.type !== "image") {
         throw new Error(
-          "Programming Error: expected image on an image-pos change"
+          "Programming Error: expected image on an image-pos change",
         );
+      }
       const ast = itemAugToAST(itemAug) as TextAST.Image | null;
-      if (ast === null)
+      if (ast === null) {
         throw new Error(
-          "Programming error: expect new image item to always be parseable"
+          "Programming error: expect new image item to always be parseable",
         );
+      }
       const newEntries = ast.style!.entries;
       const oldEntries = oldNode.style!.entries;
       return newEntries
         .filter((e) => ["width", "height", "center"].includes(e.property.value))
         .map((newEntry) => {
           const oldEntry = oldEntries.find(
-            (e) => e.property.value === newEntry.property.value
+            (e) => e.property.value === newEntry.property.value,
           );
           const text = astToText(newEntry);
           if (oldEntry) return insertWithIndentation(view, oldEntry.pos, text);
@@ -369,16 +381,17 @@ function itemChange(
                 from: insertPos,
                 to: insertPos,
               },
-              (isComma ? "" : ",") + "\n" + text + ","
+              (isComma ? "" : ",") + "\n" + text + ",",
             );
           }
         });
     }
     case "regression": {
-      if (oldNode.type !== "ExprStatement" || itemAug.type !== "expression")
+      if (oldNode.type !== "ExprStatement" || itemAug.type !== "expression") {
         throw new Error(
-          "Programming Error: expected expression on a regression change"
+          "Programming Error: expected expression on a regression change",
         );
+      }
       const text = itemToText(itemAug);
       // we trust there's only one "#{" since this is our itemToText
       const params = "#{" + text.split("#{")[1];
@@ -400,7 +413,7 @@ function childExprAugString(expr: TextAST.Expression) {
 function insertWithIndentation(
   view: EditorView,
   pos: TextAST.Pos,
-  insert: string
+  insert: string,
 ): ChangeSpec {
   const indentation = getIndentation(view, pos.from);
   return {

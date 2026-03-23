@@ -16,7 +16,7 @@ export interface HeartbeatOptions extends WindowHeartbeatOptions {
 
 export async function sendHeartbeat(
   opts: HeartbeatOptions,
-  sendResponse: (x: HeartbeatError) => void
+  sendResponse: (x: HeartbeatError) => void,
 ) {
   const data = {
     // This is background information for WakaTime to handle. These values need no change.
@@ -33,8 +33,8 @@ export async function sendHeartbeat(
     // Everything below will show up in your Leaderboard.
     project: opts.splitProjects
       ? opts.graphName
-      : // Defend against empty string
-        opts.projectName || "Desmos Projects",
+      // Defend against empty string
+      : opts.projectName || "Desmos Projects",
     entity: opts.graphURL,
     branch: opts.splitProjects ? null : opts.graphName,
   };
@@ -58,20 +58,22 @@ export async function sendHeartbeat(
           "content-type": "application/json",
         },
         body: JSON.stringify(data),
-      }
+      },
     );
-    if (r.status !== 201)
+    if (r.status !== 201) {
       sendResponse({
         type: "heartbeat-error",
         isAuthError: r.status === 401,
         message: await r.text(),
       });
+    }
   } catch (e) {
     sendResponse({
       type: "heartbeat-error",
       isAuthError: false,
-      message:
-        typeof e === "object" && e !== null ? ((e as any).message ?? e) : e,
+      message: typeof e === "object" && e !== null
+        ? ((e as any).message ?? e)
+        : e,
     });
   }
 }

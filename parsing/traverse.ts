@@ -4,7 +4,7 @@ export class Path<n extends Node = Node> {
   constructor(
     public node: n,
     public parent: Path | null,
-    public index: number
+    public index: number,
   ) {}
 
   getChildren() {

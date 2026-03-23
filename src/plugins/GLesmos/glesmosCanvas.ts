@@ -1,12 +1,12 @@
 import ViewportTransforms from "./ViewportTransforms";
 import {
-  GLesmosShaderChunk,
-  GLesmosProgram,
   glesmosError,
   glesmosGetCacheShader,
-  glesmosGetSDFShader,
-  glesmosGetFinalPassShader,
   glesmosGetFastFillShader,
+  glesmosGetFinalPassShader,
+  glesmosGetSDFShader,
+  GLesmosProgram,
+  GLesmosShaderChunk,
   setUniform,
 } from "./shaders";
 import window, { CalcController } from "#globals";
@@ -26,7 +26,18 @@ function createAndBindTexture(gl: WebGL2RenderingContext) {
 }
 
 const FULLSCREEN_QUAD = new Float32Array([
-  -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, -1, -1,
+  -1,
+  1,
+  1,
+  1,
+  1,
+  -1,
+  -1,
+  1,
+  1,
+  -1,
+  -1,
+  -1,
 ]);
 
 export function initGLesmosCanvas(cc: CalcController) {
@@ -70,7 +81,7 @@ export function initGLesmosCanvas(cc: CalcController) {
     gl.COLOR_ATTACHMENT0,
     gl.TEXTURE_2D,
     cacheTexture,
-    0
+    0,
   );
 
   // 3 extra buffers for pingponging and feedback loop dodging
@@ -84,7 +95,7 @@ export function initGLesmosCanvas(cc: CalcController) {
       gl.COLOR_ATTACHMENT0,
       gl.TEXTURE_2D,
       tex,
-      0
+      0,
     );
 
     textures.push(tex);
@@ -140,7 +151,7 @@ export function initGLesmosCanvas(cc: CalcController) {
         0,
         gl.RGBA,
         gl.FLOAT,
-        null
+        null,
       );
     }
   };

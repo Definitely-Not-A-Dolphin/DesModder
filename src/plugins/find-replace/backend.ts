@@ -109,7 +109,7 @@ function getReplacements(
   path: Path,
   fromParsed: Identifier,
   from: string,
-  to: string
+  to: string,
 ) {
   let span, line;
   switch (path.node.type) {
@@ -129,10 +129,9 @@ function getReplacements(
             end,
             // If True → it's actually a differential like dx
             // path.parent?.node.type === "Integral" && path.index === 0
-            replacement:
-              path.node._errorSymbol === "d" + path.node._symbol
-                ? "d" + to
-                : to,
+            replacement: path.node._errorSymbol === "d" + path.node._symbol
+              ? "d" + to
+              : to,
           },
         ];
       }
@@ -163,9 +162,9 @@ function getReplacements(
             String.raw`(?<=([,(]|^)(\s|\\ )*)` +
               escapeRegExp(from) +
               String.raw`(?=(\s|\\ )*((\\left)?\(|(\\right)?\)|,|$))`,
-            "g"
+            "g",
           ),
-          to
+          to,
         );
       if (repl === line) break;
       return [
@@ -252,16 +251,19 @@ export function replacer(from: string, to: string) {
         }
         const { before } = r.groups!;
         const insert = to;
-        if (endsInCommand.test(out) && startsWithLetter.test(before))
+        if (endsInCommand.test(out) && startsWithLetter.test(before)) {
           out += " ";
+        }
         out += before;
-        if (endsInCommand.test(out) && startsWithLetter.test(insert))
+        if (endsInCommand.test(out) && startsWithLetter.test(insert)) {
           out += " ";
+        }
         out += insert;
       }
       const trailing = s.slice(last);
-      if (endsInCommand.test(out) && startsWithLetter.test(trailing))
+      if (endsInCommand.test(out) && startsWithLetter.test(trailing)) {
         out += " ";
+      }
       out += trailing;
       return out;
     };

@@ -1,19 +1,19 @@
 export type DocStringRenderableNoParam =
   | {
-      str: string;
-      type: "text";
-    }
+    str: string;
+    type: "text";
+  }
   | {
-      latex: string;
-      type: "math";
-    };
+    latex: string;
+    type: "math";
+  };
 
 export type DocStringRenderable =
   | {
-      type: "param";
-      latex: string;
-      renderables: DocStringRenderableNoParam[];
-    }
+    type: "param";
+    latex: string;
+    renderables: DocStringRenderableNoParam[];
+  }
   | DocStringRenderableNoParam;
 
 export interface DocStringToken {
@@ -52,7 +52,7 @@ export function tokenizeDocstring(str: string): DocStringToken[] {
           str: mathStr.slice(1, -1),
           type: "math",
         },
-        { str: "", type: "text" }
+        { str: "", type: "text" },
       );
       continue;
     }
@@ -64,7 +64,7 @@ export function tokenizeDocstring(str: string): DocStringToken[] {
           str: paramStr.replace(/^@param\s*/g, ""),
           type: "param",
         },
-        { str: "", type: "text" }
+        { str: "", type: "text" },
       );
       continue;
     }
@@ -76,7 +76,7 @@ export function tokenizeDocstring(str: string): DocStringToken[] {
 }
 
 export function parseDocstring(
-  tokens: DocStringToken[]
+  tokens: DocStringToken[],
 ): DocStringRenderable[] {
   const renderables: DocStringRenderable[] = [];
 

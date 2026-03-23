@@ -1,10 +1,10 @@
 import { ExpressionAug } from "../../../text-mode-core";
 import { latexStringToIdentifierString } from "./view";
-import { MQCursor, MathQuillField } from "#components";
+import { MathQuillField, MQCursor } from "#components";
 
 export function mapAugAST(
   node: ExpressionAug["latex"],
-  callback: (node: ExpressionAug["latex"]) => void
+  callback: (node: ExpressionAug["latex"]) => void,
 ) {
   function map(x: any) {
     if (Array.isArray(x)) {
@@ -101,7 +101,7 @@ function isIdentifierSegment(cursor?: MQCursor): cursor is MQCursor {
 
 function rawTryGetMathquillIdent(
   node: MQCursor | undefined,
-  cursor: MQCursor | undefined = node
+  cursor: MQCursor | undefined = node,
 ) {
   const latexSegments: (string | undefined)[] = [];
 
@@ -179,7 +179,7 @@ function rawTryGetMathquillIdent(
 }
 
 function tryGetMathquillIdent(
-  mq: MathQuillField
+  mq: MathQuillField,
 ): TryFindMQIdentResult | undefined {
   const ctrlr = getController(mq);
 
@@ -204,7 +204,7 @@ function tryGetMathquillIdent(
 }
 
 export function getMathquillIdentifierAtCursorPosition(
-  mq: MathQuillField
+  mq: MathQuillField,
 ): TryFindMQIdentResult | undefined {
   return tryGetMathquillIdent(mq);
 }
@@ -215,7 +215,7 @@ export interface PartialFunctionCall {
 }
 
 export function getPartialFunctionCall(
-  mq: MathQuillField
+  mq: MathQuillField,
 ): PartialFunctionCall | undefined {
   let cursor: MQCursor | undefined = getController(mq).cursor;
   let paramIndex = 0;
@@ -247,8 +247,9 @@ export function getCorrectableIdentifier(mq: MathQuillField): {
 } {
   let cursor: MQCursor | undefined = mq.__controller.cursor[-1];
 
-  const isInSubscript =
-    mq.__controller.cursor?.parent?._el?.classList.contains("dcg-mq-sub");
+  const isInSubscript = mq.__controller.cursor?.parent?._el?.classList.contains(
+    "dcg-mq-sub",
+  );
 
   // don't bother if you're in a subscript
   if (isInSubscript) {
@@ -261,8 +262,7 @@ export function getCorrectableIdentifier(mq: MathQuillField): {
   while (cursor) {
     const subscriptInside = getSubscriptInside(cursor);
     const isSubscript = subscriptInside !== undefined;
-    const isValid =
-      isOperatorName(cursor) ||
+    const isValid = isOperatorName(cursor) ||
       isVarName(cursor) ||
       isSubscript ||
       isDigit(cursor);

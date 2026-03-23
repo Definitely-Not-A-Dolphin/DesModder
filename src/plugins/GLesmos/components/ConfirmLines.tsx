@@ -10,7 +10,8 @@ export function ConfirmLines(glesmos: GLesmos, id: string, ToggleView: any) {
         <div class="dcg-options-menu-section-title dsm-gl-lines-confirm">
           {() => format("GLesmos-confirm-lines")}
           <ToggleView
-            ariaLabel={() => format("GLesmos-confirm-lines")}
+            ariaLabel={() =>
+              format("GLesmos-confirm-lines")}
             toggled={() => glesmos.isGLesmosLinesConfirmed(id)}
             onChange={() => glesmos.toggleGLesmosLinesConfirmed(id)}
           />

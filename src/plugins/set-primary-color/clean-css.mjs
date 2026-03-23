@@ -70,7 +70,7 @@ css = css.replace(/\/\*([^*]|\*[^/])*\*\//gm, "");
 // Remove @media blocks, which never have color changes
 css = css.replace(
   /@(media|\S*keyframes)[^{}]*{[^{}]*({[^{}]*}[^{}]*)*[^{}]*}/gm,
-  ""
+  "",
 );
 // Remove lines with "var" already
 // Restrict to lines starting with an even number of spaces
@@ -83,7 +83,7 @@ for (const [from, to] of Object.entries(colorMapping)) {
     // There's some occurrences of e.g. #2f72dc80
     css = css.replace(
       new RegExp(`${from}([0-9a-zA-Z]{2})\\b`, "g"),
-      (m, a) => `rgba(var(${to}), ${(parseInt(a, 16) / 255).toFixed(3)})`
+      (m, a) => `rgba(var(${to}), ${(parseInt(a, 16) / 255).toFixed(3)})`,
     );
   } else {
     css = css.replaceAll(from, `var(${to})`);

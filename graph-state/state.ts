@@ -183,8 +183,9 @@ interface ExpressionStateWithoutColumn extends BaseNonFolderState {
   clickableInfo?: BaseClickable;
 }
 
-export type ExpressionState = ExpressionStateWithoutColumn &
-  ColumnExpressionShared;
+export type ExpressionState =
+  & ExpressionStateWithoutColumn
+  & ColumnExpressionShared;
 
 export interface ImageState extends BaseNonFolderState {
   type: "image";

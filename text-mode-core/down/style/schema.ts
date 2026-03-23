@@ -18,11 +18,11 @@ export interface Schema {
     | "color"
     | { type: "enum"; enum: string[] }
     | {
-        type: "schema";
-        schema: Schema;
-        fillDefaults: boolean;
-        orBool: boolean;
-      };
+      type: "schema";
+      schema: Schema;
+      fillDefaults: boolean;
+      orBool: boolean;
+    };
 }
 
 export const settings: Schema = {
@@ -36,7 +36,7 @@ export const settings: Schema = {
       ymax: "number",
       zmax: "number",
     },
-    { fillDefaults: true }
+    { fillDefaults: true },
   ),
   squareAxes: "boolean",
   // empty randomSeed will be filled in later in the process
@@ -100,7 +100,7 @@ const columnExpressionCommon: Schema = {
       style: enumL(["POINT", "OPEN", "CROSS"]),
       drag: enumL(["NONE", "X", "Y", "XY", "AUTO"]),
     },
-    { orBool: true }
+    { orBool: true },
   ),
   lines: schemaL(
     {
@@ -108,7 +108,7 @@ const columnExpressionCommon: Schema = {
       width: "expr",
       style: enumL(["SOLID", "DASHED", "DOTTED"]),
     },
-    { orBool: true }
+    { orBool: true },
   ),
 };
 
@@ -228,7 +228,7 @@ function enumL(L: string[]) {
 
 function schemaL(
   s: Schema,
-  t: { fillDefaults?: boolean; orBool?: boolean } = {}
+  t: { fillDefaults?: boolean; orBool?: boolean } = {},
 ) {
   return {
     type: "schema" as const,

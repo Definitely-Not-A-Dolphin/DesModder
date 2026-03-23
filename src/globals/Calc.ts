@@ -1,8 +1,8 @@
-import { ItemModel } from "./models";
-import { GraphState, ItemState, Product } from "../../graph-state";
 import { MathQuillField } from "#components";
-import { Matrix3 } from "./matrix3";
-import type { DispatchedEvent } from "./extra-actions";
+import { GraphState, ItemState, Product } from "../../graph-state/state.ts";
+import type { DispatchedEvent } from "./extra-actions.ts";
+import { Matrix3 } from "./matrix3.ts";
+import { ItemModel } from "./models.ts";
 
 export type { DispatchedEvent };
 
@@ -12,128 +12,128 @@ export type FocusLocation =
 
 export type VanillaDispatchedEvent =
   | {
-      type:
-        | "close-item-settings-menu"
-        | "close-graph-settings"
-        | "open-expression-search"
-        | "close-expression-search"
-        | "toggle-ticker"
-        | "re-randomize"
-        | "toggle-lock-viewport"
-        | "grapher/drag-end"
-        | "set-axis-limit-latex"
-        | "zoom"
-        | "set-graph-settings"
-        | "resize-exp-list"
-        | "set-none-selected"
-        | "toggle-graph-settings"
-        | "clear-unsaved-changes"
-        | "undo"
-        | "tick"
-        | "redo"
-        | "tick-ticker"
-        | "keypad/functions"
-        | "commit-geo-objects"
-        | "upward-delete-selected-expression"
-        | "downward-delete-selected-expression"
-        | "update-expression-search-str"
-        | "ui/container-resized"
-        | "toggle-complex-mode"
-        | "new-expression"
-        | "new-expression-at-end";
-    }
+    type:
+      | "close-item-settings-menu"
+      | "close-graph-settings"
+      | "open-expression-search"
+      | "close-expression-search"
+      | "toggle-ticker"
+      | "re-randomize"
+      | "toggle-lock-viewport"
+      | "grapher/drag-end"
+      | "set-axis-limit-latex"
+      | "zoom"
+      | "set-graph-settings"
+      | "resize-exp-list"
+      | "set-none-selected"
+      | "toggle-graph-settings"
+      | "clear-unsaved-changes"
+      | "undo"
+      | "tick"
+      | "redo"
+      | "tick-ticker"
+      | "keypad/functions"
+      | "commit-geo-objects"
+      | "upward-delete-selected-expression"
+      | "downward-delete-selected-expression"
+      | "update-expression-search-str"
+      | "ui/container-resized"
+      | "toggle-complex-mode"
+      | "new-expression"
+      | "new-expression-at-end";
+  }
   | {
-      type: "commit-user-requested-viewport";
-      viewport: Viewport;
-    }
+    type: "commit-user-requested-viewport";
+    viewport: Viewport;
+  }
   | {
-      type: "keypad/set-minimized";
-      minimized: boolean;
-    }
+    type: "keypad/set-minimized";
+    minimized: boolean;
+  }
   | {
-      type:
-        | "action-single-step"
-        | "duplicate-folder"
-        | "duplicate-expression"
-        | "convert-image-to-draggable"
-        | "create-sliders-for-item"
-        | "toggle-item-hidden"
-        | "delete-item-and-animate-out"
-        | "move-focus-to-item";
-      id: string;
-    }
+    type:
+      | "action-single-step"
+      | "duplicate-folder"
+      | "duplicate-expression"
+      | "convert-image-to-draggable"
+      | "create-sliders-for-item"
+      | "toggle-item-hidden"
+      | "delete-item-and-animate-out"
+      | "move-focus-to-item";
+    id: string;
+  }
   | {
-      /** This is somewhat a super type of all the `DispatchedEvent`s. It's here
-       * to avoid annotating tons of types for modify.ts. This should really be
-       * `type: "set-slider-minlatex" | (100 others)`, but that's unmaintainable.
-       * A second best would be `type: "string"`, but that screws with the
-       * other types being useful. */
-      type: "__dummy-IDEvent";
-      id?: string;
-    }
+    /** This is somewhat a super type of all the `DispatchedEvent`s. It's here
+     * to avoid annotating tons of types for modify.ts. This should really be
+     * `type: "set-slider-minlatex" | (100 others)`, but that's unmaintainable.
+     * A second best would be `type: "string"`, but that screws with the
+     * other types being useful. */
+    type: "__dummy-IDEvent";
+    id?: string;
+  }
   | {
-      type: "set-selected-id";
-      id: string;
+    type: "set-selected-id";
+    id: string;
+    // Added to avoid feedback loop. Desmos will pass this through ignored.
+    dsmFromTextModeSelection?: boolean;
+  }
+  | {
+    type: "set-focus-location";
+    location: FocusLocation;
+  }
+  | {
+    type: "on-evaluator-changes";
+    changes: Record<string, EvaluatorChange>;
+    timingData: TimingData;
+  }
+  | {
+    type: "set-state";
+    opts: {
+      allowUndo?: boolean;
       // Added to avoid feedback loop. Desmos will pass this through ignored.
-      dsmFromTextModeSelection?: boolean;
-    }
+      fromTextMode?: boolean;
+    };
+    state: GraphState;
+  }
   | {
-      type: "set-focus-location";
-      location: FocusLocation;
-    }
+    // Note: this has more parameters. I just haven't found a need for them yet.
+    type: "set-item-latex";
+    latex: string;
+    id: string;
+  }
   | {
-      type: "on-evaluator-changes";
-      changes: Record<string, EvaluatorChange>;
-      timingData: TimingData;
-    }
+    type: "on-special-key-pressed";
+    key: string;
+    // used in compact-view plugin
+    forceSwitchExpr?: boolean;
+  }
   | {
-      type: "set-state";
-      opts: {
-        allowUndo?: boolean;
-        // Added to avoid feedback loop. Desmos will pass this through ignored.
-        fromTextMode?: boolean;
-      };
-      state: GraphState;
-    }
-  | {
-      // Note: this has more parameters. I just haven't found a need for them yet.
-      type: "set-item-latex";
-      latex: string;
-      id: string;
-    }
-  | {
-      type: "on-special-key-pressed";
-      key: string;
-      // used in compact-view plugin
-      forceSwitchExpr?: boolean;
-    }
-  | {
-      type: "update-all-selected-items";
-      update: {
-        // folderId is 'move these objects to folder'
-        // Everything else is simply styling
-        prop: "folderId" | string;
-      };
-    }
+    type: "update-all-selected-items";
+    update: {
+      // folderId is 'move these objects to folder'
+      // Everything else is simply styling
+      prop: "folderId" | string;
+    };
+  }
   | { type: "new-images"; files: File[] | FileList; id?: string }
   | {
-      type: "image-upload-success";
-      token: keyof CalcController["__pendingImageUploads"];
-      url: string;
-      width: `${number}`;
-      height: `${number}`;
-      name: string;
-      id?: string;
-    }
+    type: "image-upload-success";
+    token: keyof CalcController["__pendingImageUploads"];
+    url: string;
+    width: `${number}`;
+    height: `${number}`;
+    name: string;
+    id?: string;
+  }
   | {
-      type: "image-upload-error";
-      token: keyof CalcController["__pendingImageUploads"];
-      error: true;
-    }
+    type: "image-upload-error";
+    token: keyof CalcController["__pendingImageUploads"];
+    error: true;
+  }
   | {
-      type: "toast/show";
-      toast: Toast;
-    }
+    type: "toast/show";
+    toast: Toast;
+  }
   | { type: "set-folder-collapsed"; id: string; isCollapsed: boolean }
   | { type: "set-item-colorLatex"; id: string; colorLatex: string }
   | { type: "set-note-text"; id: string; text: string };
@@ -245,9 +245,9 @@ interface CalcPrivate {
   withHistoryReplacement: (fn: () => void) => any;
   focusedMathQuill:
     | {
-        mq: MathQuillField;
-        typedText: (text: string) => void;
-      }
+      mq: MathQuillField;
+      typedText: (text: string) => void;
+    }
     | undefined;
   /// / undocumented, may break
   controller: {
@@ -257,7 +257,7 @@ interface CalcPrivate {
     _toplevelReplaceItemAt: (
       index: number,
       model: ItemModel,
-      shouldFocus: boolean
+      shouldFocus: boolean,
     ) => void;
     _hasUnsavedChanges: boolean;
     createItemModel: (modelTemplate: ItemState) => ItemModel;
@@ -382,7 +382,7 @@ interface CalcPrivate {
     opts?: {
       allowUndo?: boolean;
       remapColors?: boolean;
-    }
+    },
   ) => void;
 }
 

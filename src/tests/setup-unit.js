@@ -18,7 +18,7 @@ module.exports = async function () {
   // or if it's more than a day old as measured by modified time (mtime).
   if (!stats || Date.now() - stats.mtime > 1000 * 60 * 60 * 24) {
     console.log(
-      `Downloading '${calculatorLink}' to find the calculator_desktop URL`
+      `Downloading '${calculatorLink}' to find the calculator_desktop URL`,
     );
 
     const calculator = await (await fetch(calculatorLink)).text();

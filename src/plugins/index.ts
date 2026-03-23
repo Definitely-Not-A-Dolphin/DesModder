@@ -99,7 +99,7 @@ export interface PluginInstance<
 
   /** Returning `"abort-later-handlers"` means don't run any later handlers. */
   handleDispatchedAction?: (
-    evt: DispatchedEvent
+    evt: DispatchedEvent,
   ) => "abort-later-handlers" | undefined;
   afterHandleDispatchedAction?: (evt: DispatchedEvent) => void;
   beforeUpdateTheComputedWorld?: () => void;
@@ -178,36 +178,96 @@ export class TransparentPlugins implements KeyToPluginInstance {
     PluginInstance | undefined
   >;
 
-  get pillboxMenus () { return this.ep["pillbox-menus"]; }
-  get builtinSettings () { return this.ep["builtin-settings"]; }
-  get betterEvaluationView () { return this.ep["better-evaluation-view"]; }
-  get setPrimaryColor () { return this.ep["set-primary-color"]; }
-  get wolframToDesmos () { return this.ep["wolfram2desmos"]; }
-  get pinExpressions () { return this.ep["pin-expressions"]; }
-  get videoCreator () { return this.ep["video-creator"]; }
-  get wakatime () { return this.ep["wakatime"]; }
-  get findReplace () { return this.ep["find-and-replace"]; }
-  get showTips () { return this.ep["show-tips"]; }
-  get customMathQuillConfig () { return this.ep["custom-mathquill-config"]; }
-  get rightClickTray () { return this.ep["right-click-tray"]; }
-  get scrollBeyond () { return this.ep["scroll-beyond"]; }
-  get duplicateHotkey () { return this.ep["duplicate-expression-hotkey"]; }
-  get glesmos () { return this.ep["GLesmos"]; }
-  get hideErrors () { return this.ep["hide-errors"]; }
-  get folderTools () { return this.ep["folder-tools"]; }
-  get textMode () { return this.ep["text-mode"]; }
-  get performanceInfo () { return this.ep["performance-info"]; }
-  get metadata () { return this.ep["manage-metadata"]; }
-  get overrideKeystroke () { return this.ep["override-keystroke"]; }
-  get intellisense () { return this.ep["intellisense"]; }
-  get compactView () { return this.ep["compact-view"]; }
-  get multiline () { return this.ep["multiline"]; }
-  get exprActionButtons () { return this.ep["expr-action-buttons"]; }
-  get codeGolf () { return this.ep["code-golf"]; }
-  get syntaxHighlighting () { return this.ep["syntax-highlighting"]}
-  get betterNavigation () { return this.ep["better-navigation"]} 
-  get pasteImage () { return this.ep["paste-image"]; }
-  get quakePro () { return this.ep["quake-pro"]; }
+  get pillboxMenus() {
+    return this.ep["pillbox-menus"];
+  }
+  get builtinSettings() {
+    return this.ep["builtin-settings"];
+  }
+  get betterEvaluationView() {
+    return this.ep["better-evaluation-view"];
+  }
+  get setPrimaryColor() {
+    return this.ep["set-primary-color"];
+  }
+  get wolframToDesmos() {
+    return this.ep["wolfram2desmos"];
+  }
+  get pinExpressions() {
+    return this.ep["pin-expressions"];
+  }
+  get videoCreator() {
+    return this.ep["video-creator"];
+  }
+  get wakatime() {
+    return this.ep["wakatime"];
+  }
+  get findReplace() {
+    return this.ep["find-and-replace"];
+  }
+  get showTips() {
+    return this.ep["show-tips"];
+  }
+  get customMathQuillConfig() {
+    return this.ep["custom-mathquill-config"];
+  }
+  get rightClickTray() {
+    return this.ep["right-click-tray"];
+  }
+  get scrollBeyond() {
+    return this.ep["scroll-beyond"];
+  }
+  get duplicateHotkey() {
+    return this.ep["duplicate-expression-hotkey"];
+  }
+  get glesmos() {
+    return this.ep["GLesmos"];
+  }
+  get hideErrors() {
+    return this.ep["hide-errors"];
+  }
+  get folderTools() {
+    return this.ep["folder-tools"];
+  }
+  get textMode() {
+    return this.ep["text-mode"];
+  }
+  get performanceInfo() {
+    return this.ep["performance-info"];
+  }
+  get metadata() {
+    return this.ep["manage-metadata"];
+  }
+  get overrideKeystroke() {
+    return this.ep["override-keystroke"];
+  }
+  get intellisense() {
+    return this.ep["intellisense"];
+  }
+  get compactView() {
+    return this.ep["compact-view"];
+  }
+  get multiline() {
+    return this.ep["multiline"];
+  }
+  get exprActionButtons() {
+    return this.ep["expr-action-buttons"];
+  }
+  get codeGolf() {
+    return this.ep["code-golf"];
+  }
+  get syntaxHighlighting() {
+    return this.ep["syntax-highlighting"];
+  }
+  get betterNavigation() {
+    return this.ep["better-navigation"];
+  }
+  get pasteImage() {
+    return this.ep["paste-image"];
+  }
+  get quakePro() {
+    return this.ep["quake-pro"];
+  }
 }
 
 export type IDToPluginSettings = {

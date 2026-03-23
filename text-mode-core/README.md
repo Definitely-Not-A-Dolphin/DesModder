@@ -1,14 +1,17 @@
 # Text Mode Core
 
-This module is currently still quite entangled with [DesModder](https://github.com/DesModder/DesModder/), so the API is terrible and very much subject to change.
+This module is currently still quite entangled with
+[DesModder](https://github.com/DesModder/DesModder/), so the API is terrible and
+very much subject to change.
 
-Here's what you probably want to use for now, assuming a global Desmos API instance `Desmos` and calculator `Calc`:
+Here's what you probably want to use for now, assuming a global Desmos API
+instance `Desmos` and calculator `Calc`:
 
 ```ts
 import {
   buildConfigFromGlobals,
-  textToRaw,
   rawToText,
+  textToRaw,
 } from "@desmodder/text-mode-core";
 
 const cfg = buildConfigFromGlobals(Desmos, Calc);
@@ -18,10 +21,12 @@ console.log(textToRaw(cfg, "y = sin(x)"));
 console.log(rawToText(cfg, Calc.getState()));
 ```
 
-If you don't have access to those, then text-mode-core can assume good defaults for most options found in the config. However, it does not have its own LaTeX parser, so you cannot convert from raw graph states to other formats.
+If you don't have access to those, then text-mode-core can assume good defaults
+for most options found in the config. However, it does not have its own LaTeX
+parser, so you cannot convert from raw graph states to other formats.
 
 ```ts
-import { buildConfig, textToRaw, rawToText } from "@desmodder/text-mode-core";
+import { buildConfig, rawToText, textToRaw } from "@desmodder/text-mode-core";
 
 const cfg = buildConfig({});
 

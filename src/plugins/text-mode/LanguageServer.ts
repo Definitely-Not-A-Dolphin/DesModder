@@ -8,11 +8,11 @@ import { ProgramAnalysis, textToRaw } from "../../../text-mode-core";
 import { DispatchedEvent } from "../../globals/Calc";
 import { eventSequenceChanges } from "./modify";
 import {
-  StateField,
-  StateEffect,
-  Transaction,
   EditorState,
   Facet,
+  StateEffect,
+  StateField,
+  Transaction,
 } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import { GraphState } from "../../../graph-state";
@@ -42,8 +42,9 @@ export function onCalcEvent(view: EditorView, event: DispatchedEvent) {
     // on-evaluator-changes could mean some item model changes, which affects
     // style circles. Keep the transaction to update style circles.
     event.type !== "on-evaluator-changes"
-  )
+  ) {
     return;
+  }
   const transaction = view.state.update({
     changes,
     effects,
@@ -55,14 +56,15 @@ export function onCalcEvent(view: EditorView, event: DispatchedEvent) {
 export function parseAndReturnAnalysis(
   state: EditorState,
   nextEditDueToGraph: boolean,
-  rawIDs: RawIDRange[]
+  rawIDs: RawIDRange[],
 ) {
   const tm = state.facet(tmPlugin);
   const cfg = tm.getTextModeConfig();
   const s = state.doc.sliceString(0);
   const [analysis, rawGraphState] = textToRaw(cfg, s, { rawIDs });
-  if (!nextEditDueToGraph && rawGraphState !== null)
+  if (!nextEditDueToGraph && rawGraphState !== null) {
     setCalcState(tm, rawGraphState);
+  }
   return analysis;
 }
 
@@ -87,8 +89,9 @@ export const analysisStateField = StateField.define<ProgramAnalysis>({
       // This is where you would handle incremental updates in the input.
       const oldIDs = Object.values(value.mapIDstmt)
         .map((s) => {
-          const to =
-            s.type === "Folder" || s.type === "Table" ? s.afterOpen : s.pos.to;
+          const to = s.type === "Folder" || s.type === "Table"
+            ? s.afterOpen
+            : s.pos.to;
           return { from: s.pos.from, to, id: s.id };
         })
         .map(mapID);
@@ -98,7 +101,7 @@ export const analysisStateField = StateField.define<ProgramAnalysis>({
       return parseAndReturnAnalysis(
         transaction.state,
         transaction.annotation(Transaction.remote) ?? false,
-        rawIDs.concat(oldIDs)
+        rawIDs.concat(oldIDs),
       );
     } else return value;
   },

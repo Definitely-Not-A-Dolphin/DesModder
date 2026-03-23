@@ -4,8 +4,7 @@ import { createElementWrapped } from "./preload/replaceElement";
 export const { DCGView } = Fragile;
 
 export type OrConst<T> = {
-  [K in keyof T]: T[K] extends (...args: any[]) => any
-    ? T[K]
+  [K in keyof T]: T[K] extends (...args: any[]) => any ? T[K]
     : T[K] | (() => T[K]);
 };
 
@@ -24,14 +23,14 @@ export abstract class ClassComponent<
   abstract template(): unknown;
   _element!:
     | {
-        _domNode: HTMLElement;
-      }
+      _domNode: HTMLElement;
+    }
     | {
-        _domNode: undefined;
-        _element: {
-          _domNode: HTMLElement;
-        };
+      _domNode: undefined;
+      _element: {
+        _domNode: HTMLElement;
       };
+    };
 }
 
 export interface MountedComponent {
@@ -73,7 +72,7 @@ export interface DCGViewModule {
     Switch: typeof SwitchComponent;
     SwitchUnion: <Key extends string>(
       discriminant: () => Key,
-      branches: Record<Key, () => ComponentChild>
+      branches: Record<Key, () => ComponentChild>,
     ) => ComponentTemplate;
     IfElse: (p: () => boolean, v: IfElseSecondParam) => ComponentTemplate;
   };
@@ -81,13 +80,13 @@ export interface DCGViewModule {
   const: <T>(v: T) => () => T;
   createElement: <Props extends GenericProps>(
     comp: ComponentConstructor<Props>,
-    props: WithCommonProps<ToFunc<Props>>
+    props: WithCommonProps<ToFunc<Props>>,
   ) => ComponentTemplate;
   // couldn't figure out type for `comp`, so I just put | any
   mountToNode: <Props extends GenericProps>(
     comp: ComponentConstructor<Props>,
     el: HTMLElement,
-    props: WithCommonProps<ToFunc<Props>>
+    props: WithCommonProps<ToFunc<Props>>,
   ) => MountedComponent;
   unmountFromNode: (el: HTMLElement) => void;
 }
@@ -171,9 +170,7 @@ export function jsx<Props extends GenericProps>(
     children = [children];
   }
   // "Text should be a const or a getter:"
-  children = children.map((e) =>
-    typeof e === "string" ? DCGView.const(e) : e
-  );
+  children = children.map((e) => typeof e === "string" ? DCGView.const(e) : e);
   const fnProps = {} as any;
   for (const k in props) {
     // DCGView.createElement also expects 0-argument functions

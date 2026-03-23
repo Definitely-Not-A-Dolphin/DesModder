@@ -3,12 +3,12 @@ import { completions } from "./completions";
 import parser from "./syntax.grammar";
 import { CompletionContext } from "@codemirror/autocomplete";
 import {
-  LRLanguage,
-  LanguageSupport,
-  indentNodeProp,
-  foldNodeProp,
-  foldInside,
   delimitedIndent,
+  foldInside,
+  foldNodeProp,
+  indentNodeProp,
+  LanguageSupport,
+  LRLanguage,
 } from "@codemirror/language";
 import { styleTags, tags as t } from "@lezer/highlight";
 

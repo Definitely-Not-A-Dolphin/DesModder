@@ -15,10 +15,11 @@ function initDsm() {
       // `setTimeout` to wait until after the event loop, with the idea that
       // the `destroy()` callee is likely to run `initializeApi()` in the
       // same event loop.
-      if (!query.has("dsmTestingSuppressAutoRestart"))
+      if (!query.has("dsmTestingSuppressAutoRestart")) {
         setTimeout(() => {
           tryInitDsm();
         });
+      }
     },
   });
 

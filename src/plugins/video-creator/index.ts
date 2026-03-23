@@ -2,18 +2,18 @@ import { PluginController } from "../PluginController";
 import { updateView } from "./View";
 import {
   CANCELLED,
+  capture,
   CaptureMethod,
   SliderSettings,
-  capture,
 } from "./backend/capture";
-import { OutFileType, exportFrames, initFFmpeg } from "./backend/export";
+import { exportFrames, initFFmpeg, OutFileType } from "./backend/export";
 import { escapeRegex } from "./backend/utils";
 import { MainPopupFunc } from "./components/MainPopup";
 import { ExpressionModel, ValueType } from "#globals";
 import {
-  keys,
   EvaluateSingleExpression,
   getCurrentGraphTitle,
+  keys,
 } from "#utils/depUtils.ts";
 import {
   ManagedNumberInputModel,
@@ -91,7 +91,7 @@ export default class VideoCreator extends PluginController {
 
   managedNumberInputModel(
     initLatex: string,
-    opts?: ManagedNumberInputModelOpts
+    opts?: ManagedNumberInputModelOpts,
   ) {
     return new ManagedNumberInputModel(initLatex, this.calc, {
       ...opts,
@@ -202,8 +202,8 @@ export default class VideoCreator extends PluginController {
     return this.isCaptureMethodValid(this.#captureMethod)
       ? this.#captureMethod
       : this.isCaptureMethodValid("once")
-        ? "once"
-        : "ntimes";
+      ? "once"
+      : "ntimes";
   }
 
   isValidNumber(s: string) {
@@ -313,7 +313,7 @@ export default class VideoCreator extends PluginController {
     return Math.max(
       1,
       this.captureWidth.getValue() /
-        this.calc.graphpaperBounds.pixelCoordinates.width
+        this.calc.graphpaperBounds.pixelCoordinates.width,
     );
   }
 
@@ -332,7 +332,7 @@ export default class VideoCreator extends PluginController {
 
   getMatchingSlider() {
     const regex = new RegExp(
-      `^(\\\\?\\s)*${escapeRegex(this.sliderVariable)}(\\\\?\\s)*=`
+      `^(\\\\?\\s)*${escapeRegex(this.sliderVariable)}(\\\\?\\s)*=`,
     );
     return this.calc
       .getState()
@@ -340,7 +340,7 @@ export default class VideoCreator extends PluginController {
         (e) =>
           e.type === "expression" &&
           typeof e.latex === "string" &&
-          regex.test(e.latex)
+          regex.test(e.latex),
       );
   }
 
@@ -372,13 +372,15 @@ export default class VideoCreator extends PluginController {
   areCaptureSettingsValid() {
     // TODO: don't care about e.g. "from" when doing "step" capture, etc.
     if (!this.or.areCaptureSettingsValid()) return false;
-    if (!this.isCaptureWidthValid() || !this.isCaptureHeightValid())
+    if (!this.isCaptureWidthValid() || !this.isCaptureHeightValid()) {
       return false;
+    }
     if (
       this.useMosaicRatio() &&
       !(this.isMosaicRatioXValid() && this.isMosaicRatioYValid())
-    )
+    ) {
       return false;
+    }
     switch (this.captureMethod) {
       case "once":
         return true;
@@ -408,7 +410,7 @@ export default class VideoCreator extends PluginController {
       .filter(
         (e) =>
           e.type === "expression" &&
-          e?.formula?.typed_constant_value?.valueType === ValueType.Action
+          e?.formula?.typed_constant_value?.valueType === ValueType.Action,
       ) as ExpressionModel[];
   }
 
@@ -432,7 +434,7 @@ export default class VideoCreator extends PluginController {
   addToActionIndex(dx: number) {
     const actions = this.getActions();
     const currentActionIndex = actions.findIndex(
-      (e) => e.id === this.currentActionID
+      (e) => e.id === this.currentActionID,
     );
     // add actions.length to handle (-1) % n = -1
     const action =
@@ -459,9 +461,9 @@ export default class VideoCreator extends PluginController {
     const fps = this.getFPSNumber();
     if (this.isPlayingPreview) {
       if (this.playPreviewTimeout !== null) {
-        window.clearTimeout(this.playPreviewTimeout);
+        globalThis.clearTimeout(this.playPreviewTimeout);
       }
-      this.playPreviewTimeout = window.setTimeout(() => {
+      this.playPreviewTimeout = globalThis.setTimeout(() => {
         this.advancePlayPreviewFrame();
       }, 1000 / fps);
     }

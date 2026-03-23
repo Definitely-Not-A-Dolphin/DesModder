@@ -3,16 +3,16 @@ import { CaptureMethod } from "../backend/capture";
 import "./CaptureMethod.css";
 import { Component, jsx } from "#DCGView";
 import {
-  SegmentedControl,
-  If,
-  SwitchUnion,
-  StaticMathQuillView,
   Button,
-  IfElse,
   Checkbox,
-  Tooltip,
-  InlineMathInputView,
   For,
+  If,
+  IfElse,
+  InlineMathInputView,
+  SegmentedControl,
+  StaticMathQuillView,
+  SwitchUnion,
+  Tooltip,
 } from "#components";
 import { format } from "#i18n";
 import ManagedNumberInput from "./ManagedNumberInput";
@@ -34,13 +34,12 @@ export default class SelectCapture extends Component<{
             names={() =>
               this.validCaptureMethodNames().map((method) =>
                 format("video-creator-method-" + method)
-              )
-            }
+              )}
             selectedIndex={() => this.getSelectedCaptureMethodIndex()}
             setSelectedIndex={(i) => this.setSelectedCaptureMethodIndex(i)}
             allowChange={() => !this.vc.isCapturing}
             // TODO-localization
-            ariaGroupLabel={"Select capture method"}
+            ariaGroupLabel="Select capture method"
           />
         </div>
         {SwitchUnion(() => this.vc.captureMethod, {
@@ -55,8 +54,7 @@ export default class SelectCapture extends Component<{
                     latex={() => this.vc.sliderVariable}
                     isFocused={() => this.vc.isFocused("capture-slider-var")}
                     handleFocusChanged={(b) =>
-                      this.vc.updateFocus("capture-slider-var", b)
-                    }
+                      this.vc.updateFocus("capture-slider-var", b)}
                     controller={this.vc.cc}
                     placeholder=""
                   />
@@ -145,8 +143,7 @@ export default class SelectCapture extends Component<{
                           this.vc.cc
                             .getPlayingSliders()
                             .map((L) => L.latex.split("=")[0])
-                            .join(",\\ ")
-                        }
+                            .join(",\\ ")}
                       />
                     </span>
                   </div>
@@ -219,8 +216,7 @@ export default class SelectCapture extends Component<{
               <Checkbox
                 checked={() => this.vc.samePixelRatio}
                 onChange={(checked: boolean) =>
-                  this.vc.setSamePixelRatio(checked)
-                }
+                  this.vc.setSamePixelRatio(checked)}
                 ariaLabel="Target same pixel ratio"
               >
                 <Tooltip
@@ -270,8 +266,7 @@ export default class SelectCapture extends Component<{
                   disabled={() =>
                     this.vc.isCapturing ||
                     this.vc.isExporting ||
-                    !this.vc.areCaptureSettingsValid()
-                  }
+                    !this.vc.areCaptureSettingsValid()}
                   onTap={() => {
                     void this.vc.capture();
                   }}
@@ -288,13 +283,12 @@ export default class SelectCapture extends Component<{
                   {format("video-creator-cancel-capture")}
                 </Button>
               ),
-            }
+            },
           )}
           <If
             predicate={() =>
               this.vc.captureMethod === "action" ||
-              this.vc.captureMethod === "ticks"
-            }
+              this.vc.captureMethod === "ticks"}
           >
             {() => (
               <div class="dsm-vc-end-condition-settings">

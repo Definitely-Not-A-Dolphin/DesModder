@@ -32,7 +32,7 @@ function symbolCount(el: Element) {
     svgLen +
     (el.textContent?.replace(
       /\s|[\u00A0\u1680\u2000-\u200B\u202F\u205F\u3000]/g,
-      ""
+      "",
     )?.length ?? 0)
   );
 }
@@ -115,7 +115,7 @@ export function populateGolfStats(cg: CodeGolf) {
 function isItemTooLong(
   itemModels: ItemModel[],
   item: ExpressionModel | FolderModel,
-  i: number
+  i: number,
 ) {
   return item.type === "folder"
     ? isFolderTooLong(itemModels, item, i)
@@ -142,7 +142,7 @@ function isExprTooLong(item: ExpressionModel) {
 function isFolderTooLong(
   itemModels: ItemModel[],
   folderItem: FolderModel,
-  i: number
+  i: number,
 ): boolean {
   if (folderItem.dsmEnableGolfDespiteLength) {
     return false;
@@ -186,7 +186,7 @@ function golfStatsForItem(
   cg: CodeGolf,
   itemModels: ItemModel[],
   item: ExpressionModel | FolderModel,
-  i: number
+  i: number,
 ): GolfStats {
   if (item.dsmGolfStats === "TOO_LONG") {
     return "TOO_LONG";
@@ -254,7 +254,7 @@ function golfStatsForExpr(cc: CalcController, latex: string): GolfStats {
 function golfStatsForFolder(
   itemModels: ItemModel[],
   folderId: string,
-  i: number
+  i: number,
 ): GolfStats {
   let totalWidth = 0;
   let totalSymbols = 0;
@@ -274,7 +274,7 @@ function golfStatsForFolder(
       // HIDDEN. This is handled in `needToComputeStats`.
 
       throw new Error(
-        `Expected dsmGolfStats to be computed for expr ${item.id}, but got ${item.dsmGolfStats}`
+        `Expected dsmGolfStats to be computed for expr ${item.id}, but got ${item.dsmGolfStats}`,
       );
     }
     const { width, symbols } = item.dsmGolfStats;

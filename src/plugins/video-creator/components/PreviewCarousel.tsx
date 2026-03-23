@@ -49,8 +49,7 @@ export default class PreviewCarousel extends Component<{
           onTap={() =>
             this.vc.isPlayPreviewExpanded
               ? this.vc.togglePlayingPreview()
-              : this.vc.togglePreviewExpanded()
-          }
+              : this.vc.togglePreviewExpanded()}
         >
           <img src={() => this.getFrame(0)} draggable={false} />
           <If predicate={() => !this.vc.isPlayPreviewExpanded}>
@@ -62,7 +61,7 @@ export default class PreviewCarousel extends Component<{
                   if (
                     e.target &&
                     (e.target as HTMLElement).classList.contains(
-                      "dsm-vc-preview-expand"
+                      "dsm-vc-preview-expand",
                     )
                   ) {
                     this.vc.togglePreviewExpanded();

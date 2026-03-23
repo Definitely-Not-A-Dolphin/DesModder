@@ -20,8 +20,7 @@ function applyCaptureFrame(vc: VideoCreator) {
     }
 
     const pixelBounds = vc.calc.graphpaperBounds.pixelCoordinates;
-    const ratio =
-      vc.getCaptureHeightNumber() /
+    const ratio = vc.getCaptureHeightNumber() /
       vc.getCaptureWidthNumber() /
       (pixelBounds.height / pixelBounds.width);
     let width = 1;

@@ -17,11 +17,13 @@ export default class LoadingPie extends Component<{
           })}
         >
           <div class="dsm-vc-base-circle" />
-          {/*
+          {
+            /*
             SVG can't be used directly as DCGView element because of SVG namespace
             reasons, and treating it as an HTMLElement causes it to be ignored
             by the browser. Instead, set innerHTML.
-          */}
+          */
+          }
           <div
             onMount={this.setSVG.bind(this)}
             didUpdate={this.setSVG.bind(this)}

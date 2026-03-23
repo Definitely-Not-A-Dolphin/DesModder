@@ -7,14 +7,13 @@ export function GLesmosToggle(
   glesmos: GLesmos,
   id: string,
   ToggleView: any,
-  allowInequality: boolean
+  allowInequality: boolean,
 ) {
   return (
     <If
       predicate={() =>
         glesmos.canBeGLesmos(id) &&
-        (allowInequality || !glesmos.isInequality(id))
-      }
+        (allowInequality || !glesmos.isInequality(id))}
     >
       {() => (
         <div class="dcg-options-menu-section-title dsm-gl-fill-title">

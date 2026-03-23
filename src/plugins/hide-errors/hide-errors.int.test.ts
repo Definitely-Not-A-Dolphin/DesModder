@@ -1,4 +1,4 @@
-import { Driver, clean, testWithPage } from "#tests";
+import { clean, Driver, testWithPage } from "#tests";
 
 const ERROR = ".dcg-icon-error";
 const ERROR_HIDDEN = ".dsm-he-error-hidden";

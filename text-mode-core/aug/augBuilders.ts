@@ -17,7 +17,7 @@ export function id(name: string): Aug.Latex.Identifier {
 export function binop(
   op: "Add" | "Subtract" | "Multiply" | "Divide" | "Exponent",
   left: Aug.Latex.AnyChild,
-  right: Aug.Latex.AnyChild
+  right: Aug.Latex.AnyChild,
 ): Aug.Latex.BinaryOperator {
   return {
     type: "BinaryOperator",
@@ -32,7 +32,7 @@ type CompOp = "<" | "<=" | "=" | ">=" | ">";
 export function comparator(
   op: CompOp,
   left: Aug.Latex.AnyChild,
-  right: Aug.Latex.AnyChild
+  right: Aug.Latex.AnyChild,
 ): Aug.Latex.Comparator {
   return {
     type: "Comparator",
@@ -51,7 +51,7 @@ export function list(...children: Aug.Latex.AnyChild[]): Aug.Latex.List {
 
 export function assignmentExpr(
   variable: Aug.Latex.Identifier,
-  expression: Aug.Latex.AnyChild
+  expression: Aug.Latex.AnyChild,
 ): Aug.Latex.AssignmentExpression {
   return {
     type: "AssignmentExpression",
@@ -69,7 +69,7 @@ export function substitution(
 
 export function updateRule(
   variable: Aug.Latex.Identifier,
-  expression: Aug.Latex.AnyChild
+  expression: Aug.Latex.AnyChild,
 ): Aug.Latex.UpdateRule {
   return {
     type: "UpdateRule",
@@ -80,7 +80,7 @@ export function updateRule(
 
 export function functionCall(
   callee: Aug.Latex.Identifier,
-  args: Aug.Latex.AnyChild[]
+  args: Aug.Latex.AnyChild[],
 ): Aug.Latex.FunctionCall {
   return {
     type: "FunctionCall",
@@ -105,7 +105,7 @@ export function factorial(arg: Aug.Latex.AnyChild): Aug.Latex.Factorial {
 
 export function listAccess(
   list: Aug.Latex.AnyChild,
-  index: Aug.Latex.AnyChild
+  index: Aug.Latex.AnyChild,
 ): Aug.Latex.ListAccess {
   return {
     type: "ListAccess",
@@ -116,7 +116,7 @@ export function listAccess(
 
 export function range(
   start: Aug.Latex.AnyChild[],
-  end: Aug.Latex.AnyChild[]
+  end: Aug.Latex.AnyChild[],
 ): Aug.Latex.Range {
   return {
     type: "Range",

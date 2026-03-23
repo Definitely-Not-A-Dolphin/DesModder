@@ -2,9 +2,9 @@ import Metadata from "#metadata/interface";
 import migrateToLatest from "#metadata/migrate";
 import { ID_METADATA, ID_METADATA_FOLDER } from "#metadata/manage";
 import {
+  AnyNode,
   ChildExprNode,
   evalMaybeRational,
-  AnyNode,
   // eslint-disable-next-line @desmodder/eslint-rules/no-reach-past-exports
 } from "../../parsing/parsenode";
 import { Config } from "../TextModeConfig";
@@ -14,7 +14,7 @@ import type * as Graph from "#graph-state";
 
 export default function rawToAug(
   cfg: Config,
-  raw: Graph.GraphState
+  raw: Graph.GraphState,
 ): Aug.State {
   const dsmMetadata = rawToDsmMetadata(raw);
   const res: Aug.State = {
@@ -44,19 +44,19 @@ export function rawToAugSettings(raw: Graph.GraphState): Aug.GraphSettings {
 
 export function rawToDsmMetadata(raw: Graph.GraphState) {
   const dsmMetadataExpr = raw.expressions.list.find(
-    (e) => e.id === ID_METADATA
+    (e) => e.id === ID_METADATA,
   );
   return migrateToLatest(
     dsmMetadataExpr?.type === "text"
       ? JSON.parse(dsmMetadataExpr.text ?? "{}")
-      : {}
+      : {},
   );
 }
 
 function rawListToAug(
   cfg: Config,
   list: Graph.ItemState[],
-  dsmMetadata: Metadata
+  dsmMetadata: Metadata,
 ): Aug.ItemAug[] {
   const res: Aug.ItemAug[] = [];
   let currentFolder: null | Aug.FolderAug = null;
@@ -97,7 +97,7 @@ function rawFolderToAug(item: Graph.FolderState): Aug.FolderAug {
 export function rawNonFolderToAug(
   cfg: Config,
   item: Graph.NonFolderState,
-  dsmMetadata: Metadata
+  dsmMetadata: Metadata,
 ): Aug.NonFolderAug {
   try {
     return tryRawNonFolderToAug(cfg, item, dsmMetadata);
@@ -116,7 +116,7 @@ export function rawNonFolderToAug(
 function tryRawNonFolderToAug(
   cfg: Config,
   item: Graph.NonFolderState,
-  dsmMetadata: Metadata
+  dsmMetadata: Metadata,
 ): Aug.NonFolderAug {
   const base = {
     id: item.id,
@@ -145,42 +145,41 @@ function tryRawNonFolderToAug(
         ...(latex ? { latex } : {}),
         ...(item.labelSize !== "0" && item.label && item.showLabel
           ? {
-              label: {
-                text: item.label,
-                size: parseLatex(cfg, item.labelSize ?? "1"),
-                orientation: item.labelOrientation ?? "default",
-                angle: parseLatex(cfg, item.labelAngle ?? "0"),
-                outline: !item.suppressTextOutline,
-                showOnHover: item.interactiveLabel ?? false,
-                editableMode: item.editableLabelMode ?? "NONE",
-              },
-            }
+            label: {
+              text: item.label,
+              size: parseLatex(cfg, item.labelSize ?? "1"),
+              orientation: item.labelOrientation ?? "default",
+              angle: parseLatex(cfg, item.labelAngle ?? "0"),
+              outline: !item.suppressTextOutline,
+              showOnHover: item.interactiveLabel ?? false,
+              editableMode: item.editableLabelMode ?? "NONE",
+            },
+          }
           : {}),
-        fillOpacity:
-          item.fill === false
-            ? parseLatex(cfg, "0")
-            : parseMaybeLatex(
-                cfg,
-                item.fillOpacity === "0"
-                  ? "2^{-99}"
-                  : (item.fillOpacity ?? (item.fill ? "0.4" : undefined))
-              ),
+        fillOpacity: item.fill === false
+          ? parseLatex(cfg, "0")
+          : parseMaybeLatex(
+            cfg,
+            item.fillOpacity === "0"
+              ? "2^{-99}"
+              : (item.fillOpacity ?? (item.fill ? "0.4" : undefined)),
+          ),
         regression: item.residualVariable
           ? {
-              residualVariable: parseLatex(
-                cfg,
-                item.residualVariable
-              ) as Aug.Latex.Identifier,
-              regressionParameters: new Map(
-                Object.entries(item.regressionParameters ?? {}).map(
-                  ([key, value]) => [
-                    parseLatex(cfg, key) as Aug.Latex.Identifier,
-                    value,
-                  ]
-                )
+            residualVariable: parseLatex(
+              cfg,
+              item.residualVariable,
+            ) as Aug.Latex.Identifier,
+            regressionParameters: new Map(
+              Object.entries(item.regressionParameters ?? {}).map(
+                ([key, value]) => [
+                  parseLatex(cfg, key) as Aug.Latex.Identifier,
+                  value,
+                ],
               ),
-              isLogMode: !!item.isLogModeRegression,
-            }
+            ),
+            isLogMode: !!item.isLogModeRegression,
+          }
           : undefined,
         slider: {
           period: item.slider?.animationPeriod,
@@ -204,16 +203,16 @@ function tryRawNonFolderToAug(
         parametricDomain3Dphi: parseMapDomain(cfg, item.parametricDomain3Dphi),
         cdf: item.cdf?.show
           ? {
-              min: item.cdf.min ? parseLatex(cfg, item.cdf.min) : undefined,
-              max: item.cdf.max ? parseLatex(cfg, item.cdf.max) : undefined,
-            }
+            min: item.cdf.min ? parseLatex(cfg, item.cdf.min) : undefined,
+            max: item.cdf.max ? parseLatex(cfg, item.cdf.max) : undefined,
+          }
           : undefined,
         vizProps: vizPropsAug(cfg, item),
         clickableInfo: item.clickableInfo?.latex
           ? {
-              description: item.clickableInfo.description ?? "",
-              latex: parseLatex(cfg, item.clickableInfo.latex),
-            }
+            description: item.clickableInfo.description ?? "",
+            latex: parseLatex(cfg, item.clickableInfo.latex),
+          }
           : undefined,
       };
     }
@@ -234,18 +233,18 @@ function tryRawNonFolderToAug(
         draggable: item.draggable ?? false,
         clickableInfo: item.clickableInfo?.latex
           ? {
-              description: item.clickableInfo.description ?? "",
-              latex: parseLatex(cfg, item.clickableInfo.latex),
-              hoveredImage: item.clickableInfo.hoveredImage,
-              depressedImage: item.clickableInfo.depressedImage,
-            }
+            description: item.clickableInfo.description ?? "",
+            latex: parseLatex(cfg, item.clickableInfo.latex),
+            hoveredImage: item.clickableInfo.hoveredImage,
+            depressedImage: item.clickableInfo.depressedImage,
+          }
           : undefined,
       };
     case "table": {
       const longestColumnLength = Math.max(
         ...item.columns.map((col) =>
           (col.values ?? []).map((e) => e !== "").lastIndexOf(true)
-        )
+        ),
       );
       return {
         ...base,
@@ -274,7 +273,7 @@ function tryRawNonFolderToAug(
 
 function vizPropsAug(
   cfg: Config,
-  item: Graph.ExpressionState
+  item: Graph.ExpressionState,
 ): Aug.ExpressionAug["vizProps"] {
   const viz = item.vizProps ?? {};
   if (!viz) return {};
@@ -285,9 +284,9 @@ function vizPropsAug(
   };
   if (
     viz.breadth ??
-    viz.axisOffset ??
-    viz.alignedAxis ??
-    viz.showBoxplotOutliers
+      viz.axisOffset ??
+      viz.alignedAxis ??
+      viz.showBoxplotOutliers
   ) {
     res.boxplot = {
       breadth: parseLatex(cfg, viz.breadth ?? "1"),
@@ -303,7 +302,7 @@ function parseMapDomain(
   cfg: Config,
   domain: Graph.Domain | undefined,
   fallbackMin: string = "0",
-  fallbackMax: string = "1"
+  fallbackMax: string = "1",
 ): Aug.DomainAug | undefined {
   if (!domain) return undefined;
   return {
@@ -314,40 +313,39 @@ function parseMapDomain(
 
 function columnExpressionCommon(
   cfg: Config,
-  item: Graph.TableColumn | Graph.ExpressionState
+  item: Graph.TableColumn | Graph.ExpressionState,
 ) {
   const color = item.colorLatex ? parseLatex(cfg, item.colorLatex) : item.color;
   return {
     color,
     hidden: item.hidden ?? false,
-    points:
-      item.points === false ||
-      item.pointOpacity === "0" ||
-      item.pointSize === "0"
-        ? { size: parseLatex(cfg, "0") }
-        : item.points === true ||
-            item.pointOpacity !== undefined ||
-            item.pointSize !== undefined ||
-            item.dragMode !== undefined
-          ? {
-              opacity: parseMaybeLatex(cfg, item.pointOpacity),
-              size: parseMaybeLatex(cfg, item.pointSize),
-              style: item.pointStyle,
-              dragMode: item.dragMode,
-            }
-          : undefined,
+    points: item.points === false ||
+        item.pointOpacity === "0" ||
+        item.pointSize === "0"
+      ? { size: parseLatex(cfg, "0") }
+      : item.points === true ||
+          item.pointOpacity !== undefined ||
+          item.pointSize !== undefined ||
+          item.dragMode !== undefined
+      ? {
+        opacity: parseMaybeLatex(cfg, item.pointOpacity),
+        size: parseMaybeLatex(cfg, item.pointSize),
+        style: item.pointStyle,
+        dragMode: item.dragMode,
+      }
+      : undefined,
     lines:
       item.lines === false || item.lineOpacity === "0" || item.lineWidth === "0"
         ? { width: parseLatex(cfg, "0") }
         : item.lines === true ||
             item.lineOpacity !== undefined ||
             item.lineWidth !== undefined
-          ? {
-              opacity: parseMaybeLatex(cfg, item.lineOpacity),
-              width: parseMaybeLatex(cfg, item.lineWidth),
-              style: item.lineStyle,
-            }
-          : undefined,
+        ? {
+          opacity: parseMaybeLatex(cfg, item.lineOpacity),
+          width: parseMaybeLatex(cfg, item.lineWidth),
+          style: item.lineStyle,
+        }
+        : undefined,
   };
 }
 
@@ -364,7 +362,7 @@ export function parseLatex(cfg: Config, str: string): Aug.Latex.AnyChild {
 
 export function parseRootLatex(
   cfg: Config,
-  str: string
+  str: string,
 ): Aug.Latex.AnyRootOrChild {
   const parsed = cfg.parseDesmosLatex(str);
   switch (parsed.type) {
@@ -427,7 +425,7 @@ function childNodeToTree(node: AnyNode): Aug.Latex.AnyChild {
     case "MixedNumber":
       if (typeof node._constantValue === "boolean") {
         throw Error(
-          "Constant value is boolean, but expected rational or number"
+          "Constant value is boolean, but expected rational or number",
         );
       }
       return {
@@ -442,8 +440,9 @@ function childNodeToTree(node: AnyNode): Aug.Latex.AnyChild {
         arg: childNodeToTree(node.args[0]),
       };
     case "FunctionCall":
-      if (node._symbol === "factorial" && node.args.length === 1)
+      if (node._symbol === "factorial" && node.args.length === 1) {
         return { type: "Factorial", arg: childNodeToTree(node.args[0]) };
+      }
       return {
         type: "FunctionCall",
         callee: parseIdentifier(node._symbol),
@@ -527,7 +526,7 @@ function childNodeToTree(node: AnyNode): Aug.Latex.AnyChild {
       const prop = childNodeToTree(node.args[1]);
       if (prop.type !== "Identifier" && prop.type !== "FunctionCall") {
         throw Error(
-          "Dot access property is not an identifier or function call"
+          "Dot access property is not an identifier or function call",
         );
       }
       return {
@@ -566,7 +565,7 @@ function childNodeToTree(node: AnyNode): Aug.Latex.AnyChild {
             identifier: parseIdentifier(identifier._symbol),
             open,
             bounds: [childNodeToTree(min), childNodeToTree(max)],
-          })
+          }),
         ),
         bracketWrapped: node.shouldCoerceToList,
       };
@@ -578,14 +577,13 @@ function childNodeToTree(node: AnyNode): Aug.Latex.AnyChild {
       };
     case "Piecewise": {
       const [conditionNode] = node.args;
-      const condition =
-        conditionNode.type === "Constant" &&
-        conditionNode._constantValue === true
-          ? true
-          : childNodeToTree(conditionNode);
+      const condition = conditionNode.type === "Constant" &&
+          conditionNode._constantValue === true
+        ? true
+        : childNodeToTree(conditionNode);
       if (condition !== true && !isPiecewiseBoolean(condition)) {
         throw Error(
-          "Expected condition of Piecewise to be a Comparator, DoubleInequality, or true"
+          "Expected condition of Piecewise to be a Comparator, DoubleInequality, or true",
         );
       }
       return {
@@ -597,14 +595,13 @@ function childNodeToTree(node: AnyNode): Aug.Latex.AnyChild {
     }
     case "Restriction": {
       const [conditionNode] = node.args;
-      const condition =
-        conditionNode.type === "Constant" &&
-        conditionNode._constantValue === true
-          ? true
-          : childNodeToTree(conditionNode);
+      const condition = conditionNode.type === "Constant" &&
+          conditionNode._constantValue === true
+        ? true
+        : childNodeToTree(conditionNode);
       if (condition !== true && !isRestrictionBoolean(condition)) {
         throw Error(
-          "Expected condition of Restriction to be a Comparator, DoubleInequality, Or, or true"
+          "Expected condition of Restriction to be a Comparator, DoubleInequality, Or, or true",
         );
       }
       return { type: "Restriction", condition };
@@ -612,8 +609,9 @@ function childNodeToTree(node: AnyNode): Aug.Latex.AnyChild {
     case "Or": {
       const left = childNodeToTree(node.args[0]);
       const right = childNodeToTree(node.args[1]);
-      if (!isRestrictionBoolean(left) || !isRestrictionBoolean(right))
+      if (!isRestrictionBoolean(left) || !isRestrictionBoolean(right)) {
         throw new Error("Expected 'Or' to combine two syntactical booelans.");
+      }
       return { type: "Or", left, right };
     }
     case "Product":
@@ -697,23 +695,24 @@ function childNodeToTree(node: AnyNode): Aug.Latex.AnyChild {
     case "Table":
     case "TableColumn":
       throw new Error(
-        `Programming Error: Expected parsenode ${node.type} to not be created`
+        `Programming Error: Expected parsenode ${node.type} to not be created`,
       );
     default:
       node satisfies never;
       throw new Error(
-        `Programming Error: Unexpected raw node ${(node as any).type}`
+        `Programming Error: Unexpected raw node ${(node as any).type}`,
       );
   }
 }
 
 function assignmentExprToTree(
-  node: ChildExprNode
+  node: ChildExprNode,
 ): Aug.Latex.AssignmentExpression {
-  if (node.type !== "AssignmentExpression")
+  if (node.type !== "AssignmentExpression") {
     throw Error(
-      "Programming Error: expected AssignmentExpression in list comprehension"
+      "Programming Error: expected AssignmentExpression in list comprehension",
     );
+  }
   return {
     type: "AssignmentExpression",
     variable: nodeToIdentifier(node.args[0]),

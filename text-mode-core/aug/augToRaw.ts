@@ -13,7 +13,7 @@ import type * as Graph from "#graph-state";
 
 export default function augToRaw(
   cfg: Config,
-  aug: Aug.State
+  aug: Aug.State,
 ): Graph.GraphState {
   const list = [];
   const dsmMetadata = {
@@ -48,7 +48,7 @@ export default function augToRaw(
         id: ID_METADATA,
         folderId: ID_METADATA_FOLDER,
         text: JSON.stringify(dsmMetadata),
-      } as const
+      } as const,
     );
   }
   const { randomSeed } = aug.settings;
@@ -63,8 +63,8 @@ export default function augToRaw(
     },
     expressions: {
       list,
-      ticker:
-        aug.expressions.ticker && augTickerToRaw(cfg, aug.expressions.ticker),
+      ticker: aug.expressions.ticker &&
+        augTickerToRaw(cfg, aug.expressions.ticker),
     },
   };
   cleanUndefined(res);
@@ -120,7 +120,7 @@ function augFolderToRaw(expr: Aug.FolderAug): Graph.FolderState {
 
 function augNonFolderToRaw(
   cfg: Config,
-  item: Aug.NonFolderAug
+  item: Aug.NonFolderAug,
 ): Graph.NonFolderState {
   const base = {
     id: item.id,
@@ -141,60 +141,55 @@ function augNonFolderToRaw(
           : undefined,
         residualVariable: latexTreeToStringMaybe(
           cfg,
-          item.regression?.residualVariable
+          item.regression?.residualVariable,
         ),
         regressionParameters: Object.fromEntries(
           [...(item.regression?.regressionParameters.entries() ?? [])].map(
-            ([k, v]) => [latexTreeToString(cfg, k), v]
-          )
+            ([k, v]) => [latexTreeToString(cfg, k), v],
+          ),
         ),
         isLogModeRegression: item.regression?.isLogMode,
         ...(item.label
           ? {
-              label: item.label.text,
-              showLabel: true,
-              labelSize: latexTreeToString(cfg, item.label.size),
-              labelOrientation: item.label.orientation,
-              labelAngle: latexTreeToString(cfg, item.label.angle),
-              suppressTextOutline: !item.label.outline,
-              interactiveLabel: item.label.showOnHover,
-              editableLabelMode:
-                item.label.editableMode === "NONE"
-                  ? undefined
-                  : item.label.editableMode,
-            }
+            label: item.label.text,
+            showLabel: true,
+            labelSize: latexTreeToString(cfg, item.label.size),
+            labelOrientation: item.label.orientation,
+            labelAngle: latexTreeToString(cfg, item.label.angle),
+            suppressTextOutline: !item.label.outline,
+            interactiveLabel: item.label.showOnHover,
+            editableLabelMode: item.label.editableMode === "NONE"
+              ? undefined
+              : item.label.editableMode,
+          }
           : {}),
         slider: {
           animationPeriod: item.slider.period,
           loopMode: item.slider.loopMode,
           playDirection: item.slider.playDirection,
           isPlaying: item.slider.isPlaying,
-          hardMin:
-            !!item.slider.min && item.slider.loopMode !== "PLAY_INDEFINITELY",
+          hardMin: !!item.slider.min &&
+            item.slider.loopMode !== "PLAY_INDEFINITELY",
           min: latexTreeToStringMaybe(cfg, item.slider.min),
-          hardMax:
-            !!item.slider.max && item.slider.loopMode !== "PLAY_INDEFINITELY",
+          hardMax: !!item.slider.max &&
+            item.slider.loopMode !== "PLAY_INDEFINITELY",
           max: latexTreeToStringMaybe(cfg, item.slider.max),
           step: latexTreeToStringMaybe(cfg, item.slider.step),
         },
         displayEvaluationAsFraction: item.displayEvaluationAsFraction,
         polarDomain: item.polarDomain && latexMapDomain(cfg, item.polarDomain),
-        parametricDomain:
-          item.parametricDomain && latexMapDomain(cfg, item.parametricDomain),
-        parametricDomain3Du:
-          item.parametricDomain3Du &&
+        parametricDomain: item.parametricDomain &&
+          latexMapDomain(cfg, item.parametricDomain),
+        parametricDomain3Du: item.parametricDomain3Du &&
           latexMapDomain(cfg, item.parametricDomain3Du),
-        parametricDomain3Dv:
-          item.parametricDomain3Dv &&
+        parametricDomain3Dv: item.parametricDomain3Dv &&
           latexMapDomain(cfg, item.parametricDomain3Dv),
-        parametricDomain3Dr:
-          item.parametricDomain3Dr &&
+        parametricDomain3Dr: item.parametricDomain3Dr &&
           latexMapDomain(cfg, item.parametricDomain3Dr),
-        parametricDomain3Dphi:
-          item.parametricDomain3Dphi &&
+        parametricDomain3Dphi: item.parametricDomain3Dphi &&
           latexMapDomain(cfg, item.parametricDomain3Dphi),
-        domain:
-          item.parametricDomain && latexMapDomain(cfg, item.parametricDomain),
+        domain: item.parametricDomain &&
+          latexMapDomain(cfg, item.parametricDomain),
         cdf: item.cdf && {
           show: true,
           min: latexTreeToStringMaybe(cfg, item.cdf.min),
@@ -204,7 +199,7 @@ function augNonFolderToRaw(
           breadth: latexTreeToStringMaybe(cfg, item.vizProps.boxplot?.breadth),
           axisOffset: latexTreeToStringMaybe(
             cfg,
-            item.vizProps.boxplot?.axisOffset
+            item.vizProps.boxplot?.axisOffset,
           ),
           alignedAxis: item.vizProps.boxplot?.alignedAxis,
           showBoxplotOutliers: item.vizProps.boxplot?.showOutliers,
@@ -261,7 +256,7 @@ function augNonFolderToRaw(
               id: "dsm-blank-" + Math.random().toString().slice(2, 16),
               values: [""],
               color: "#2D70B3",
-            }))
+            })),
           ),
       };
     case "text":
@@ -286,7 +281,7 @@ function latexMapDomain(cfg: Config, domain: Aug.DomainAug | undefined) {
 
 function columnExpressionCommon(
   cfg: Config,
-  item: Aug.TableColumnAug | Aug.ExpressionAug
+  item: Aug.TableColumnAug | Aug.ExpressionAug,
 ) {
   const res: Graph.ColumnExpressionShared = {
     color: "",
@@ -301,22 +296,26 @@ function columnExpressionCommon(
     res.colorLatex = latexTreeToString(cfg, item.color);
   }
   if (item.points) {
-    res.points =
-      !isConstant(item.points.opacity, 0) && !isConstant(item.points.size, 0);
-    if (item.points.opacity)
+    res.points = !isConstant(item.points.opacity, 0) &&
+      !isConstant(item.points.size, 0);
+    if (item.points.opacity) {
       res.pointOpacity = latexTreeToString(cfg, item.points.opacity);
-    if (item.points.size)
+    }
+    if (item.points.size) {
       res.pointSize = latexTreeToString(cfg, item.points.size);
+    }
     res.pointStyle = item.points.style;
     res.dragMode = item.points.dragMode;
   }
   if (item.lines) {
-    res.lines =
-      !isConstant(item.lines.opacity, 0) && !isConstant(item.lines.width, 0);
-    if (item.lines.opacity)
+    res.lines = !isConstant(item.lines.opacity, 0) &&
+      !isConstant(item.lines.width, 0);
+    if (item.lines.opacity) {
       res.lineOpacity = latexTreeToString(cfg, item.lines.opacity);
-    if (item.lines.width)
+    }
+    if (item.lines.width) {
       res.lineWidth = latexTreeToString(cfg, item.lines.width);
+    }
     res.lineStyle = item.lines.style;
   }
   return res;
@@ -324,7 +323,7 @@ function columnExpressionCommon(
 
 function latexTreeToStringMaybe(
   cfg: Config,
-  e: Aug.Latex.AnyRootOrChild | undefined
+  e: Aug.Latex.AnyRootOrChild | undefined,
 ) {
   if (!e) return undefined;
   return latexTreeToString(cfg, e);

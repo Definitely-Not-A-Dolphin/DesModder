@@ -75,7 +75,7 @@ testWithPage("More Greek Letters", async (driver) => {
   await driver.setPluginSetting(
     "custom-mathquill-config",
     "extendedGreek",
-    true
+    true,
   );
   await driver.keyboard.type("omega");
   await driver.assertExprsList(STATE_GREEK as any);
@@ -91,7 +91,7 @@ testWithPage("Operators in Exponents", async (driver) => {
   await driver.setPluginSetting(
     "custom-mathquill-config",
     "superscriptOperators",
-    true
+    true,
   );
   await driver.keyboard.type("e^2+2");
   await driver.assertExprsList(STATE_SUPERSCRIPT as any);

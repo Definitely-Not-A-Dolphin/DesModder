@@ -47,7 +47,7 @@ export default class Multiline extends PluginController<Config> {
 
   unmultilineExpressions(force?: boolean) {
     const mathfields = document.querySelectorAll(
-      ".dcg-expressionitem .dcg-mq-root-block"
+      ".dcg-expressionitem .dcg-mq-root-block",
     );
     for (const f of mathfields) {
       if (!(f instanceof HTMLElement)) continue;
@@ -66,11 +66,11 @@ export default class Multiline extends PluginController<Config> {
 
     if (e.type === "set-item-latex") {
       mathfields = document.querySelectorAll(
-        ".dcg-expressionitem.dcg-selected .dcg-mq-root-block"
+        ".dcg-expressionitem.dcg-selected .dcg-mq-root-block",
       );
     } else {
       mathfields = document.querySelectorAll(
-        ".dcg-expressionitem .dcg-mq-root-block"
+        ".dcg-expressionitem .dcg-mq-root-block",
       );
     }
 
@@ -83,8 +83,9 @@ export default class Multiline extends PluginController<Config> {
         e.type !== "set-item-latex" &&
         e.type !== "undo" &&
         e.type !== "redo"
-      )
+      ) {
         continue;
+      }
 
       // add to a queue of expressions that need to be verticalified
       this.enqueueVerticalifyOperation(f);
@@ -101,7 +102,7 @@ export default class Multiline extends PluginController<Config> {
       unverticalify(f);
 
       const minWidth =
-        ((window.innerWidth * this.settings.widthBeforeMultiline) / 100) *
+        ((globalThis.innerWidth * this.settings.widthBeforeMultiline) / 100) *
         (this.cc.isNarrow() ? 3 : 1);
 
       // settings for where and how to put line breaks
@@ -160,7 +161,7 @@ export default class Multiline extends PluginController<Config> {
             (this.settings.disableAutomaticLineBreaksForHandAlignedExpressions
               ? !(mathfield?.latex?.() ?? "").includes("\\ \\ \\ ")
               : true),
-        }
+        },
       );
 
       // perform all dom writing (to prevent getBoundingClientRect-related slowdowns)
@@ -191,7 +192,7 @@ export default class Multiline extends PluginController<Config> {
       if (mq) {
         mq.typedText("   ");
         this.enqueueVerticalifyOperation(
-          mq.__controller.container.querySelector(".dcg-mq-root-block")!
+          mq.__controller.container.querySelector(".dcg-mq-root-block")!,
         );
         setTimeout(() => {
           this.dequeueAllMultilinifications();
@@ -251,16 +252,15 @@ export default class Multiline extends PluginController<Config> {
     if (cursor) {
       this.lastRememberedCursorX = cursor.getBoundingClientRect().left;
     } else {
-      let xpos =
-        this.calc.focusedMathQuill?.mq.__controller.cursor?.[
-          -1
-        ]?._el?.getBoundingClientRect()?.right;
+      let xpos = this.calc.focusedMathQuill?.mq.__controller.cursor?.[
+        -1
+      ]?._el?.getBoundingClientRect()?.right;
       if (xpos !== undefined) {
         this.lastRememberedCursorX = xpos;
       } else {
-        xpos =
-          this.calc.focusedMathQuill?.mq.__controller.cursor?.[1]?._el?.getBoundingClientRect()
-            ?.left;
+        xpos = this.calc.focusedMathQuill?.mq.__controller.cursor?.[1]?._el
+          ?.getBoundingClientRect()
+          ?.left;
         this.lastRememberedCursorX = xpos;
       }
     }
@@ -281,7 +281,7 @@ export default class Multiline extends PluginController<Config> {
 
     this.dsm.overrideKeystroke?.setMQKeystrokeListener(
       "multiline",
-      this.onMQKeystroke.bind(this)
+      this.onMQKeystroke.bind(this),
     );
 
     this.afterConfigChange();
@@ -292,8 +292,9 @@ export default class Multiline extends PluginController<Config> {
         Date.now() - this.lastEditTime <
           this.settings.multilinifyDelayAfterEdit ||
         !this.settings.automaticallyMultilinify
-      )
+      ) {
         return;
+      }
 
       this.dequeueAllMultilinifications();
     }, 0);
@@ -339,8 +340,9 @@ export default class Multiline extends PluginController<Config> {
   handleDispatchedAction(evt: DispatchedEvent) {
     if (evt.type === "on-special-key-pressed") {
       if (evt.key === "Up" || evt.key === "Down") {
-        if (!this.doMultilineVerticalNav(evt.key))
+        if (!this.doMultilineVerticalNav(evt.key)) {
           return "abort-later-handlers";
+        }
       }
     }
   }
@@ -354,8 +356,9 @@ export default class Multiline extends PluginController<Config> {
 
     if (this.dispatcherID) this.cc.dispatcher.unregister(this.dispatcherID);
 
-    if (this.multilineIntervalID !== undefined)
+    if (this.multilineIntervalID !== undefined) {
       clearInterval(this.multilineIntervalID);
+    }
   }
 
   // navigates up/down through a multiline expression
@@ -371,8 +374,8 @@ export default class Multiline extends PluginController<Config> {
     let linesPassed = 0;
 
     const arrowdir = (select ? "Shift-" : "") + (up ? "Left" : "Right");
-    const oppositeArrowdir =
-      (select ? "Shift-" : "") + (!up ? "Left" : "Right");
+    const oppositeArrowdir = (select ? "Shift-" : "") +
+      (!up ? "Left" : "Right");
 
     // focus the mq element that was focused before hitting up/down
     focusmq(focusedmq);
@@ -387,8 +390,8 @@ export default class Multiline extends PluginController<Config> {
     // so we can snap to it later
     const cursor = document.querySelector(".dcg-mq-cursor");
     this.findCursorX();
-    const originalCursorX =
-      this.lastRememberedCursorX ?? cursor?.getBoundingClientRect().left ?? 0;
+    const originalCursorX = this.lastRememberedCursorX ??
+      cursor?.getBoundingClientRect().left ?? 0;
     const cursorPositions: number[] = [];
 
     const ctrlr = getController(focusedmq);
@@ -458,7 +461,7 @@ export default class Multiline extends PluginController<Config> {
         cursorPositions.push(
           isNextRight
             ? (next?.getBoundingClientRect().right ?? 0)
-            : (next?.getBoundingClientRect().left ?? 0)
+            : (next?.getBoundingClientRect().left ?? 0),
         );
       }
 
@@ -499,7 +502,7 @@ export default class Multiline extends PluginController<Config> {
     // figure out how much we'll have to reverse to get there
     const loopCount = Math.max(
       0,
-      Math.min(bestIndex + 1, cursorPositions.length - 1)
+      Math.min(bestIndex + 1, cursorPositions.length - 1),
     );
 
     // go back to the optimal x-position

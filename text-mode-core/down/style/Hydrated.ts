@@ -82,18 +82,18 @@ export interface ColumnExpressionCommon extends Base {
   hidden: boolean;
   points?:
     | {
-        opacity: Expr;
-        size: Expr;
-        style: "POINT" | "OPEN" | "CROSS";
-        drag: "NONE" | "X" | "Y" | "XY" | "AUTO";
-      }
+      opacity: Expr;
+      size: Expr;
+      style: "POINT" | "OPEN" | "CROSS";
+      drag: "NONE" | "X" | "Y" | "XY" | "AUTO";
+    }
     | boolean;
   lines?:
     | {
-        opacity: Expr;
-        width: Expr;
-        style: "SOLID" | "DASHED" | "DOTTED";
-      }
+      opacity: Expr;
+      width: Expr;
+      style: "SOLID" | "DASHED" | "DOTTED";
+    }
     | boolean;
 }
 
@@ -109,9 +109,7 @@ interface HydratedBounds {
 
 // TODO: split hydrated expr based on regression, function definition, etc.
 export interface Expression
-  extends NonFolderBase,
-    ColumnExpressionCommon,
-    Clickable {
+  extends NonFolderBase, ColumnExpressionCommon, Clickable {
   label?: {
     text: string;
     size: Expr;

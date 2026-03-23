@@ -41,12 +41,13 @@ const pluginNames = [
 
 replacements.forEach((r) => {
   r.plugins.forEach((plugin) => {
-    if (!pluginNames.includes(plugin))
+    if (!pluginNames.includes(plugin)) {
       // This can only break due to DesModder, not Desmos, so a throw is acceptable.
       throw new Error(
         `Plugin ${plugin} specified in replacement ${r.filename} not found: ` +
-          `at risk of instability on panic.`
+          `at risk of instability on panic.`,
       );
+    }
   });
 });
 

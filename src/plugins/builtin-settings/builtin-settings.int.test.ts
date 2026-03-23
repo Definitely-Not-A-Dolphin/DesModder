@@ -1,5 +1,5 @@
 import { Calc as CalcType } from "#globals";
-import { Driver, clean, testWithPage } from "#tests";
+import { clean, Driver, testWithPage } from "#tests";
 
 declare let Calc: CalcType;
 

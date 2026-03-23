@@ -35,7 +35,7 @@ testWithPage(
     await driver.assertSelector(".dcg-action-zoomin");
     await driver.enablePlugin("video-creator");
     await driver.assertSelector('[data-buttonid="dsm-vc-menu"]');
-  }
+  },
 );
 
 async function normalizedHtml(page: Page) {
@@ -43,12 +43,12 @@ async function normalizedHtml(page: Page) {
   // Sometimes the script gets removed, sometimes it's not.
   html = html.replace(
     /<script src="chrome-extension:\/\/[^/]+\/script.js"><\/script>/,
-    ""
+    "",
   );
   // This div has tabindex depending on activeElement, ref `getShiftTabElementTabIndex`.
   html = html.replace(
     /<div tabindex="(0|-1)"><\/div>(<canvas class="dcg-graph-inner")/,
-    "$2"
+    "$2",
   );
   return html;
 }

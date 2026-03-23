@@ -33,8 +33,8 @@ if (BROWSER === "firefox") {
   // Block the initial load of calculator.js in order to run a modified version later
   chrome.webRequest.onBeforeRequest.addListener(
     ({ url }) => ({
-      cancel:
-        url.endsWith(".js") && !url.startsWith("https://maintain.desmos.com"),
+      cancel: url.endsWith(".js") &&
+        !url.startsWith("https://maintain.desmos.com"),
     }),
     {
       urls: [
@@ -44,7 +44,7 @@ if (BROWSER === "firefox") {
         "https://*.desmos.com/assets/build/shared_calculator_desktop-*.js",
       ],
     },
-    ["blocking"]
+    ["blocking"],
   );
   // Modify headers on all resources to enabled SharedArrayBuffer for FFmpeg
   chrome.webRequest.onHeadersReceived.addListener(
@@ -54,7 +54,7 @@ if (BROWSER === "firefox") {
         ...(details.responseHeaders?.filter(
           ({ name }) =>
             name !== "Cross-Origin-Embedder-Policy" &&
-            name !== "Cross-Origin-Opener-Policy"
+            name !== "Cross-Origin-Opener-Policy",
         ) ?? []),
         {
           name: "Cross-Origin-Embedder-Policy",
@@ -73,14 +73,14 @@ if (BROWSER === "firefox") {
         "https://*.desmos.com/3d*",
       ],
     },
-    ["blocking", "responseHeaders"]
+    ["blocking", "responseHeaders"],
   );
   chrome.webRequest.onHeadersReceived.addListener(
     (details) => ({
       ...details,
       responseHeaders: [
         ...(details.responseHeaders?.filter(
-          ({ name }) => name !== "Cross-Origin-Resource-Policy"
+          ({ name }) => name !== "Cross-Origin-Resource-Policy",
         ) ?? []),
         {
           name: "Cross-Origin-Resource-Policy",
@@ -95,6 +95,6 @@ if (BROWSER === "firefox") {
         "https://saved-work.desmos.com/calc-3d-thumbs/**/*",
       ],
     },
-    ["blocking", "responseHeaders"]
+    ["blocking", "responseHeaders"],
   );
 }

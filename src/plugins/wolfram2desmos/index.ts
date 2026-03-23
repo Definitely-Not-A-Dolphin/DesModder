@@ -1,11 +1,11 @@
 import { PluginController } from "../PluginController";
 import { Config, configList } from "./config";
-import { wolfram2desmos, isIllegalASCIIMath } from "./wolfram2desmos";
+import { isIllegalASCIIMath, wolfram2desmos } from "./wolfram2desmos";
 
 // https://stackoverflow.com/a/34278578
 function typeInTextArea(
   newText: string,
-  elm: Element | null = document.activeElement
+  elm: Element | null = document.activeElement,
 ) {
   const el = elm as HTMLTextAreaElement;
   const start = el.selectionStart;
@@ -68,8 +68,9 @@ export default class WolframToDesmos extends PluginController<Config> {
 
     // Pasting a folder or expression that was yellow-copied.
     const textHtml = e.clipboardData.getData("text/html");
-    if (textHtml.includes(`data-dcg-clipboard-format="dcg-copy-expression"`))
+    if (textHtml.includes(`data-dcg-clipboard-format="dcg-copy-expression"`)) {
       return;
+    }
 
     const pasteData = e.clipboardData.getData("text/plain");
     if (

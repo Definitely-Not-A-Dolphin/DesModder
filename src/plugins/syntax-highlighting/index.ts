@@ -23,7 +23,7 @@ export default class SyntaxHighlighting extends PluginController<Config> {
 
     document.body.classList.toggle(
       "dsm-syntax-highlighting-underline-highlighted-ranges",
-      this.settings.underlineHighlightedRanges
+      this.settings.underlineHighlightedRanges,
     );
   }
 
@@ -37,18 +37,21 @@ export default class SyntaxHighlighting extends PluginController<Config> {
     this.caretBracketContainer = el;
 
     if (oldcaretBracketContainer !== this.caretBracketContainer) {
-      if (oldcaretBracketContainer)
+      if (oldcaretBracketContainer) {
         delete oldcaretBracketContainer.dataset.containsCaret;
-      if (this.caretBracketContainer)
+      }
+      if (this.caretBracketContainer) {
         this.caretBracketContainer.dataset.containsCaret = "true";
+      }
     }
   }
 
   changeMouseOverElement(el: HTMLElement | null) {
     delete this.mouseBracketContainer?.dataset.isDirectlyHovered;
     this.mouseBracketContainer = el;
-    if (this.mouseBracketContainer)
+    if (this.mouseBracketContainer) {
       this.mouseBracketContainer.dataset.isDirectlyHovered = "true";
+    }
   }
 
   onMouseOver = (e: MouseEvent) => {

@@ -19,16 +19,18 @@ export default function needsParens(path: NodePath): boolean {
   /* istanbul ignore if */
   if (parent === null) return false;
 
-  if (node.type === "SequenceExpression")
+  if (node.type === "SequenceExpression") {
     // sequence expressions will only ever be unwrapped when their parent
     // is a statement or style mapping (onClick event)
     return parent.type === "MappingEntry";
+  }
 
   if (
     isNonExpression(node) ||
     (isNonExpression(parent) && parent.type !== "PiecewiseBranch")
-  )
+  ) {
     return false;
+  }
 
   const nodeIsLikeSub = node.type === "Substitution";
   // TODO: this might be needed for correctness. Extra thing for nodeIsLikeSub.
@@ -55,7 +57,7 @@ export default function needsParens(path: NodePath): boolean {
       return false;
     case "MemberExpression":
       return name !== "object" || node.type !== "Identifier";
-    // else fall through to the next switch
+      // else fall through to the next switch
   }
 
   switch (node.type) {
@@ -140,8 +142,9 @@ export default function needsParens(path: NodePath): boolean {
                 parent.op !== node.op) ||
               (comparisonOps.includes(parent.op) &&
                 comparisonOps.includes(node.op))
-            )
+            ) {
               return true;
+            }
           }
           return false;
         }
@@ -161,7 +164,7 @@ export default function needsParens(path: NodePath): boolean {
     default:
       node satisfies never;
       throw new Error(
-        `Programming Error: Unexpected Text node ${(node as any).type}`
+        `Programming Error: Unexpected Text node ${(node as any).type}`,
       );
   }
 }
@@ -207,7 +210,7 @@ const PRECEDENCE = new Map(
       ["*", "cross", "/"],
       ["^"],
     ] as const
-  ).flatMap((operators, index) => operators.map((op) => [op, index]))
+  ).flatMap((operators, index) => operators.map((op) => [op, index])),
 );
 
 function getPrecedence(operator: BinaryExpression["op"]) {

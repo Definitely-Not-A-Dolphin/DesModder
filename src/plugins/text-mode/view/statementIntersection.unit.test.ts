@@ -1,4 +1,4 @@
-import { parseText, astToText, buildConfig } from "../../../../text-mode-core";
+import { astToText, buildConfig, parseText } from "../../../../text-mode-core";
 import { Statement } from "../../../../text-mode-core/TextAST";
 import { statementsIntersecting } from "./statementIntersection";
 
@@ -8,7 +8,7 @@ function positionsAndProgram(s: string) {
   const split = s.split("|");
   let pos = 0;
   const positions: number[] = [];
-  split.slice(0, -1).forEach((x) => positions.push((pos += x.length)));
+  split.slice(0, -1).forEach((x) => positions.push(pos += x.length));
   return [positions, parseText(cfg, split.join("")).program] as const;
 }
 

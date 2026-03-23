@@ -34,7 +34,7 @@ function outOfDateError(str: string) {
 
 // given a right dcg-mq-paren element, gets the type of bracket it represents
 function getBracketType(
-  elem: Element
+  elem: Element,
 ): "paren" | "square" | "curly" | "abs" | undefined {
   // get the svg path
   const svgPath = elem?.children?.[0]?.children?.[0];
@@ -42,7 +42,7 @@ function getBracketType(
   // make sure it's an svg path
   if (!(svgPath instanceof SVGPathElement)) {
     outOfDateError(
-      "Attempted to determine bracket type but could not identify it because SVG path does not exist."
+      "Attempted to determine bracket type but could not identify it because SVG path does not exist.",
     );
     return;
   }
@@ -51,7 +51,7 @@ function getBracketType(
   const disambiguator = svgPath.getAttribute("d")?.[1];
   if (!disambiguator) {
     outOfDateError(
-      "Attempted to determine bracket type but could not identify it because SVG path draw instructions do not exist."
+      "Attempted to determine bracket type but could not identify it because SVG path draw instructions do not exist.",
     );
     return;
   }
@@ -69,7 +69,7 @@ function getBracketType(
       return "curly";
     default:
       outOfDateError(
-        "Attempted to determine bracket type but could not identify it because SVG path draw instructions were unrecognizable."
+        "Attempted to determine bracket type but could not identify it because SVG path draw instructions were unrecognizable.",
       );
   }
 }
@@ -127,7 +127,7 @@ export function unverticalify(elem: Element, force?: boolean) {
 export function verticalify(
   elem: Element,
   context: VerticalifyContext,
-  options: VerticalifyOptions
+  options: VerticalifyOptions,
 ) {
   // skip processing elements that are safe to reuse
   if (elem instanceof HTMLElement && elem.dataset.safeToReuse) return;
@@ -140,14 +140,13 @@ export function verticalify(
       {
         ...context,
         enclosingBracketType: bracketType,
-        containerType:
-          bracketType === "curly"
-            ? "piecewise"
-            : bracketType === "square"
-              ? "list"
-              : context.containerType,
+        containerType: bracketType === "curly"
+          ? "piecewise"
+          : bracketType === "square"
+          ? "list"
+          : context.containerType,
       },
-      options
+      options,
     );
     return;
   }
@@ -155,8 +154,9 @@ export function verticalify(
   const children = Array.from(elem.children);
   const newContext: VerticalifyContext = {
     ...context,
-    containerType:
-      context.containerType === "piecewise" ? "piecewise" : "other",
+    containerType: context.containerType === "piecewise"
+      ? "piecewise"
+      : "other",
     enclosingBracketType: undefined,
   };
 
@@ -206,7 +206,7 @@ export function verticalify(
         (e) =>
           e.tagName.toUpperCase() === "SPAN" &&
           e instanceof HTMLElement &&
-          (e.innerText === "\u00A0" || e.dataset.isManualLineBreak)
+          (e.innerText === "\u00A0" || e.dataset.isManualLineBreak),
       );
 
       if (!isThreeSpaces) continue;
@@ -255,10 +255,12 @@ export function verticalify(
 
         // try all symbols from current context
         // and also from the "all" context
-        for (const s of [
-          ...containerOptions.symbols,
-          ...options.collapse.all.symbols,
-        ]) {
+        for (
+          const s of [
+            ...containerOptions.symbols,
+            ...options.collapse.all.symbols,
+          ]
+        ) {
           // can this element cause a line break?
           if (
             child.innerHTML.startsWith(s.symbol) &&
@@ -275,8 +277,9 @@ export function verticalify(
               child.dataset.originalSymbol = s.symbol;
               child.innerHTML = s.symbol + "<br />";
               child.style.setProperty("--line-break-indent", `${s.indent}px`);
-              if (elem instanceof HTMLElement)
+              if (elem instanceof HTMLElement) {
                 elem.dataset.isMultiline = "true";
+              }
             });
             accumulatedWidth = 0;
             break;
@@ -298,8 +301,9 @@ export function verticalify(
   // collapse children
   for (const child of children) {
     // indicate that we've reached the equals sign
-    if (context.containerType === "root" && child.innerHTML.startsWith("="))
+    if (context.containerType === "root" && child.innerHTML.startsWith("=")) {
       beforeEquals = false;
+    }
 
     const { width } = child.getBoundingClientRect();
 
@@ -313,7 +317,7 @@ export function verticalify(
         beforeEquals
           ? { ...context, containerType: "functionDef" }
           : newContext,
-        options
+        options,
       );
     }
 

@@ -10,33 +10,33 @@ import { GenericSettings, PluginID } from "#plugins/index.ts";
 
 type MessageWindowToContent =
   | {
-      type: "set-plugins-enabled";
-      value: Record<PluginID, boolean>;
-    }
+    type: "set-plugins-enabled";
+    value: Record<PluginID, boolean>;
+  }
   | {
-      type: "set-plugins-force-disabled";
-      value: PluginID[];
-    }
+    type: "set-plugins-force-disabled";
+    value: PluginID[];
+  }
   | {
-      type: "set-plugin-settings";
-      value: Record<PluginID, GenericSettings | undefined>;
-    }
+    type: "set-plugin-settings";
+    value: Record<PluginID, GenericSettings | undefined>;
+  }
   | {
-      type: "get-initial-data";
-    }
+    type: "get-initial-data";
+  }
   | {
-      type: "send-heartbeat";
-      options: WindowHeartbeatOptions;
-    };
+    type: "send-heartbeat";
+    options: WindowHeartbeatOptions;
+  };
 
 type MessageContentToWindow =
   | {
-      type: "apply-initial-data";
-      pluginsEnabled: Record<PluginID, boolean | undefined>;
-      pluginsForceDisabled: PluginID[];
-      pluginSettings: Record<PluginID, GenericSettings | undefined>;
-      scriptURL: string;
-    }
+    type: "apply-initial-data";
+    pluginsEnabled: Record<PluginID, boolean | undefined>;
+    pluginsForceDisabled: PluginID[];
+    pluginSettings: Record<PluginID, GenericSettings | undefined>;
+    scriptURL: string;
+  }
   | HeartbeatError;
 
 export interface HeartbeatError {
@@ -46,7 +46,7 @@ export interface HeartbeatError {
 }
 
 function postMessage<T extends { type: string }>(message: T) {
-  window.postMessage(message, "*");
+  globalThis.postMessage(message, "*");
 }
 
 export function postMessageUp(message: MessageWindowToContent) {
@@ -67,21 +67,21 @@ function listenToMessage<T>(callback: (message: T) => ShouldCancel) {
     }
     const cancel = callback(event.data);
     if (cancel) {
-      window.removeEventListener("message", wrappedCallback, false);
+      globalThis.removeEventListener("message", wrappedCallback, false);
     }
   };
-  window.addEventListener("message", wrappedCallback, false);
+  globalThis.addEventListener("message", wrappedCallback, false);
   return wrappedCallback;
 }
 
 export function listenToMessageUp(
-  callback: (message: MessageWindowToContent) => ShouldCancel
+  callback: (message: MessageWindowToContent) => ShouldCancel,
 ) {
   listenToMessage(callback);
 }
 
 export function listenToMessageDown(
-  callback: (message: MessageContentToWindow) => ShouldCancel
+  callback: (message: MessageContentToWindow) => ShouldCancel,
 ) {
   listenToMessage(callback);
 }

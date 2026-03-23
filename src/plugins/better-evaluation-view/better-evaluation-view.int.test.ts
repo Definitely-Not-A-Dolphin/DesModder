@@ -49,7 +49,7 @@ testWithPage("ListOfComplex", async (driver) => {
 
   await driver.setPluginSetting("better-evaluation-view", "lists", false);
   await driver.expectEvalPlain(
-    'equals\n=\n1 plus "i"\n1+i\n2 plus "i"\n2+i\n3 plus "i"\n3+i\n4 plus "i"\n4+i'
+    'equals\n=\n1 plus "i"\n1+i\n2 plus "i"\n2+i\n3 plus "i"\n3+i\n4 plus "i"\n4+i',
   );
 
   await driver.clean();
@@ -63,7 +63,7 @@ testWithPage("ListOfPoint and ListOfPoint3D", async (driver) => {
   await driver.focusIndex(listOfPointIndex);
   await driver.setLatexAndSync("([1...3],2)");
   await driver.expectEval(
-    "\\left[\\left(1,2\\right),\\left(2,2\\right),\\left(3,2\\right)\\right]"
+    "\\left[\\left(1,2\\right),\\left(2,2\\right),\\left(3,2\\right)\\right]",
   );
   await driver.dispatch({
     type: "new-expression",
@@ -71,17 +71,17 @@ testWithPage("ListOfPoint and ListOfPoint3D", async (driver) => {
   await driver.focusIndex(listOfPoint3DIndex);
   await driver.setLatexAndSync("([1...3],2,3)");
   await driver.expectEval(
-    "\\left[\\left(1,2,3\\right),\\left(2,2,3\\right),\\left(3,2,3\\right)\\right]"
+    "\\left[\\left(1,2,3\\right),\\left(2,2,3\\right),\\left(3,2,3\\right)\\right]",
   );
 
   await driver.setPluginSetting("better-evaluation-view", "lists", false);
   await driver.focusIndex(listOfPointIndex);
   await driver.expectEvalPlain(
-    "equals\n=\nleft parenthesis, 1 , 2 , right parenthesis\n1,2\nleft parenthesis, 2 , 2 , right parenthesis\n2,2\nleft parenthesis, 3 , 2 , right parenthesis\n3,2"
+    "equals\n=\nleft parenthesis, 1 , 2 , right parenthesis\n1,2\nleft parenthesis, 2 , 2 , right parenthesis\n2,2\nleft parenthesis, 3 , 2 , right parenthesis\n3,2",
   );
   await driver.focusIndex(listOfPoint3DIndex);
   await driver.expectEvalPlain(
-    "equals\n=\nleft parenthesis, 1 , 2 , 3 , right parenthesis\n1,2,3\nleft parenthesis, 2 , 2 , 3 , right parenthesis\n2,2,3\nleft parenthesis, 3 , 2 , 3 , right parenthesis\n3,2,3"
+    "equals\n=\nleft parenthesis, 1 , 2 , 3 , right parenthesis\n1,2,3\nleft parenthesis, 2 , 2 , 3 , right parenthesis\n2,2,3\nleft parenthesis, 3 , 2 , 3 , right parenthesis\n3,2,3",
   );
 
   await driver.clean();
@@ -141,7 +141,7 @@ testWithPage(
     // List is untouched with floats=false (default)
     await driver.setLatexAndSync("L=[0/0,1/0,-1/0,4]+0");
     await driver.expectEval(
-      "\\left[\\mathrm{undefined},\\mathrm{undefined},\\mathrm{undefined},4\\right]"
+      "\\left[\\mathrm{undefined},\\mathrm{undefined},\\mathrm{undefined},4\\right]",
     );
 
     // Scalar is untouched with floats=false.
@@ -179,5 +179,5 @@ testWithPage(
     await driver.clean();
     return clean;
   },
-  150000
+  150000,
 );

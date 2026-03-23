@@ -45,16 +45,14 @@ export class GolfStatsPanel extends Component<{
                 // We always need to show stats for folders because drag-drop
                 // can change the stats for the folders.
                 this.props.model().type === "folder" ||
-                areStatsUseful(this.props.model().dsmGolfStats)
-              }
+                areStatsUseful(this.props.model().dsmGolfStats)}
             >
               {() => (
                 <div class="dsm-code-golf-char-count-container">
                   <div class="dsm-code-golf-char-count">
                     <If
                       predicate={() =>
-                        !!window.DSM.codeGolf?.settings.showWidth
-                      }
+                        !!window.DSM.codeGolf?.settings.showWidth}
                     >
                       {() => <div>{() => this.displayedStats().width}</div>}
                     </If>

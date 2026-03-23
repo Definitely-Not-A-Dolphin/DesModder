@@ -55,7 +55,7 @@ async function captureMosaic(
   /** The width and height of each tile of the mosaic */
   { width, height }: { width: number; height: number },
   captureOpts: ScreenshotOpts,
-  dims: MosaicDims
+  dims: MosaicDims,
 ): ImageCapturePromise {
   const canvas = document.createElement("canvas");
   canvas.width = width * dims.x;
@@ -131,7 +131,7 @@ async function captureFrame(vc: VideoCreator): ImageCapturePromise {
 
 async function raceWithCancel(
   vc: VideoCreator,
-  p: Promise<string>
+  p: Promise<string>,
 ): ImageCapturePromise {
   return await Promise.race([p, vc.awaitCancel()]);
 }
@@ -159,7 +159,7 @@ function getClampedMathBounds(vc: VideoCreator, size: ScreenshotOpts) {
     mathBounds,
     Math.min(1 / ratio, 1),
     Math.min(ratio, 1),
-    vc.cc.getViewState()
+    vc.cc.getViewState(),
   );
   return clampedMathBounds;
 }
@@ -283,7 +283,7 @@ async function captureNTimes(vc: VideoCreator) {
 
 function updateOrientationAfterCapture(
   vc: VideoCreator,
-  numStepsRemaining: number
+  numStepsRemaining: number,
 ) {
   const { or } = vc;
   switch (or.orientationMode) {
@@ -350,14 +350,14 @@ export async function capture(vc: VideoCreator) {
     or.setSpinningSpeedAndDirection(noSpeed);
     if (or.orientationMode === "from-to") {
       or.xyRotFrom.setLatexWithoutCallbacks(
-        or.xyRotFrom.getLatexPopulatingDefault()
+        or.xyRotFrom.getLatexPopulatingDefault(),
       );
       or.zTipFrom.setLatexWithoutCallbacks(
-        or.zTipFrom.getLatexPopulatingDefault()
+        or.zTipFrom.getLatexPopulatingDefault(),
       );
       or.setOrientationFromCapture(
         or.xyRotFrom.getValue(),
-        or.zTipFrom.getValue()
+        or.zTipFrom.getValue(),
       );
     }
   }

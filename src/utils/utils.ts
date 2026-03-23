@@ -48,12 +48,12 @@ export function jsx(
       element.setAttribute(
         name,
         typeof value === "object"
-          ? // handle class={{class1: true, class2: false}}
-            Object.keys(value)
-              .filter((key) => value[key])
-              .join(" ")
-          : // all other attribute changes
-            value
+          // handle class={{class1: true, class2: false}}
+          ? Object.keys(value)
+            .filter((key) => value[key])
+            .join(" ")
+          // all other attribute changes
+          : value,
       )
     );
 
@@ -65,7 +65,7 @@ export function jsx(
 
 export function get<T extends object, K extends string | symbol | number>(
   t: T,
-  prop: K
+  prop: K,
 ): K extends keyof T ? T[K] : undefined {
   const obj2 = t as {
     [Key in string | symbol | number]: Key extends keyof T ? T[Key] : undefined;
@@ -85,8 +85,9 @@ export function isDescendant(elem: HTMLElement | null, target: HTMLElement) {
 }
 
 // https://stackoverflow.com/questions/48230773/how-to-create-a-partial-like-that-requires-a-single-property-to-be-set
-export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
-  U[keyof U];
+export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> =
+  & Partial<T>
+  & U[keyof U];
 
 type MapTo<T, U> = {
   [K in keyof T]: U;
@@ -103,6 +104,7 @@ export const zipWith = <
   mapFn: F,
   ...tupleArray: T
 ) =>
-  Array.from({ length: Math.min(...tupleArray.map((a) => a.length)) }, (_, i) =>
-    mapFn(...(tupleArray.map((a) => a[i]) as UnwrapInner<T>))
+  Array.from(
+    { length: Math.min(...tupleArray.map((a) => a.length)) },
+    (_, i) => mapFn(...(tupleArray.map((a) => a[i]) as UnwrapInner<T>)),
   ) as MapTo<T[number], ReturnType<F>>;

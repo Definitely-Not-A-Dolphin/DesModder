@@ -29,7 +29,7 @@ class ImageWidget extends WidgetType {
           fileInput.files[0],
           (err, dataURI: string) => {
             err || toggleString(view, view.posAtDOM(res), this.value, dataURI);
-          }
+          },
         );
       }
     });

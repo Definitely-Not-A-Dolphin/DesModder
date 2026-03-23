@@ -10,7 +10,7 @@ import type { GraphState } from "#graph-state";
 export default function textToRaw(
   cfg: Config,
   text: string,
-  incr?: Partial<IncrementalState>
+  incr?: Partial<IncrementalState>,
 ): [ProgramAnalysis, GraphState | null] {
   const analysis = parse(cfg, text, incr);
   try {
@@ -35,8 +35,9 @@ export function textModeExprToLatex(cfg: Config, tmExpr: string) {
   if (
     parsedTextMode.program.children.length !== 1 ||
     parsedTextMode.diagnostics.length > 0
-  )
+  ) {
     return;
+  }
   const [parsedExpr] = parsedTextMode.program.children;
   if (parsedExpr && parsedExpr.type === "ExprStatement") {
     const aug = childExprToAug(parsedExpr.expr);

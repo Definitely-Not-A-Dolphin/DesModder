@@ -5,35 +5,35 @@
         "deno",
         "!typescript-language-server",
         "!vtsls",
-        "!eslint",
+        "!eslint"
       ],
-      "formatter": "language_server",
+      "formatter": "language_server"
     },
     "Markdown": {
-      "format_on_save": "off",
+      "format_on_save": "off"
     },
     "TSX": {
       "language_servers": [
         "deno",
         "!typescript-language-server",
         "!vtsls",
-        "!eslint",
+        "!eslint"
       ],
-      "formatter": "language_server",
+      "formatter": "language_server"
     },
     "TypeScript": {
       "language_servers": [
         "deno",
         "!typescript-language-server",
         "!vtsls",
-        "!eslint",
+        "!eslint"
       ],
-      "formatter": "language_server",
-    },
+      "formatter": "language_server"
+    }
   },
   "lsp": {
     "eslint": {
-      "enable_lsp_tasks": true,
-    },
-  },
+      "enable_lsp_tasks": true
+    }
+  }
 }

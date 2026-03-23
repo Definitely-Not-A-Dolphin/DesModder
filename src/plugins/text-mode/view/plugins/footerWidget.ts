@@ -2,7 +2,7 @@ import { analysisStateField, tmPlugin } from "../../LanguageServer";
 import { statementsIntersecting } from "../statementIntersection";
 import "./footerWidget.less";
 import { EditorState, RangeSet } from "@codemirror/state";
-import { EditorView, Decoration, WidgetType } from "@codemirror/view";
+import { Decoration, EditorView, WidgetType } from "@codemirror/view";
 import { DCGView } from "#DCGView";
 import { ExpressionFooterView } from "#components";
 import { ExpressionModel } from "#globals";
@@ -39,7 +39,7 @@ export function footerPlugin() {
       if (!container) return;
       (container as HTMLElement).style.setProperty(
         "--dsm-tm-gutter-width",
-        width.toFixed(1) + "px"
+        width.toFixed(1) + "px",
       );
     }),
   ];

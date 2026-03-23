@@ -1,10 +1,10 @@
 import TextMode from "..";
 import {
+  AnyHydrated,
+  AnyHydratedValue,
   astToText,
   childLatexToAST,
   StyleDefaults as Defaults,
-  AnyHydrated,
-  AnyHydratedValue,
 } from "../../../../text-mode-core";
 import { getIndentation } from "../modify";
 import {
@@ -20,13 +20,13 @@ import { SyntaxNode } from "@lezer/common";
 function macroExpandWithSelection(
   before: string,
   selString: string,
-  after: string
+  after: string,
 ) {
   return (
     view: EditorView,
     completion: Completion,
     from: number,
-    to: number
+    to: number,
   ) => {
     const indentation = getIndentation(view, from);
     if (indentation.length > 0) {
@@ -39,7 +39,7 @@ function macroExpandWithSelection(
       annotations: pickedCompletion.of(completion),
       selection: EditorSelection.range(
         from + before.length,
-        from + before.length + selString.length
+        from + before.length + selString.length,
       ),
     });
   };
@@ -52,7 +52,7 @@ const FOLDER_COMPLETIONS: Completion[] = [
     apply: macroExpandWithSelection(
       "table {\n  ",
       "x1",
-      " = []\n  \n  y1 = []\n}"
+      " = []\n  \n  y1 = []\n}",
     ),
   },
   {
@@ -61,9 +61,11 @@ const FOLDER_COMPLETIONS: Completion[] = [
     apply: macroExpandWithSelection(
       'image "',
       "Black Pixel",
-      `" @{\n  url: ${JSON.stringify(
-        Defaults.image.url
-      )},\n  width: 10,\n  height: 10,\n  center: (0, 0),\n}`
+      `" @{\n  url: ${
+        JSON.stringify(
+          Defaults.image.url,
+        )
+      },\n  width: 10,\n  height: 10,\n  center: (0, 0),\n}`,
     ),
   },
   {
@@ -84,21 +86,21 @@ const PROGRAM_COMPLETIONS: Completion[] = [
 
 export function completions(tm: TextMode, context: CompletionContext) {
   const word = context.matchBefore(/\w*/);
-  if (word === null || (word.from === word.to && !context.explicit))
+  if (word === null || (word.from === word.to && !context.explicit)) {
     return null;
+  }
   const tree = syntaxTree(context.state);
   const parent = tree.resolve(context.pos);
   return {
     validFor: /^\w*$/,
     from: word.from,
-    options:
-      parent.name === "BlockInner" && parent.parent!.name === "Folder"
-        ? FOLDER_COMPLETIONS
-        : parent.name === "Program"
-          ? PROGRAM_COMPLETIONS
-          : parent.name === "StyleMapping" || parent.name === "MappingEntry"
-            ? styleCompletions(tm, parent)
-            : [],
+    options: parent.name === "BlockInner" && parent.parent!.name === "Folder"
+      ? FOLDER_COMPLETIONS
+      : parent.name === "Program"
+      ? PROGRAM_COMPLETIONS
+      : parent.name === "StyleMapping" || parent.name === "MappingEntry"
+      ? styleCompletions(tm, parent)
+      : [],
   };
 }
 
@@ -114,10 +116,9 @@ export function completions(tm: TextMode, context: CompletionContext) {
  *   StyleMapping . MappingEntry
  */
 function styleCompletions(tm: TextMode, node: SyntaxNode): Completion[] {
-  const defaults =
-    node.name === "MappingEntry"
-      ? styleDefaults(tm, node.parent!)
-      : styleDefaults(tm, node);
+  const defaults = node.name === "MappingEntry"
+    ? styleDefaults(tm, node.parent!)
+    : styleDefaults(tm, node);
   return styleCompletionsFromDefaults(defaults);
 }
 
@@ -163,30 +164,29 @@ function styleCompletionsFromDefaults(defaults: AnyHydrated): Completion[] {
     completions.push({
       type: "property",
       label: key,
-      apply:
-        value === null
-          ? macroExpandWithSelection(key + ": ", "", ",")
-          : typeof value === "object"
-            ? "type" in value
-              ? macroExpandWithSelection(
-                  key + ": ",
-                  astToText(childLatexToAST(value)),
-                  ","
-                )
-              : macroExpandWithSelection(key + ": @{ ", "", " },")
-            : typeof value === "string"
-              ? macroExpandWithSelection(
-                  key + ': "',
-                  // string stringify will always start and end with `"`
-                  JSON.stringify(value).slice(1, -1),
-                  '",'
-                )
-              : // I don't know if this last case is reachable
-                macroExpandWithSelection(
-                  key + ": ",
-                  JSON.stringify(value),
-                  ","
-                ),
+      apply: value === null
+        ? macroExpandWithSelection(key + ": ", "", ",")
+        : typeof value === "object"
+        ? "type" in value
+          ? macroExpandWithSelection(
+            key + ": ",
+            astToText(childLatexToAST(value)),
+            ",",
+          )
+          : macroExpandWithSelection(key + ": @{ ", "", " },")
+        : typeof value === "string"
+        ? macroExpandWithSelection(
+          key + ': "',
+          // string stringify will always start and end with `"`
+          JSON.stringify(value).slice(1, -1),
+          '",',
+        )
+        // I don't know if this last case is reachable
+        : macroExpandWithSelection(
+          key + ": ",
+          JSON.stringify(value),
+          ",",
+        ),
     });
   }
   return completions;

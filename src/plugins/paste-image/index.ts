@@ -36,10 +36,10 @@ export default class PasteImage extends PluginController {
     } else {
       const { 0: nonImageFiles, 1: imageFiles } = Object.groupBy(
         clipboardFiles,
-        ({ type: mimeType }) => +/image\/*/.test(mimeType)
+        ({ type: mimeType }) => +/image\/*/.test(mimeType),
       );
       // Among the possible errors, only those related to an invalid MIME type is not handled by the image-upload-error event
-      if (nonImageFiles)
+      if (nonImageFiles) {
         setTimeout(() =>
           this.cc.showToast({
             message: this.cc.s("graphing-calculator-error-image-invalid-file", {
@@ -47,6 +47,7 @@ export default class PasteImage extends PluginController {
             }),
           })
         );
+      }
       if (!imageFiles) return;
       const selectedItem = this.cc.getSelectedItem();
       // Do nothing when the focused element is not an expression textarea
@@ -96,11 +97,12 @@ export default class PasteImage extends PluginController {
           runAfterSuccess?.();
         // eslint-disable-next-line no-fallthrough
         case "image-upload-error":
-          if (!this.cc.isUploadingImages())
+          if (!this.cc.isUploadingImages()) {
             setTimeout(() => {
               runFinally?.();
               this.cc.dispatcher.unregister(callbackId);
             });
+          }
           break;
       }
     };

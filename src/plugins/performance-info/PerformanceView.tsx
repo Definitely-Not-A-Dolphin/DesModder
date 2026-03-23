@@ -20,7 +20,7 @@ export class PerformanceView extends Component<{
               tooltip={format("performance-info-sticky-tooltip")}
             >
               <IconButton
-                iconClass={"dsm-icon-bookmark"}
+                iconClass="dsm-icon-bookmark"
                 onTap={() => {
                   this.props.dsm().pillboxMenus?.toggleMenuPinned();
                 }}
@@ -35,27 +35,27 @@ export class PerformanceView extends Component<{
         </div>
         <ul>
           <li>
-            <strong>{format("performance-info-time-in-worker")}: </strong>
+            <strong>{format("performance-info-time-in-worker")}:</strong>
             {() => Math.round(this.props.pi().getTimingData().timeInWorker)}
             ms
           </li>
           <li>
-            <strong>{format("performance-info-compiling")}: </strong>
+            <strong>{format("performance-info-compiling")}:</strong>
             {() => Math.round(this.props.pi().getTimingData().updateAnalysis)}
             ms
           </li>
           <li>
-            <strong>{format("performance-info-rendering")}: </strong>
+            <strong>{format("performance-info-rendering")}:</strong>
             {() => Math.round(this.props.pi().getTimingData().graphAllChanges)}
             ms
           </li>
           <li>
-            <strong>{format("performance-info-other")}: </strong>
+            <strong>{format("performance-info-other")}:</strong>
             {() => {
               const timingData = this.props.pi().getTimingData();
               return Math.round(
                 timingData.timeInWorker -
-                  (timingData.updateAnalysis + timingData.graphAllChanges)
+                  (timingData.updateAnalysis + timingData.graphAllChanges),
               );
             }}
             ms

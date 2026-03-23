@@ -14,42 +14,42 @@ export default class CompactView extends PluginController<Config> {
   afterConfigChange(): void {
     toggleBodyClass(
       "compact-view-remove-spacing-enabled",
-      this.settings.compactFactor > 0
+      this.settings.compactFactor > 0,
     );
     toggleBodyClass(
       "compact-view-no-separating-lines",
-      this.settings.noSeparatingLines
+      this.settings.noSeparatingLines,
     );
     toggleBodyClass(
       "compact-view-highlight-alternating-lines",
-      this.settings.highlightAlternatingLines
+      this.settings.highlightAlternatingLines,
     );
     toggleBodyClass(
       "compact-view-hide-evaluations-enabled",
-      this.settings.hideEvaluations
+      this.settings.hideEvaluations,
     );
     toggleBodyClass("hide-folder-toggles", this.settings.hideFolderToggles);
 
     document.body.style.setProperty(
       "--math-font-size",
-      `${this.settings.mathFontSize}px`
+      `${this.settings.mathFontSize}px`,
     );
     document.body.style.setProperty(
       "--text-font-size",
-      `${this.settings.textFontSize}px`
+      `${this.settings.textFontSize}px`,
     );
     document.body.style.setProperty(
       "--bracket-font-size-factor",
-      `${this.settings.bracketFontSizeFactor}em`
+      `${this.settings.bracketFontSizeFactor}em`,
     );
 
     document.body.style.setProperty(
       "--minimum-font-size",
-      `${this.settings.minimumFontSize}px`
+      `${this.settings.minimumFontSize}px`,
     );
     document.body.style.setProperty(
       "--dsm-compact-mode-multiplier",
-      `${this.settings.compactFactor}`
+      `${this.settings.compactFactor}`,
     );
 
     if (this.settings.hideEvaluations) {
@@ -59,7 +59,7 @@ export default class CompactView extends PluginController<Config> {
 
   updateHiddenEvaluations() {
     const mathitems = document.querySelectorAll(
-      ".dcg-mathitem.dcg-expressionitem"
+      ".dcg-mathitem.dcg-expressionitem",
     );
 
     // go through all math expressions

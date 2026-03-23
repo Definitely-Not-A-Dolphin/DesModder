@@ -24,7 +24,7 @@ export function isBlankMetadata(metadata: Metadata) {
 export function changeExprInMetadata(
   metadata: Metadata,
   id: string,
-  obj: Partial<Expression>
+  obj: Partial<Expression>,
 ) {
   const changed = metadata.expressions[id] ?? {};
   for (const _key in obj) {
@@ -58,7 +58,7 @@ export function mergeMetadata(target: Metadata, source: Metadata) {
 /** Create a new metadata by replacing all IDs `from` with `oldIdToNewId[from]`. */
 export function metadataWithIdsMapped(
   oldMetadata: Metadata,
-  oldIdToNewId: Map<string, string>
+  oldIdToNewId: Map<string, string>,
 ) {
   const out = getBlankMetadata();
   for (const [id, value] of Object.entries(oldMetadata.expressions)) {

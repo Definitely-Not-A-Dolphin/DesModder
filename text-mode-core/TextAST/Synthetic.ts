@@ -41,8 +41,9 @@ export type PrimeExpression = TextAST.PrimeExpression<Synthetic>;
 export type DerivativeExpression = TextAST.DerivativeExpression<Synthetic>;
 export type Positioned = TextAST.Positioned<Synthetic>;
 export type NonExprNode = TextAST.NonExprNode<Synthetic>;
-export type NonExprNonStatementNode =
-  TextAST.NonExprNonStatementNode<Synthetic>;
+export type NonExprNonStatementNode = TextAST.NonExprNonStatementNode<
+  Synthetic
+>;
 export type Node = TextAST.Node<Synthetic>;
 
 export class NodePath<T extends Node = Node> extends TextAST.NodePath<

@@ -2,6 +2,7 @@
 import { Message } from "@fluent/bundle";
 import fs from "fs/promises";
 import { locales } from "#i18n";
+import process from "node:process";
 
 void main();
 
@@ -13,8 +14,9 @@ async function main() {
     console.error("Usage: 'npm run audit-langs' or 'npm run audit-langs fr'");
     process.exit(1);
   }
-  const langs =
-    args.length === 0 ? [...locales.keys()].filter((x) => x !== "en") : args;
+  const langs = args.length === 0
+    ? [...locales.keys()].filter((x) => x !== "en")
+    : args;
   let good = true;
   for (const lang of langs) {
     good = (await compareLang(lang, await getUntranslatable(lang))) && good;
@@ -28,7 +30,7 @@ async function getUntranslatable(lang: string) {
     langFTL
       .split(/#\s*unchanged.*\r?\n/gi)
       .slice(1)
-      .map((block) => block.split(/\n/)[0].split("=")[0].trim())
+      .map((block) => block.split(/\n/)[0].split("=")[0].trim()),
   );
 }
 
@@ -44,8 +46,9 @@ async function compareLang(lang: string, expUnchanged: Set<string>) {
       missing = true;
     }
   }
-  if (missing)
+  if (missing) {
     console.log(`(Missing = included in en.ftl but not ${lang}.ftl)\n`);
+  }
   // Check for excess
   let excess = false;
   for (const key of langMessages.keys()) {
@@ -54,8 +57,9 @@ async function compareLang(lang: string, expUnchanged: Set<string>) {
       excess = true;
     }
   }
-  if (excess)
+  if (excess) {
     console.log(`(Excess = included in ${lang}.ftl but not en.ftl)\n`);
+  }
   // Check for unchanged
   let unchanged = false;
   for (const key of enMessages.keys()) {
@@ -67,12 +71,13 @@ async function compareLang(lang: string, expUnchanged: Set<string>) {
       unchanged = true;
     }
   }
-  if (unchanged)
+  if (unchanged) {
     console.log(
       `(Unchanged = same definition in ${lang}.ftl and en.ftl. ` +
         `Add a comment '# Unchanged' before the definition ` +
-        `in ${lang}.ftl if this is intended.)\n`
+        `in ${lang}.ftl if this is intended.)\n`,
     );
+  }
   // Check for falsely unchanged
   let falselyUnchanged = false;
   for (const key of langMessages.keys()) {
@@ -84,12 +89,13 @@ async function compareLang(lang: string, expUnchanged: Set<string>) {
       falselyUnchanged = true;
     }
   }
-  if (falselyUnchanged)
+  if (falselyUnchanged) {
     console.log(
       `(Falsely unchanged = different definition in ${lang}.ftl and en.ftl, ` +
         `but comment '# Unchanged' is included at the end of the definition ` +
-        `in ${lang}.ftl.)\n`
+        `in ${lang}.ftl.)\n`,
     );
+  }
   // wrap up
   const good = !missing && !excess && !unchanged && !falselyUnchanged;
   if (good) console.log("Looks all good!\n");

@@ -3,17 +3,17 @@ import Node from "#parsing/parsenode.ts";
 import DSM from "#DSM";
 import {
   CheckboxComponent,
+  DropdownPopoverComponent,
   DStaticMathquillViewComponent,
-  ImageIconViewComponent,
-  ExpressionIconViewComponent,
   ExpressionFooterViewComponent,
+  ExpressionIconViewComponent,
+  ImageIconViewComponent,
   InlineMathInputViewComponent,
+  MathQuillConfig,
   MathQuillField,
   MathQuillViewComponent,
   SegmentedControlComponent,
   TooltipComponent,
-  MathQuillConfig,
-  DropdownPopoverComponent,
 } from "../components/desmosComponents";
 import { GenericSettings, PluginID } from "../plugins";
 import { ItemModel, ValueType, ValueTypeMap } from "./models";
@@ -66,24 +66,24 @@ interface Mathtools {
   Label: {
     truncatedLatexLabel: (
       label: ValueTypeMap[ValueType.Number],
-      labelOptions?: LabelOptionsBase
+      labelOptions?: LabelOptionsBase,
     ) => string;
     pointLabel: (
       label: ValueTypeMap[ValueType.Point],
       labelOptions?: LabelOptionsBase,
-      emitComponentsAs?: ComponentEmitType
+      emitComponentsAs?: ComponentEmitType,
     ) => string;
     point3dLabel: (
       label: ValueTypeMap[ValueType.Point3D],
       labelOptions?: LabelOptionsBase,
-      emitComponentsAs?: ComponentEmitType
+      emitComponentsAs?: ComponentEmitType,
     ) => string;
     complexNumberLabel: (
       label: ValueTypeMap[ValueType.Complex],
       labelOptions?: LabelOptionsBase & {
         alwaysEmitImaginary?: boolean;
       },
-      emitComponentsAs?: ComponentEmitType
+      emitComponentsAs?: ComponentEmitType,
     ) => string;
   };
   migrateToLatest: (s: GraphState) => GraphState;
@@ -101,7 +101,7 @@ export interface Parser {
       allowIntervalComprehensions?: boolean;
       disableParentheses?: boolean;
       disabledFeatures?: string[];
-    }
+    },
   ) => Node;
 }
 
@@ -175,7 +175,7 @@ export const Fragile = new Proxy(
     get(_target, prop: keyof Fragile) {
       return window.Desmos?.Private?.Fragile?.[prop];
     },
-  }
+  },
 );
 
 type Section = "colors-only" | "lines" | "points" | "fill" | "label" | "drag";
@@ -188,15 +188,14 @@ export const Private = new Proxy(
     get(_target, prop: keyof Private) {
       return window.Desmos?.Private?.[prop];
     },
-  }
+  },
 );
 
 /* Object.fromEntries based on https://dev.to/svehla/typescript-object-fromentries-389c */
 type DeepWriteable<T> = { -readonly [P in keyof T]: DeepWriteable<T[P]> };
-type FromEntries<T> = T extends [infer Key, any][]
-  ? {
-      [K in Key extends string ? Key : string]: Extract<T[number], [K, any]>[1];
-    }
+type FromEntries<T> = T extends [infer Key, any][] ? {
+    [K in Key extends string ? Key : string]: Extract<T[number], [K, any]>[1];
+  }
   : Record<string, any>;
 
 export type FromEntriesWithReadOnly<T> = FromEntries<DeepWriteable<T>>;

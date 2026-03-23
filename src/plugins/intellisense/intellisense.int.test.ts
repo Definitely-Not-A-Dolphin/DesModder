@@ -20,7 +20,7 @@ describe("Intellisense", () => {
         subscriptname: string | undefined,
         typedSuffix: string,
         latexSuffix: string,
-        suffixLeft: number
+        suffixLeft: number,
       ) => {
         let typedIdentifierSample = varname;
 
@@ -87,10 +87,12 @@ describe("Intellisense", () => {
 
             await driver.assertSelectedItemLatex(
               latexPrefix + expectedLatex + latexSuffix,
-              `Testing Identifier '${typedIdentifierSample}', autocompleting from '${str}', going left ${Math.max(
-                j - 1,
-                0
-              )} characters, ${j === 0 ? "out of subscript" : "in subscript"}.`
+              `Testing Identifier '${typedIdentifierSample}', autocompleting from '${str}', going left ${
+                Math.max(
+                  j - 1,
+                  0,
+                )
+              } characters, ${j === 0 ? "out of subscript" : "in subscript"}.`,
             );
 
             await delay(50);
@@ -162,12 +164,12 @@ describe("Intellisense", () => {
 
       await driver.keyboard.type("c(x)=rgb(x,x,x)");
       await driver.assertSelectedItemLatex(
-        "c\\left(x\\right)=\\operatorname{rgb}\\left(x,x,x\\right)"
+        "c\\left(x\\right)=\\operatorname{rgb}\\left(x,x,x\\right)",
       );
 
       await driver.clean();
     },
-    40000
+    40000,
   );
 });
 

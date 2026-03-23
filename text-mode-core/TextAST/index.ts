@@ -20,15 +20,15 @@ export type Program<C extends S = Concrete> = Positioned<C> & {
   children: Statement<C>[];
 };
 
-type StatementBase<C extends S = Concrete> = Positioned<C> &
-  Styled<C> &
-  (C extends Concrete
-    ? {
-        id: string;
-        index: number;
-      }
-    : // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-      {});
+type StatementBase<C extends S = Concrete> =
+  & Positioned<C>
+  & Styled<C>
+  & (C extends Concrete ? {
+      id: string;
+      index: number;
+    }
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+    : {});
 
 export type Statement<C extends S = Concrete> =
   | ExprStatement<C>
@@ -50,8 +50,10 @@ export type ExprStatement<C extends S = Concrete> = StatementBase<C> & {
   residualVariable?: Identifier<C>;
 };
 
-export type Table<C extends S = Concrete> = StatementBase<C> &
-  HasChildren<C> & {
+export type Table<C extends S = Concrete> =
+  & StatementBase<C>
+  & HasChildren<C>
+  & {
     type: "Table";
     columns: TableColumn<C>[];
   };
@@ -68,8 +70,10 @@ export type Text<C extends S = Concrete> = StatementBase<C> & {
   text: string;
 };
 
-export type Folder<C extends S = Concrete> = StatementBase<C> &
-  HasChildren<C> & {
+export type Folder<C extends S = Concrete> =
+  & StatementBase<C>
+  & HasChildren<C>
+  & {
     type: "Folder";
     title: string;
     children: Statement<C>[];
@@ -198,23 +202,26 @@ export type PiecewiseExpression<C extends S = Concrete> = Positioned<C> & {
   branches: PiecewiseBranch<C>[];
 };
 
-export type PiecewiseBranch<C extends S = Concrete> = Positioned<C> & {
-  type: "PiecewiseBranch";
-} & (
+export type PiecewiseBranch<C extends S = Concrete> =
+  & Positioned<C>
+  & {
+    type: "PiecewiseBranch";
+  }
+  & (
     | {
-        condition: Expression<C>;
-        consequent: Expression<C>;
-      }
+      condition: Expression<C>;
+      consequent: Expression<C>;
+    }
     | {
-        /** null represents "else"/"otherwise"/"always" */
-        condition: null;
-        consequent: Expression<C>;
-      }
+      /** null represents "else"/"otherwise"/"always" */
+      condition: null;
+      consequent: Expression<C>;
+    }
     | {
-        condition: Expression<C>;
-        /** null represents 1 */
-        consequent: null;
-      }
+      condition: Expression<C>;
+      /** null represents 1 */
+      consequent: null;
+    }
   );
 
 export type Restriction<C extends S = Concrete> = Positioned<C> & {
@@ -304,19 +311,17 @@ export type DerivativeExpression<C extends S = Concrete> = Positioned<C> & {
   variable: Identifier<C>;
 };
 
-export type Positioned<C extends S = Concrete> = C extends Concrete
-  ? {
-      pos: Pos;
-    }
-  : // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    {};
+export type Positioned<C extends S = Concrete> = C extends Concrete ? {
+    pos: Pos;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  : {};
 
-export type HasChildren<C extends S = Concrete> = C extends Concrete
-  ? {
-      afterOpen: number;
-    }
-  : // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-    {};
+export type HasChildren<C extends S = Concrete> = C extends Concrete ? {
+    afterOpen: number;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+  : {};
 
 export interface Pos {
   from: number;
@@ -348,7 +353,7 @@ export type Node<C extends S = Concrete> =
   | Expression<C>;
 
 export function isExpression<C extends S = Concrete>(
-  n: Node<C>
+  n: Node<C>,
 ): n is Expression<C> {
   if (isStatement(n)) return false;
   switch (n.type) {
@@ -368,7 +373,7 @@ export function isExpression<C extends S = Concrete>(
 }
 
 export function isStatement<C extends S = Concrete>(
-  n: Node<C>
+  n: Node<C>,
 ): n is Statement<C> {
   switch (n.type) {
     case "ExprStatement":
@@ -390,7 +395,7 @@ export class NodePath<C extends S = Concrete, T extends Node<C> = Node<C>> {
   constructor(
     public node: T,
     public parentPath: NodePath<C> | null,
-    public name?: string | number
+    public name?: string | number,
   ) {}
 
   get parent() {

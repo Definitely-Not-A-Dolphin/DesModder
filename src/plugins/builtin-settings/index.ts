@@ -10,7 +10,7 @@ const settingsKeys = settingsConfigList.map((e) => e.key);
 const specialKeys = specialConfigList.map((e) => e.key);
 
 function hasQueryFlag(s: string) {
-  const params = new URLSearchParams(window.location.href);
+  const params = new URLSearchParams(globalThis.location.href);
   return params.has(s) && params.get(s) !== "false";
 }
 
@@ -23,14 +23,13 @@ export default class BuiltinSettings extends PluginController<Config> {
   afterEnable() {
     this.initialSettings = { ...this.settings };
     for (const key of settingsKeys) {
-      this.initialSettings[key] =
-        (
-          this.calc.settings as typeof this.calc.settings & {
-            advancedStyling: boolean;
-            authorFeatures: boolean;
-            showPerformanceMeter: boolean;
-          }
-        )[key] ?? false;
+      this.initialSettings[key] = (
+        this.calc.settings as typeof this.calc.settings & {
+          advancedStyling: boolean;
+          authorFeatures: boolean;
+          showPerformanceMeter: boolean;
+        }
+      )[key] ?? false;
     }
     for (const key of specialKeys) {
       switch (key) {
@@ -53,7 +52,7 @@ export default class BuiltinSettings extends PluginController<Config> {
   }
 
   private updateURL(config: Config) {
-    const params = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(globalThis.location.search);
     for (const key of specialKeys) {
       switch (key) {
         case "showIDs":
@@ -67,7 +66,7 @@ export default class BuiltinSettings extends PluginController<Config> {
           key satisfies never;
       }
     }
-    const { href } = window.location;
+    const { href } = globalThis.location;
     const url = new URL(href);
     url.search = params.toString();
     const newURL = url.toString().replace(/=trueDSMDELETE/g, "");

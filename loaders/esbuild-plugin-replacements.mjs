@@ -8,8 +8,7 @@ export const esbuildPluginReplacements = () => ({
       const content = await loadFile(args.path);
 
       return {
-        contents:
-          "export default " +
+        contents: "export default " +
           JSON.stringify({
             file: content,
             filename: path.basename(args.path),

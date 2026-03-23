@@ -12,28 +12,28 @@ import { stmtNumbers } from "./plugins/stmtNumbers";
 import { styleCircles } from "./plugins/styleCircles";
 import { styleMappingPlugin } from "./plugins/styleMappingWidgets";
 import {
-  closeBrackets,
   autocompletion,
-  completionKeymap,
+  closeBrackets,
   closeBracketsKeymap,
+  completionKeymap,
 } from "@codemirror/autocomplete";
-import { history, defaultKeymap, historyKeymap } from "@codemirror/commands";
+import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
 import {
-  indentOnInput,
-  foldGutter,
   bracketMatching,
-  syntaxHighlighting,
-  foldKeymap,
   defaultHighlightStyle,
+  foldGutter,
+  foldKeymap,
+  indentOnInput,
+  syntaxHighlighting,
 } from "@codemirror/language";
 import { linter } from "@codemirror/lint";
 import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
 import { EditorState } from "@codemirror/state";
 // Basic editor extensions
 import {
-  EditorView,
   drawSelection,
   dropCursor,
+  EditorView,
   highlightActiveLine,
   keymap,
 } from "@codemirror/view";

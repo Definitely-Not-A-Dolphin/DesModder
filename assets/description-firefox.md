@@ -8,6 +8,9 @@
 <li> Many more features! </li>
 </ul>
 
-All graphs created using this extension are compatible with vanilla Desmos. This means your graphs are always safe to share with others, whether or not they have DesModder.
+All graphs created using this extension are compatible with vanilla Desmos. This
+means your graphs are always safe to share with others, whether or not they have
+DesModder.
 
-Currently only works on the public-facing calculator at <a href="https://desmos.com/calculator">desmos.com/calculator</a>.
+Currently only works on the public-facing calculator at
+<a href="https://desmos.com/calculator">desmos.com/calculator</a>.

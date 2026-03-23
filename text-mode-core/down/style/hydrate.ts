@@ -1,6 +1,6 @@
 import { TextAST } from "../..";
 import { Aug } from "../../aug";
-import { DownState, childExprToAug } from "../astToAug";
+import { childExprToAug, DownState } from "../astToAug";
 import { ComptimeValue, evalExpr } from "../staticEval";
 import { Schema } from "./schema";
 
@@ -17,14 +17,14 @@ export function hydrate<T>(
   defaults: T,
   schema: Schema,
   itemType: string,
-  path = ""
+  path = "",
 ): T | null {
   const smEntries = styleMapping?.entries ?? [];
   for (const entry of smEntries) {
     if (!(entry.property.value in schema)) {
       ds.pushWarning(
         `Property ${entry.property.value} unexpected on ${itemType}${path}`,
-        entry.property.pos
+        entry.property.pos,
       );
     }
   }
@@ -38,20 +38,22 @@ export function hydrate<T>(
     const key = _key as keyof Schema & keyof T & string;
     const schemaType = schema[key];
     const matchingEntries = smEntries.filter(
-      (entry) => entry.property.value === key
+      (entry) => entry.property.value === key,
     );
-    if (matchingEntries.length > 1)
+    if (matchingEntries.length > 1) {
       matchingEntries
         .slice(1)
         .forEach((entry) =>
           ds.pushWarning(
             `Duplicate property ${entry.property.value} on ${itemType}${path}`,
-            entry.property.pos
+            entry.property.pos,
           )
         );
+    }
     const chosenEntry: TextAST.MappingEntry | undefined = matchingEntries[0];
-    if (chosenEntry?.expr === null)
+    if (chosenEntry?.expr === null) {
       throw Error("Null expression in style mapping");
+    }
     function pushError(msg: string) {
       ds.pushError(msg, chosenEntry?.expr?.pos);
       hasNull = true;
@@ -72,18 +74,19 @@ export function hydrate<T>(
           (defaults as any)[key],
           schemaType.schema,
           itemType,
-          path + "." + key
+          path + "." + key,
         );
         if (style === null) hasNull = true;
         res[key] = style;
       } else {
         const evaluated = evalExpr(ds.diagnostics, givenValue);
-        if (schemaType.orBool && typeof evaluated === "boolean")
+        if (schemaType.orBool && typeof evaluated === "boolean") {
           res[key] = evaluated;
-        else
+        } else {
           pushError(
-            `Expected ${errPath} to be style mapping, but got primitive`
+            `Expected ${errPath} to be style mapping, but got primitive`,
           );
+        }
       }
     } else if (givenValue === undefined) {
       res[key] = defaults[key] as any;
@@ -112,29 +115,31 @@ export function hydrate<T>(
               ) {
                 const j = JSON.stringify(evaluated);
                 pushError(
-                  `Expected ${errPath} to evaluate to a list of ${schemaType.length} numbers, but got '${j}'`
+                  `Expected ${errPath} to evaluate to a list of ${schemaType.length} numbers, but got '${j}'`,
                 );
               }
               break;
             case "enum":
-              if (typeof evaluated !== "string")
+              if (typeof evaluated !== "string") {
                 pushError(
-                  `Expected ${errPath} to evaluate to a string, but got ${typeof evaluated}`
+                  `Expected ${errPath} to evaluate to a string, but got ${typeof evaluated}`,
                 );
-              else if (!schemaType.enum.includes(evaluated))
+              } else if (!schemaType.enum.includes(evaluated)) {
                 pushError(
                   `Expected ${errPath} to be one of ` +
                     `${JSON.stringify(schemaType.enum)}, but got ` +
-                    `${JSON.stringify(evaluated)} instead`
+                    `${JSON.stringify(evaluated)} instead`,
                 );
+              }
               break;
           }
         } else {
           // eslint-disable-next-line valid-typeof
-          if (typeof evaluated !== schemaType)
+          if (typeof evaluated !== schemaType) {
             pushError(
-              `Expected ${errPath} to evaluate to ${schemaType}, but got ${typeof evaluated}`
+              `Expected ${errPath} to evaluate to ${schemaType}, but got ${typeof evaluated}`,
             );
+          }
         }
         if (evaluated !== null) res[key] = evaluated;
       }

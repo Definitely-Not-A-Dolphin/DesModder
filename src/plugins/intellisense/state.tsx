@@ -39,7 +39,7 @@ export class IntellisenseState {
 
   getIdentDoc(ident: BoundIdentifier) {
     const mdl = this.cc.getItemModelByIndex(
-      (this.cc.getItemModel(ident.exprId)?.index ?? 0) - 1
+      (this.cc.getItemModel(ident.exprId)?.index ?? 0) - 1,
     );
     return mdl?.type === "text" ? mdl.text : undefined;
   }
@@ -70,8 +70,8 @@ export class IntellisenseState {
   }
 
   afterDisable() {
-    this.cc.evaluator.workerPoolConnection.sendMessage =
-      this.vanillaWorkerPoolSendMessage!;
+    this.cc.evaluator.workerPoolConnection.sendMessage = this
+      .vanillaWorkerPoolSendMessage!;
   }
 
   /**
@@ -160,7 +160,7 @@ export class IntellisenseState {
     const identRefSet = getOrMakeKey(
       this.identifierReferences,
       ident,
-      () => new Set()
+      () => new Set(),
     );
     identRefSet.add(exprId);
   }
@@ -228,7 +228,7 @@ export class IntellisenseState {
               variableName: s.symbol,
               exprId: expression.id,
               id: this.counter++,
-            }))
+            })),
           );
           foundTopLevelBinding = true;
         }
@@ -251,10 +251,9 @@ export class IntellisenseState {
               newBoundIdentifiers.push({
                 exprId: expression.id,
                 variableName: ass.variable.symbol,
-                type:
-                  node.type === "ListComprehension"
-                    ? "listcomp-param"
-                    : "substitution",
+                type: node.type === "ListComprehension"
+                  ? "listcomp-param"
+                  : "substitution",
                 id: this.counter++,
               });
             }
@@ -299,7 +298,7 @@ export class IntellisenseState {
     this.boundIdentifiersInExpressions.set(expression.id, newBoundIdentifiers);
     this.identifiersReferencedInExpression.set(
       expression.id,
-      newIdentifiersReferenced
+      newIdentifiersReferenced,
     );
   }
 }

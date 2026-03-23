@@ -14,7 +14,7 @@ const CROP_EVEN = ["-vf", "crop=floor(iw/2)*2:floor(ih/2)*2"];
 async function exportAll(
   ffmpeg: FFmpeg,
   fileType: FFmpegFileType,
-  fps: number
+  fps: number,
 ) {
   const outFilename = "out." + fileType;
 
@@ -39,7 +39,7 @@ async function exportAll(
     "-i",
     "*.png",
     ...outFlags,
-    outFilename
+    outFilename,
   );
 
   return outFilename;
@@ -102,15 +102,16 @@ async function* files(frames: string[]) {
 async function exportFFmpeg(
   vc: VideoCreator,
   fileType: FFmpegFileType,
-  ext: "png" | "gif" | "mp4" | "webm" | "webp"
+  ext: "png" | "gif" | "mp4" | "webm" | "webp",
 ) {
   const ffmpeg = await initFFmpeg(vc);
 
   const filenames: string[] = [];
 
   async function writeFile(filename: string, frame: Blob) {
-    if (ffmpeg !== null)
+    if (ffmpeg !== null) {
       ffmpeg.FS("writeFile", filename, await fetchFile(frame));
+    }
   }
 
   for await (const { name, input } of files(vc.frames)) {
@@ -148,10 +149,9 @@ export async function exportFrames(vc: VideoCreator) {
 
   const { fileType } = vc;
   const ext = fileType === "apng" ? "png" : fileType;
-  const blob =
-    fileType === "zip"
-      ? await exportZip(vc)
-      : await exportFFmpeg(vc, fileType, ext as Exclude<typeof ext, "zip">);
+  const blob = fileType === "zip"
+    ? await exportZip(vc)
+    : await exportFFmpeg(vc, fileType, ext as Exclude<typeof ext, "zip">);
 
   const url = URL.createObjectURL(blob);
 
@@ -176,6 +176,6 @@ function download(url: string, filename: string) {
   a.click();
   setTimeout(function () {
     document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+    globalThis.URL.revokeObjectURL(url);
   }, 0);
 }

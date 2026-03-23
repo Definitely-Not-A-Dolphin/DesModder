@@ -20,7 +20,7 @@ export default class ExprActionButtons extends PluginController<undefined> {
         (eab, i): ActionButtonWithKey => ({
           ...eab,
           key: `${pluginID}:${i}`,
-        })
+        }),
       )
     );
   }

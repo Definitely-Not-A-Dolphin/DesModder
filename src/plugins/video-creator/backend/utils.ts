@@ -24,19 +24,19 @@ export function scaleBoundsAboutCenter(
   scales: {
     xAxisScale: Scale;
     yAxisScale: Scale;
-  }
+  },
 ) {
   const { lo: left, hi: right } = scaleIntervalAboutCenter(
     b.left,
     b.right,
     xr,
-    scales.xAxisScale
+    scales.xAxisScale,
   );
   const { lo: bottom, hi: top } = scaleIntervalAboutCenter(
     b.bottom,
     b.top,
     yr,
-    scales.yAxisScale
+    scales.yAxisScale,
   );
   return { left, right, bottom, top };
 }
@@ -45,7 +45,7 @@ function scaleIntervalAboutCenter(
   lo: number,
   hi: number,
   r: number,
-  scale: Scale
+  scale: Scale,
 ) {
   switch (scale) {
     case "logarithmic":
@@ -84,7 +84,7 @@ export function segmentInterval(
   lo: number,
   hi: number,
   count: number,
-  scale: Scale
+  scale: Scale,
 ): readonly (readonly [number, number])[] {
   let range;
   switch (scale) {

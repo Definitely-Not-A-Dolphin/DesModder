@@ -104,7 +104,7 @@ export default class GLesmos extends PluginController {
   glesmosToggle(
     id: string,
     ToggleView: any,
-    allowInequality: boolean
+    allowInequality: boolean,
   ): Inserter {
     return () => GLesmosToggle(this, id, ToggleView, allowInequality);
   }

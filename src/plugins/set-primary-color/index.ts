@@ -36,7 +36,7 @@ const configList = [
 
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 const faviconLink = document.querySelector(
-  "link[rel~='icon'][type]"
+  "link[rel~='icon'][type]",
 ) as HTMLLinkElement;
 const originalHref = faviconLink.href;
 
@@ -90,7 +90,7 @@ export default class SetPrimaryColor extends PluginController<Config> {
           // Copy over --dcg-accent-color, --dcg-accent-color-shaded-10, etc.
           this.apiContainer.style.setProperty(
             prop,
-            calcApiContainer.style.getPropertyValue(prop)
+            calcApiContainer.style.getPropertyValue(prop),
           );
         }
       }

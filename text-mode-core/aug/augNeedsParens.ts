@@ -3,7 +3,7 @@ import { Aug } from ".";
 export default function augNeedsParens(
   node: Aug.Latex.AnyChild,
   parent: Aug.Latex.AnyRootOrChild | null,
-  path: string | undefined
+  path: string | undefined,
 ): boolean {
   if (node.type === "Seq" && node.parenWrapped) return true;
   const nodeIsLikeSub = node.type === "Substitution";
@@ -95,17 +95,19 @@ type BinopName = Aug.Latex.BinaryOperator["name"];
 function binopNeedsParens(
   node: Aug.Latex.AnyChild,
   parentName: BinopName,
-  path: string
+  path: string,
 ) {
-  const parentPower =
-    path === "left" ? binopLeftPower(parentName) : binopRightPower(parentName);
+  const parentPower = path === "left"
+    ? binopLeftPower(parentName)
+    : binopRightPower(parentName);
   if (node.type === "BinaryOperator") {
     if (
       (node.name === "CrossMultiply" && parentName === "Multiply") ||
       // For clarity, always parenthesize multiplication in cross product or vice versa etc.
       (node.name === "Multiply" && parentName === "CrossMultiply")
-    )
+    ) {
       return true;
+    }
   }
   return power(node) <= parentPower;
 }
@@ -116,8 +118,8 @@ function binopLeftPower(name: BinopName): number {
   return name === "Divide"
     ? POWERS.top - 1
     : name === "Exponent"
-      ? POWERS.power + 1
-      : binopPower(name) - 1;
+    ? POWERS.power + 1
+    : binopPower(name) - 1;
 }
 
 // This node can hold anything with power greater than (return value) on its right

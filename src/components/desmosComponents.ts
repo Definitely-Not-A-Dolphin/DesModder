@@ -139,7 +139,7 @@ export function Match<Disc extends { type: string }>(
   discriminant: () => Disc,
   branches: {
     [K in Disc["type"]]: (r: Disc & { type: K }) => ComponentChild;
-  }
+  },
 ): ComponentTemplate {
   return createElementWrapped(Switch, {
     key: () => discriminant().type,
@@ -184,7 +184,8 @@ interface ModelAndController {
 }
 
 // <ExpressionIconView ... >
-export abstract class ExpressionIconViewComponent extends Component<ModelAndController> {}
+export abstract class ExpressionIconViewComponent
+  extends Component<ModelAndController> {}
 
 interface ExpressionFooterViewProps extends ModelAndController {
   isFirstRender: boolean;
@@ -192,7 +193,8 @@ interface ExpressionFooterViewProps extends ModelAndController {
 
 // <If predicate={this.shouldShowFooter}>
 //   {() => <div class={this.getFooterClass()}> ...
-export abstract class ExpressionFooterViewComponent extends Component<ExpressionFooterViewProps> {}
+export abstract class ExpressionFooterViewComponent
+  extends Component<ExpressionFooterViewProps> {}
 
 export const {
   ImageIconView,
@@ -227,4 +229,5 @@ interface DropdownPopoverProps {
   };
 }
 
-export abstract class DropdownPopoverComponent extends Component<DropdownPopoverProps> {}
+export abstract class DropdownPopoverComponent
+  extends Component<DropdownPopoverProps> {}

@@ -1,4 +1,5 @@
 import { testWithPageAndOpts } from "#tests";
+import process from "node:process";
 
 const CAPTURE = ".dsm-pillbox-popover .dsm-vc-capture-menu";
 const PREVIEW = ".dsm-pillbox-popover .dsm-vc-preview-menu";
@@ -47,7 +48,7 @@ describe("Video Creator", () => {
 
       // Click graphpaper to close menu
       await driver.click(".dcg-graph-outer");
-    }
+    },
   );
 
   testFn(
@@ -82,6 +83,6 @@ describe("Video Creator", () => {
 
       // Click graphpaper to close menu
       await driver.click(".dcg-graph-outer");
-    }
+    },
   );
 });

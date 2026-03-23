@@ -1,7 +1,7 @@
 import { Inserter, PluginController } from "../../plugins/PluginController";
 import { MenuFunc } from "./components/Menu";
 import { DCGView } from "#DCGView";
-import { plugins, PluginID, ConfigItem } from "#plugins/index.ts";
+import { ConfigItem, PluginID, plugins } from "#plugins/index.ts";
 import { createElementWrapped } from "../../preload/replaceElement";
 import { PillboxButton } from "./components/PillboxButton";
 import { PillboxContainer } from "./components/PillboxContainer";
@@ -149,7 +149,7 @@ export default class PillboxMenus extends PluginController<undefined> {
       this.dsm.setPluginSetting(
         this.expandedPlugin,
         key,
-        this.getDefaultSetting(key)!
+        this.getDefaultSetting(key)!,
       );
   }
 

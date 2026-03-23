@@ -17,7 +17,7 @@ const FALLBACK_COLOR = [0.5, 0.5, 0.5, 1];
 
 function mapToColorSpace(
   clFrom: string | undefined,
-  clTo: string | undefined
+  clTo: string | undefined,
 ): (args: number[]) => number[] {
   if (clFrom === undefined || clTo === undefined) return () => FALLBACK_COLOR;
   if (clFrom === clTo) return (args) => args;
@@ -67,8 +67,8 @@ function mapToColorSpace(
   }
 
   // bitfield to decide what to do with alpha disparity
-  const aBf: number =
-    (rxAlpha.test(clFrom) ? 1 : 0) | (rxAlpha.test(clTo) ? 2 : 0);
+  const aBf: number = (rxAlpha.test(clFrom) ? 1 : 0) |
+    (rxAlpha.test(clTo) ? 2 : 0);
 
   switch (aBf) {
     case 0: // none to none - does nothing
@@ -96,7 +96,7 @@ function getRGBfromHSL(hue: number, sat: number, light: number) {
     .map(
       (kval) =>
         light -
-        lsRatio * Math.max(Math.min(Math.min(kval - 3, 9 - kval), 1), -1)
+        lsRatio * Math.max(Math.min(Math.min(kval - 3, 9 - kval), 1), -1),
     );
 }
 
@@ -108,7 +108,7 @@ function getRGBfromHSV(hue: number, sat: number, value: number) {
     .map((offset) => mod(offset + hue / 60, 6))
     .map(
       (kval) =>
-        value - vsRatio * Math.max(Math.min(Math.min(kval, 4 - kval), 1), 0)
+        value - vsRatio * Math.max(Math.min(Math.min(kval, 4 - kval), 1), 0),
     );
 }
 
@@ -137,8 +137,9 @@ function getHSLfromRGB(red: number, green: number, blue: number) {
   const range: number = max - Math.min(red, green, blue);
 
   const li: number = max - range / 2;
-  const sat: number =
-    li === 0 || li === 1 ? 0 : (max - li) / Math.min(li, 1 - li);
+  const sat: number = li === 0 || li === 1
+    ? 0
+    : (max - li) / Math.min(li, 1 - li);
   let hue: number = 0;
   if (range === 0) hue = 0;
   else if (max === red) hue = (60 * (green - blue)) / range;
@@ -150,8 +151,9 @@ function getHSLfromRGB(red: number, green: number, blue: number) {
 
 function getHSLfromHSV(hue: number, sat: number, value: number) {
   const li: number = value * (1 - sat / 2);
-  const s: number =
-    li === 0 || li === 1 ? 0 : (value - li) / Math.min(li, 1 - li);
+  const s: number = li === 0 || li === 1
+    ? 0
+    : (value - li) / Math.min(li, 1 - li);
   return [hue, s, li];
 }
 
@@ -164,8 +166,8 @@ function parseCSSFunc(color: string): ColorType | null {
   const NUMMAP_RGB: boolean[] = [false, false, false];
   const NUMMAP_HSL: boolean[] = [false, true, true];
 
-  const [, funcName = "", argSet = ""] =
-    matchSignature.exec(color.trim()) ?? [];
+  const [, funcName = "", argSet = ""] = matchSignature.exec(color.trim()) ??
+    [];
   const args0 = matchArgs.exec(argSet);
   if (args0 === null) return null;
   const args = args0.slice(1);
@@ -187,7 +189,7 @@ function parseCSSFunc(color: string): ColorType | null {
     case funcName === "hsla":
       if (!isEqual(pType, NUMMAP_HSL)) return null;
       components = args.map(
-        (num, i) => parseFloat(num) * (pType[i] ? 0.01 : 1)
+        (num, i) => parseFloat(num) * (pType[i] ? 0.01 : 1),
       );
       break;
     default:
@@ -391,7 +393,7 @@ function parseNamedColor(color: string) {
 
 export default function getRGBpack(cssColor: string): number[] {
   const color: number[] | null = parseCSSHex(
-    parseNamedColor(cssColor) ?? cssColor
+    parseNamedColor(cssColor) ?? cssColor,
   );
 
   if (color) {
@@ -401,7 +403,7 @@ export default function getRGBpack(cssColor: string): number[] {
     if (funcPar?.values === undefined) return FALLBACK_COLOR;
     const colorPack: number[] | null = mapToColorSpace(
       funcPar?.type,
-      "rgba"
+      "rgba",
     )(funcPar.values);
     return colorPack ?? FALLBACK_COLOR;
   }

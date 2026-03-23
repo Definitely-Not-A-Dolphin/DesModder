@@ -18,7 +18,7 @@ export default class ScrollBeyond extends PluginController {
     }
 
     const newExpression = document.querySelector<HTMLElement>(
-      ".dcg-new-expression"
+      ".dcg-new-expression",
     );
     if (!newExpression) return;
 
@@ -31,7 +31,7 @@ export default class ScrollBeyond extends PluginController {
     const expPanelHeight = expPanel.getBoundingClientRect().height;
 
     const branding = document.querySelector<HTMLElement>(
-      ".dcg-expressions-branding"
+      ".dcg-expressions-branding",
     );
     if (!branding) return;
     const brandingHeight = branding.getBoundingClientRect().height;
@@ -41,7 +41,7 @@ export default class ScrollBeyond extends PluginController {
     const newExprHeight = newExpr.getBoundingClientRect().height;
 
     const newExpression = document.querySelector<HTMLElement>(
-      ".dcg-new-expression"
+      ".dcg-new-expression",
     );
     if (!newExpression) return;
 

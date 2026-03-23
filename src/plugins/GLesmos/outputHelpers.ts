@@ -2,13 +2,13 @@ import getRGBPack from "./colorParsing";
 
 function glslFloatify(x: number) {
   return Number.isInteger(x)
-    ? // BigInt prevents scientific notation
-      BigInt(x).toString() + ".0"
-    : // scientific notation is ok here. We aren't appending ".0"
-      // NaN gives "NaN", defined via uniform
-      // Infinity gives "Infinity", defined via uniform
-      // -Infinity gives "-Infinity"
-      x.toString();
+    // BigInt prevents scientific notation
+    ? BigInt(x).toString() + ".0"
+    // scientific notation is ok here. We aren't appending ".0"
+    // NaN gives "NaN", defined via uniform
+    // Infinity gives "Infinity", defined via uniform
+    // -Infinity gives "-Infinity"
+    : x.toString();
 }
 
 export function colorVec4(color: string, opacity: number) {

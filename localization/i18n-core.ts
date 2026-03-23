@@ -16,7 +16,7 @@ const Console = console;
 export function format(
   key: string,
   args?: Record<string, FluentVariable> | null,
-  missingReplacement?: string
+  missingReplacement?: string,
 ): string {
   const lang = currentLanguage();
   const bundle = locales.get(lang);
@@ -25,8 +25,9 @@ export function format(
     if (message?.value != null) {
       return bundle.formatPattern(message.value, args);
     }
-    if (missingReplacement === undefined)
+    if (missingReplacement === undefined) {
       Console.warn("[DesModder] Error formatting key", key, "in locale", lang);
+    }
   }
   const englishBundle = locales.get("en")!;
   const englishMessage = englishBundle.getMessage(key);

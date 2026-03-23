@@ -1,24 +1,24 @@
 import { Component, jsx } from "#DCGView";
 import {
-  Toggle,
-  If,
   Checkbox,
-  Tooltip,
   For,
-  Match,
-  IfElse,
   IconButton,
+  If,
+  IfElse,
+  Match,
   Switch,
+  Toggle,
+  Tooltip,
 } from "#components";
 import { format } from "#i18n";
 import {
   ConfigItem,
+  ConfigItemNumber,
   ConfigItemString,
   GenericSettings,
-  SpecificPlugin,
   PluginID,
   plugins,
-  ConfigItemNumber,
+  SpecificPlugin,
 } from "#plugins/index.ts";
 import PillboxMenus from "..";
 import "./Menu.less";
@@ -111,8 +111,7 @@ export default class Menu extends Component<{
                 <div class="dsm-category-container">
                   <For each={() => categoryPlugins[category]} key={(id) => id}>
                     {(getPluginID: () => PluginID) =>
-                      this.plugin(plugins.get(getPluginID())!)
-                    }
+                      this.plugin(plugins.get(getPluginID())!)}
                   </For>
                 </div>
               )}
@@ -130,7 +129,8 @@ export default class Menu extends Component<{
           <div
             class="dsm-plugin-header"
             tabindex={0}
-            onTap={() => this.pm.togglePluginExpanded(plugin.id)}
+            onTap={() =>
+              this.pm.togglePluginExpanded(plugin.id)}
           >
             <div
               class={() => ({
@@ -143,7 +143,8 @@ export default class Menu extends Component<{
             <div>{pluginDisplayName(plugin)}</div>
           </div>
           <Toggle
-            toggled={() => this.pm.dsm.isPluginEnabled(plugin.id)}
+            toggled={() =>
+              this.pm.dsm.isPluginEnabled(plugin.id)}
             disabled={() => !this.pm.dsm.isPluginToggleable(plugin.id)}
             onChange={() => this.pm.dsm.togglePlugin(plugin.id)}
           />
@@ -162,7 +163,8 @@ export default class Menu extends Component<{
                         href={() => plugin.descriptionLearnMore}
                         target="_blank"
                         tabIndex={0}
-                        onTap={(e: MouseEvent) => e.stopPropagation()}
+                        onTap={(e: MouseEvent) =>
+                          e.stopPropagation()}
                       >
                         {" "}
                         {format("menu-learn-more")}
@@ -190,8 +192,7 @@ export default class Menu extends Component<{
         {plugin.config.map((item: ConfigItem) => (
           <If
             predicate={() =>
-              item.shouldShow?.(pluginSettings, this.pm.dsm) ?? true
-            }
+              item.shouldShow?.(pluginSettings, this.pm.dsm) ?? true}
           >
             {() =>
               indentation(
@@ -205,9 +206,8 @@ export default class Menu extends Component<{
                     numberOption(this.pm, item, plugin, pluginSettings),
                   "color-list": () =>
                     colorListOption(this.pm, item, plugin, pluginSettings),
-                })
-              )
-            }
+                }),
+              )}
           </If>
         ))}
       </div>
@@ -237,7 +237,7 @@ function colorListOption(
   pm: PillboxMenus,
   item: ConfigItem,
   plugin: SpecificPlugin,
-  settings: GenericSettings
+  settings: GenericSettings,
 ) {
   const setValue = (newValue: string[]) =>
     pm.expandedPlugin &&
@@ -259,8 +259,7 @@ function colorListOption(
               <ol class="dsm-settings-color-list">
                 <For
                   each={() =>
-                    (settings[item.key] as string[]).map((e, i) => [e, i])
-                  }
+                    (settings[item.key] as string[]).map((e, i) => [e, i])}
                   key={([e, i]) => `${e}:${i}`}
                 >
                   {(getPair: () => [value: string, index: number]) => (
@@ -273,7 +272,7 @@ function colorListOption(
                           setValue(
                             (settings[item.key] as string[]).map((e, j) =>
                               j === getPair()[1] ? newValue : e
-                            )
+                            ),
                           );
                         }}
                       />
@@ -286,15 +285,15 @@ function colorListOption(
                               ...value().slice(getPair()[1] + 1),
                             ]);
                           }}
-                          iconClass={"dcg-icon-plus"}
+                          iconClass="dcg-icon-plus"
                         />
                         <IconButton
                           onTap={() => {
                             setValue(
-                              value().filter((_, j) => j !== getPair()[1])
+                              value().filter((_, j) => j !== getPair()[1]),
                             );
                           }}
-                          iconClass={"dcg-icon-remove"}
+                          iconClass="dcg-icon-remove"
                         />
                       </div>
                     </div>
@@ -324,7 +323,7 @@ function numberOption(
   pm: PillboxMenus,
   item: ConfigItem,
   plugin: SpecificPlugin,
-  settings: GenericSettings
+  settings: GenericSettings,
 ) {
   const numItem = item as ConfigItemNumber;
 
@@ -349,8 +348,7 @@ function numberOption(
         id={`dsm-settings-item__input-${item.key}`}
         onUpdate={(e: HTMLInputElement) =>
           !e.classList.contains("dcg-hovered") &&
-          (e.value = settings[item.key].toString())
-        }
+          (e.value = settings[item.key].toString())}
       />
       <Tooltip tooltip={configItemDesc(plugin, item)} gravity="n">
         <label for={`dsm-settings-item__input-${item.key}`}>
@@ -366,7 +364,7 @@ function booleanOption(
   pm: PillboxMenus,
   item: ConfigItem,
   plugin: SpecificPlugin,
-  settings: GenericSettings
+  settings: GenericSettings,
 ) {
   const toggle = () =>
     pm.expandedPlugin &&
@@ -392,7 +390,7 @@ function stringOption(
   pm: PillboxMenus,
   item: ConfigItem,
   plugin: SpecificPlugin,
-  settings: GenericSettings
+  settings: GenericSettings,
 ) {
   return (
     <div class="dsm-settings-item dsm-settings-color">
@@ -402,25 +400,22 @@ function stringOption(
         value={settings[item.key]}
         onUpdate={(e: HTMLInputElement) =>
           !e.classList.contains("dcg-hovered") &&
-          (e.value = settings[item.key] as string)
-        }
+          (e.value = settings[item.key] as string)}
         onChange={(evt: Event) =>
           pm.expandedPlugin &&
           pm.dsm.setPluginSetting(
             pm.expandedPlugin,
             item.key,
-            (evt.target as HTMLInputElement).value
-          )
-        }
+            (evt.target as HTMLInputElement).value,
+          )}
         onInput={(evt: Event) =>
           pm.expandedPlugin &&
           pm.dsm.setPluginSetting(
             pm.expandedPlugin,
             item.key,
             (evt.target as HTMLInputElement).value,
-            true
-          )
-        }
+            true,
+          )}
       />
       <Tooltip tooltip={configItemDesc(plugin, item)} gravity="n">
         <label for={`dsm-settings-item__input-${item.key}`}>

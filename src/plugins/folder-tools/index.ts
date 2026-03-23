@@ -152,8 +152,9 @@ export default class FolderTools extends PluginController {
         List.moveItemsTo(this.cc.listModel, currIndex, newIndex, 1);
       }
     }
-    if (toDeleteFolderID)
+    if (toDeleteFolderID) {
       List.removeItemById(this.cc.listModel, toDeleteFolderID);
+    }
   }
 
   private noteEnclose(noteIndex: number) {

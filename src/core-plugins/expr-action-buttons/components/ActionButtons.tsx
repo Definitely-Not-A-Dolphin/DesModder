@@ -11,7 +11,8 @@ export function ActionButtons(eab: ExprActionButtons, m: ItemModel) {
       <For each={() => eab.order()} key={(b) => b.key}>
         {(getButton: () => ActionButton) => (
           <If predicate={() => getButton().predicate(m)}>
-            {() => ActionButtonView(getButton(), m)}
+            {() =>
+              ActionButtonView(getButton(), m)}
           </If>
         )}
       </For>

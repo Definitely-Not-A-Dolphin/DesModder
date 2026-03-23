@@ -46,10 +46,11 @@ export default class Wakatime extends PluginController<Config> {
   }
 
   maybeSendHeartbeat(isWrite: boolean) {
-    if (!(performance.now() - this.lastUpdate > heartbeatInterval || isWrite))
+    if (!(performance.now() - this.lastUpdate > heartbeatInterval || isWrite)) {
       return;
+    }
     const graphName = getCurrentGraphTitle(this.calc) ?? "Untitled Graph";
-    const graphURL = window.location.href;
+    const graphURL = globalThis.location.href;
     const lineCount = this.calc.getExpressions().length;
 
     Console.debug("[WakaTime] Sending heartbeat at:", new Date());

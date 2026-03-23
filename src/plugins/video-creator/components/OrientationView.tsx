@@ -1,11 +1,11 @@
 import "./CaptureMethod.css";
 import { Component, jsx } from "#DCGView";
 import {
-  If,
-  StaticMathQuillView,
   IconButton,
-  SwitchUnion,
+  If,
   SegmentedControl,
+  StaticMathQuillView,
+  SwitchUnion,
 } from "#components";
 import { format } from "#i18n";
 import ManagedNumberInput from "./ManagedNumberInput";
@@ -30,13 +30,12 @@ export class OrientationView extends Component<{
             names={() =>
               orientationModes.map((mode) =>
                 format("video-creator-orientation-mode-" + mode)
-              )
-            }
+              )}
             selectedIndex={() => this.getOrientationModeIndex()}
             setSelectedIndex={(i) => this.setOrientationModeIndex(i)}
             allowChange={() => !this.or.vc.isCapturing}
             // TODO-localization
-            ariaGroupLabel={"Select orientation method"}
+            ariaGroupLabel="Select orientation method"
           />
         </div>
         {SwitchUnion(() => this.or.orientationMode, {
@@ -113,14 +112,13 @@ export class OrientationView extends Component<{
                       ? "dcg-icon-move-horizontal"
                       : "dcg-icon-move-vertical";
                   }}
-                  small={true}
+                  small
                 />
                 <StaticMathQuillView
                   latex={() =>
                     this.or.getSpinningSpeedAndDirection()?.dir === "zTip"
                       ? "\\ z:"
-                      : "\\ xy:"
-                  }
+                      : "\\ xy:"}
                 />
               </span>
             )}

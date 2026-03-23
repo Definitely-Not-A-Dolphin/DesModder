@@ -1,5 +1,5 @@
 import { FormatPanel } from "./FormatPanel";
-import { showPanel, EditorView, Panel } from "@codemirror/view";
+import { EditorView, Panel, showPanel } from "@codemirror/view";
 import { DCGView, MountedComponent } from "#DCGView";
 
 function formatPanel(ev: EditorView): Panel {

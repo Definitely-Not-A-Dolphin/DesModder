@@ -4,21 +4,21 @@ import jsTokens, { Token } from "js-tokens";
 export type PatternToken =
   | Token
   | {
-      type: "PatternBalanced";
-      value: string;
-    }
+    type: "PatternBalanced";
+    value: string;
+  }
   | {
-      type: "PatternBalancedNonGreedy";
-      value: string;
-    }
+    type: "PatternBalancedNonGreedy";
+    value: string;
+  }
   | {
-      type: "PatternIdentifierDot";
-      value: string;
-    }
+    type: "PatternIdentifierDot";
+    value: string;
+  }
   | {
-      type: "PatternIdentifier";
-      value: string;
-    };
+    type: "PatternIdentifier";
+    value: string;
+  };
 
 function errorOnLine(msg: string, lineIndex: number, line: string): never {
   throw new ReplacementError(`${msg} (line ${lineIndex + 1}): ${line}`);
@@ -26,11 +26,12 @@ function errorOnLine(msg: string, lineIndex: number, line: string): never {
 
 export function tokenizeReplacement(
   replacementString: string,
-  filename: string
+  filename: string,
 ) {
   replacementString = replacementString.replace(/\r/g, "");
-  if (!replacementString.startsWith("#"))
+  if (!replacementString.startsWith("#")) {
     throw new ReplacementError("File is missing heading (line 1)");
+  }
   const tokens: ReplacementToken[] = [];
   const lines = replacementString.split(/\n/g);
   // starting line (containing "```js") of the current code block, else null
@@ -46,15 +47,18 @@ export function tokenizeReplacement(
       });
     } else if (line.startsWith("*")) {
       const match = /^\*([^*]+)\*(.*)$/.exec(line);
-      if (match === null)
+      if (match === null) {
         errorOnLine(`Line starting with '*' missing second '*'`, i, line);
+      }
       const parts = match[2].split("=>");
-      if (parts.length > 2)
+      if (parts.length > 2) {
         errorOnLine("Duplicate '=>'; only one is allowed", i, line);
+      }
       const args = inlineCodes(parts[0]);
       const ret = inlineCodes(parts[1] ?? "");
-      if (ret.length > 1)
+      if (ret.length > 1) {
         errorOnLine("Duplicate return capture variable", i, line);
+      }
       tokens.push({
         tag: "emph",
         command: normalizeCommand(match[1]),
@@ -64,27 +68,29 @@ export function tokenizeReplacement(
     } else if (line.startsWith("```")) {
       const isStart = line.startsWith("```js");
       if (isStart) {
-        if (codeStartLine !== null)
+        if (codeStartLine !== null) {
           errorOnLine(
             "Unexpected code block start after start. " +
               "Missing '```' or duplicated '```js'",
             i,
-            line
+            line,
           );
+        }
         codeStartLine = i;
       } else {
-        if (codeStartLine === null)
+        if (codeStartLine === null) {
           errorOnLine(
             "Unexpected code block end without start. " +
               "Code blocks need to start with '```js'",
             i,
-            line
+            line,
           );
+        }
         tokens.push({
           tag: "code",
           value: patternTokens(
             lines.slice(codeStartLine + 1, i).join("\n"),
-            filename
+            filename,
           ),
         });
         codeStartLine = null;
@@ -133,7 +139,7 @@ function* _patternTokens(str: string, msg: string): Generator<PatternToken> {
             "Prepend a '$' to indicate you want to match any identifier, or " +
             "lengthen it to longer than 3 letters, or " +
             `write '// ${allowIDs} ${token.value}' to indicate this is a ` +
-            "global or local variable with a fixed name."
+            "global or local variable with a fixed name.",
         );
       }
     }
@@ -165,10 +171,11 @@ function parseToken(token: Token): PatternToken {
 }
 
 function commentInner(token: PatternToken) {
-  if (token.type === "SingleLineComment")
+  if (token.type === "SingleLineComment") {
     return token.value.replace(/^\/+/, "").trim();
-  else if (token.type === "MultiLineComment")
+  } else if (token.type === "MultiLineComment") {
     return token.value.replace(/\/\*+/, "").replace(/\*\//, "").trim();
+  }
 }
 
 function safeDSM(str: string) {
@@ -185,17 +192,17 @@ function inlineCodes(str: string) {
 
 export type ReplacementToken =
   | {
-      tag: "code";
-      value: PatternToken[];
-    }
+    tag: "code";
+    value: PatternToken[];
+  }
   | {
-      tag: "heading";
-      depth: number;
-      text: string;
-    }
+    tag: "heading";
+    depth: number;
+    text: string;
+  }
   | {
-      tag: "emph";
-      command: string;
-      args: string[];
-      returns?: string;
-    };
+    tag: "emph";
+    command: string;
+    args: string[];
+    returns?: string;
+  };

@@ -2,8 +2,8 @@ import { ProgramAnalysis } from "../ProgramAnalysis";
 import { TextAST } from "..";
 import { Config } from "../TextModeConfig";
 import {
-  Identifier,
   constant,
+  Identifier,
   isPiecewiseBoolean,
   isRestrictionBoolean,
 } from "../aug/AugLatex";
@@ -13,7 +13,7 @@ import { DiagnosticsState } from "./diagnostics";
 import { evalExpr } from "./staticEval";
 import * as Hydrated from "./style/Hydrated";
 import * as Default from "./style/defaults";
-import { StyleValue, hydrate } from "./style/hydrate";
+import { hydrate, StyleValue } from "./style/hydrate";
 import * as Schema from "./style/schema";
 import type { Diagnostic } from "@codemirror/lint";
 import type { GrapherState } from "#graph-state";
@@ -21,7 +21,7 @@ import type { GrapherState } from "#graph-state";
 export class DownState extends DiagnosticsState {
   constructor(
     public readonly cfg: Config,
-    diagnostics: Diagnostic[]
+    diagnostics: Diagnostic[],
   ) {
     super(diagnostics);
   }
@@ -31,7 +31,7 @@ export class DownState extends DiagnosticsState {
 
 export default function astToAug(
   cfg: Config,
-  analysis: ProgramAnalysis
+  analysis: ProgramAnalysis,
 ): [ProgramAnalysis, Aug.State | null] {
   const state: Aug.State = {
     version: 9,
@@ -53,8 +53,9 @@ export default function astToAug(
     } else if (stmtAug.type === "settings") {
       state.settings = { ...state.settings, ...stmtAug.settings };
     } else if (stmtAug.type === "ticker") {
-      if (state.expressions.ticker !== undefined)
+      if (state.expressions.ticker !== undefined) {
         ds.pushWarning("Duplicate ticker, ignoring this one", stmt.pos);
+      }
       state.expressions.ticker = stmtAug.ticker;
     } else {
       state.expressions.list.push(stmtAug);
@@ -95,7 +96,7 @@ function fixEmptyColors(cfg: Config, state: Aug.State) {
 
 function forEachExpr(
   items: Aug.ItemAug[],
-  func: (e: Aug.ItemAug | Aug.TableColumnAug) => void
+  func: (e: Aug.ItemAug | Aug.TableColumnAug) => void,
 ) {
   items.forEach((item) => {
     func(item);
@@ -114,7 +115,7 @@ function forEachExpr(
 function statementToAug(
   ds: DownState,
   state: Aug.State,
-  stmt: TextAST.Statement
+  stmt: TextAST.Statement,
 ):
   | Aug.ItemAug
   | { type: "settings"; settings: GrapherState }
@@ -141,15 +142,15 @@ function statementToAug(
 function textToAug(
   ds: DownState,
   styleMapping: TextAST.StyleMapping | null,
-  stmt: TextAST.Text
+  stmt: TextAST.Text,
 ): Aug.TextAug | null {
   const style = hydrate(ds, styleMapping, Default.text, Schema.text, "text");
   return style !== null
     ? {
-        ...exprBase(style, stmt),
-        type: "text",
-        text: stmt.text,
-      }
+      ...exprBase(style, stmt),
+      type: "text",
+      text: stmt.text,
+    }
     : null;
 }
 
@@ -157,7 +158,7 @@ function regressionToAug(
   ds: DownState,
   styleMapping: TextAST.StyleMapping | null,
   stmt: TextAST.ExprStatement,
-  exprAST: TextAST.BinaryExpression
+  exprAST: TextAST.BinaryExpression,
 ): Aug.ExpressionAug | null {
   const expr: Aug.Latex.Regression = {
     type: "Regression",
@@ -169,7 +170,7 @@ function regressionToAug(
     styleMapping,
     Default.regression,
     Schema.regression,
-    "regression"
+    "regression",
   );
   if (style === null) return null;
   const params = (stmt.parameters?.entries ?? []).map(
@@ -178,12 +179,12 @@ function regressionToAug(
       if (typeof evaluated !== "number") {
         ds.pushError(
           `Expected regression parameter to evaluate to number, but got ${typeof evaluated}`,
-          value.pos
+          value.pos,
         );
         return null;
       }
       return [identifierToAug(variable), evaluated];
-    }
+    },
   );
   if (!everyNonNull(params)) return null;
   return {
@@ -192,8 +193,8 @@ function regressionToAug(
     latex: expr,
     regression: {
       isLogMode: style.logMode,
-      residualVariable:
-        stmt.residualVariable && identifierToAug(stmt.residualVariable),
+      residualVariable: stmt.residualVariable &&
+        identifierToAug(stmt.residualVariable),
       regressionParameters: new Map(params),
     },
     color: "",
@@ -210,7 +211,7 @@ function regressionToAug(
 function expressionToAug(
   ds: DownState,
   styleMapping: TextAST.StyleMapping | null,
-  stmt: TextAST.ExprStatement
+  stmt: TextAST.ExprStatement,
 ): Aug.ExpressionAug | null {
   if (stmt.expr.type === "BinaryExpression" && stmt.expr.op === "~") {
     return regressionToAug(ds, styleMapping, stmt, stmt.expr);
@@ -223,7 +224,7 @@ function expressionToAug(
     styleMapping,
     Default.expression,
     Schema.expression,
-    "expression"
+    "expression",
   );
   if (style === null) return null;
   return {
@@ -231,14 +232,13 @@ function expressionToAug(
     // Use empty string as an ID placeholder. These will get filled in at the end
     ...exprBase(style, stmt),
     latex: expr,
-    label:
-      style.label && style.label.text !== ""
-        ? {
-            ...style.label,
-            size: style.label.size,
-            angle: style.label.angle,
-          }
-        : undefined,
+    label: style.label && style.label.text !== ""
+      ? {
+        ...style.label,
+        size: style.label.size,
+        angle: style.label.angle,
+      }
+      : undefined,
     // hidden from common
     errorHidden: style.errorHidden,
     glesmos: style.glesmos,
@@ -246,14 +246,14 @@ function expressionToAug(
     displayEvaluationAsFraction: style.displayEvaluationAsFraction,
     slider: style.slider
       ? {
-          period: style.slider.period,
-          loopMode: style.slider.loopMode,
-          playDirection: style.slider.reversed ? -1 : 1,
-          isPlaying: style.slider.playing,
-          min: style.slider.min,
-          max: style.slider.max,
-          step: style.slider.step,
-        }
+        period: style.slider.period,
+        loopMode: style.slider.loopMode,
+        playDirection: style.slider.reversed ? -1 : 1,
+        isPlaying: style.slider.playing,
+        min: style.slider.min,
+        max: style.slider.max,
+        step: style.slider.step,
+      }
       : {},
     polarDomain: style.domain?.theta,
     parametricDomain: style.domain?.t,
@@ -261,18 +261,17 @@ function expressionToAug(
     parametricDomain3Dv: style.domain?.v,
     parametricDomain3Dr: style.domain?.r,
     parametricDomain3Dphi: style.domain?.phi,
-    cdf:
-      style.cdf &&
-      !exprEvalSameDeep(style.cdf as any, { min: -Infinity, max: Infinity })
-        ? { min: style.cdf.min, max: style.cdf.max }
-        : undefined,
+    cdf: style.cdf &&
+        !exprEvalSameDeep(style.cdf as any, { min: -Infinity, max: Infinity })
+      ? { min: style.cdf.min, max: style.cdf.max }
+      : undefined,
     // TODO: vizProps
     vizProps: {},
     clickableInfo: style.onClick
       ? {
-          description: style.clickDescription,
-          latex: style.onClick,
-        }
+        description: style.clickDescription,
+        latex: style.onClick,
+      }
       : undefined,
     ...columnExpressionCommonStyle(ds, style),
   };
@@ -281,14 +280,14 @@ function expressionToAug(
 function tickerToAug(
   ds: DownState,
   styleMapping: TextAST.StyleMapping | null,
-  handler: TextAST.Expression
+  handler: TextAST.Expression,
 ): null | { type: "ticker"; ticker: Aug.TickerAug } {
   const hydrated = hydrate(
     ds,
     styleMapping,
     Default.ticker,
     Schema.ticker,
-    "ticker"
+    "ticker",
   );
   if (hydrated === null) return null;
   return {
@@ -303,14 +302,14 @@ function tickerToAug(
 
 function settingsToAug(
   ds: DownState,
-  styleMapping: TextAST.StyleMapping | null
+  styleMapping: TextAST.StyleMapping | null,
 ): null | { type: "settings"; settings: GrapherState } {
   const hydrated = hydrate(
     ds,
     styleMapping,
     Default.settings,
     Schema.settings,
-    "settings"
+    "settings",
   );
   if (hydrated === null) return null;
   const res = {
@@ -334,47 +333,44 @@ function settingsToAug(
 
 function columnExpressionCommonStyle(
   ds: DownState,
-  style: Hydrated.ColumnExpressionCommon
+  style: Hydrated.ColumnExpressionCommon,
 ) {
   const res = {
-    color:
-      typeof style.color === "string"
-        ? style.color
-        : (style.color.type === "Identifier" &&
-            ds.cfg.colors[style.color.symbol.replace("_", "")]) ||
-          style.color,
+    color: typeof style.color === "string"
+      ? style.color
+      : (style.color.type === "Identifier" &&
+        ds.cfg.colors[style.color.symbol.replace("_", "")]) ||
+        style.color,
     hidden: style.hidden,
-    points:
-      style.points === true
-        ? {}
-        : style.points === false
-          ? { size: constant(0) }
-          : style.points
-            ? exprEvalSame(style.points.opacity, 0) ||
-              exprEvalSame(style.points.size, 0)
-              ? { size: constant(0) }
-              : {
-                  opacity: style.points.opacity,
-                  size: style.points.size,
-                  style: style.points.style,
-                  dragMode: style.points.drag,
-                }
-            : undefined,
-    lines:
-      style.lines === true
-        ? {}
-        : style.lines === false
-          ? { width: constant(0) }
-          : style.lines
-            ? exprEvalSame(style.lines.opacity, 0) ||
-              exprEvalSame(style.lines.width, 0)
-              ? { width: constant(0) }
-              : {
-                  opacity: style.lines.opacity,
-                  width: style.lines.width,
-                  style: style.lines.style,
-                }
-            : undefined,
+    points: style.points === true
+      ? {}
+      : style.points === false
+      ? { size: constant(0) }
+      : style.points
+      ? exprEvalSame(style.points.opacity, 0) ||
+          exprEvalSame(style.points.size, 0)
+        ? { size: constant(0) }
+        : {
+          opacity: style.points.opacity,
+          size: style.points.size,
+          style: style.points.style,
+          dragMode: style.points.drag,
+        }
+      : undefined,
+    lines: style.lines === true
+      ? {}
+      : style.lines === false
+      ? { width: constant(0) }
+      : style.lines
+      ? exprEvalSame(style.lines.opacity, 0) ||
+          exprEvalSame(style.lines.width, 0)
+        ? { width: constant(0) }
+        : {
+          opacity: style.lines.opacity,
+          width: style.lines.width,
+          style: style.lines.style,
+        }
+      : undefined,
   };
   return res;
 }
@@ -390,7 +386,7 @@ function exprBase(style: Hydrated.NonFolderBase, stmt: TextAST.Statement) {
 function tableToAug(
   ds: DownState,
   styleMapping: TextAST.StyleMapping | null,
-  stmt: TextAST.Table
+  stmt: TextAST.Table,
 ): Aug.TableAug | null {
   const style = hydrate(ds, styleMapping, Default.table, Schema.table, "table");
   if (style === null) return null;
@@ -406,14 +402,14 @@ function tableToAug(
 
 function tableColumnToAug(
   ds: DownState,
-  column: TextAST.TableColumn
+  column: TextAST.TableColumn,
 ): Aug.TableColumnAug | null {
   const style = hydrate(
     ds,
     column.style,
     Default.column,
     Schema.column,
-    "column"
+    "column",
   );
   if (style === null) return null;
   const { expr } = column;
@@ -427,13 +423,13 @@ function tableColumnToAug(
     if (expr.left.type !== "Identifier") {
       ds.pushError(
         `Expected column to assign to an identifier, but got ${expr.left.type}`,
-        expr.left.pos
+        expr.left.pos,
       );
       return null;
     } else if (expr.right.type !== "ListExpression") {
       ds.pushError(
         `Expected table assignment to assign from a ListExpression, but got ${expr.right.type}`,
-        expr.right.pos
+        expr.right.pos,
       );
       return null;
     } else {
@@ -448,17 +444,16 @@ function tableColumnToAug(
     return {
       ...base,
       values: [],
-      latex:
-        expr.type === "ListExpression"
-          ? // Desmos complains about a plain list expression as latex
-            // so placate it by adding zero
-            {
-              type: "BinaryOperator",
-              name: "Add",
-              left: constant(0),
-              right: list,
-            }
-          : list,
+      latex: expr.type === "ListExpression"
+        // Desmos complains about a plain list expression as latex
+        // so placate it by adding zero
+        ? {
+          type: "BinaryOperator",
+          name: "Add",
+          left: constant(0),
+          right: list,
+        }
+        : list,
     };
   }
 }
@@ -466,7 +461,7 @@ function tableColumnToAug(
 function imageToAug(
   ds: DownState,
   styleMapping: TextAST.StyleMapping | null,
-  expr: TextAST.Image
+  expr: TextAST.Image,
 ): Aug.ImageAug | null {
   const style = hydrate(ds, styleMapping, Default.image, Schema.image, "image");
   if (style === null) return null;
@@ -484,11 +479,11 @@ function imageToAug(
     draggable: style.draggable,
     clickableInfo: style.onClick
       ? {
-          description: style.clickDescription,
-          latex: style.onClick,
-          hoveredImage: style.hoveredImage,
-          depressedImage: style.depressedImage,
-        }
+        description: style.clickDescription,
+        latex: style.onClick,
+        hoveredImage: style.hoveredImage,
+        depressedImage: style.depressedImage,
+      }
       : undefined,
   };
   return res;
@@ -498,7 +493,7 @@ function folderToAug(
   ds: DownState,
   styleMapping: TextAST.StyleMapping | null,
   expr: TextAST.Folder,
-  state: Aug.State
+  state: Aug.State,
 ): Aug.FolderAug | null {
   const children: Aug.NonFolderAug[] = [];
   const style = hydrate(
@@ -506,7 +501,7 @@ function folderToAug(
     styleMapping,
     Default.folder,
     Schema.folder,
-    "folder"
+    "folder",
   );
   if (style === null) return null;
   for (const child of expr.children) {
@@ -544,15 +539,16 @@ function exprEvalSame(expr: Aug.Latex.AnyChild, expected: number) {
 
 function exprEvalSameDeep<T extends Record<string, Aug.Latex.AnyChild>>(
   exprMap: T,
-  expected: { [K in keyof T]: number }
+  expected: { [K in keyof T]: number },
 ) {
-  for (const key in expected)
+  for (const key in expected) {
     if (!exprEvalSame(exprMap[key], expected[key])) return false;
+  }
   return true;
 }
 
 export function childExprToAug(
-  expr: StyleValue | TextAST.Expression
+  expr: StyleValue | TextAST.Expression,
 ): Aug.Latex.AnyChild {
   if (expr.type === "StyleValue") throw Error("Unexpected style value");
   switch (expr.type) {
@@ -602,7 +598,7 @@ export function childExprToAug(
             identifier: identifierToAug(identifier),
             open,
             bounds: [childExprToAug(min), childExprToAug(max)],
-          })
+          }),
         ),
         bracketWrapped: expr.bracketWrapped,
       };
@@ -615,11 +611,13 @@ export function childExprToAug(
     case "PiecewiseExpression":
       return piecewiseToAug(expr.branches);
     case "Restriction": {
-      if (expr.condition === true)
+      if (expr.condition === true) {
         return { type: "Restriction", condition: true };
+      }
       const condition = childExprToAug(expr.condition);
-      if (!isRestrictionBoolean(condition))
+      if (!isRestrictionBoolean(condition)) {
         throw Error("Invalid restriction condition");
+      }
       return {
         type: "Restriction",
         condition,
@@ -628,8 +626,9 @@ export function childExprToAug(
     case "Or": {
       const left = childExprToAug(expr.left);
       const right = childExprToAug(expr.right);
-      if (!isRestrictionBoolean(left) || !isRestrictionBoolean(right))
+      if (!isRestrictionBoolean(left) || !isRestrictionBoolean(right)) {
         throw Error("Invalid or condition");
+      }
       return { type: "Or", left, right };
     }
     case "PrefixExpression":
@@ -667,15 +666,15 @@ export function childExprToAug(
     case "MemberExpression":
       return ["x", "y"].includes(expr.property.name)
         ? {
-            type: "OrderedPairAccess",
-            point: childExprToAug(expr.object),
-            index: expr.property.name as "x" | "y",
-          }
+          type: "OrderedPairAccess",
+          point: childExprToAug(expr.object),
+          index: expr.property.name as "x" | "y",
+        }
         : {
-            type: "DotAccess",
-            object: childExprToAug(expr.object),
-            property: identifierToAug(expr.property),
-          };
+          type: "DotAccess",
+          object: childExprToAug(expr.object),
+          property: identifierToAug(expr.property),
+        };
     case "ListAccessExpression":
       return {
         type: "ListAccess",
@@ -689,21 +688,22 @@ export function childExprToAug(
         symbols: expr.symbols,
       };
     case "BinaryExpression":
-      if (expr.op === "~")
+      if (expr.op === "~") {
         throw Error("Programming Error: `~` in child BinaryExpression");
+      }
       return binopMap[expr.op] !== undefined
         ? {
-            type: "BinaryOperator",
-            name: binopMap[expr.op] as any,
-            left: childExprToAug(expr.left),
-            right: childExprToAug(expr.right),
-          }
+          type: "BinaryOperator",
+          name: binopMap[expr.op] as any,
+          left: childExprToAug(expr.left),
+          right: childExprToAug(expr.right),
+        }
         : {
-            type: "Comparator",
-            operator: expr.op as any,
-            left: childExprToAug(expr.left),
-            right: childExprToAug(expr.right),
-          };
+          type: "Comparator",
+          operator: expr.op as any,
+          left: childExprToAug(expr.left),
+          right: childExprToAug(expr.right),
+        };
     case "PostfixExpression":
       return {
         type: "Factorial",
@@ -743,13 +743,13 @@ export function childExprToAug(
     default:
       expr satisfies never;
       throw new Error(
-        `Programming Error: Unexpected AST node ${(expr as any).type}`
+        `Programming Error: Unexpected AST node ${(expr as any).type}`,
       );
   }
 }
 
 function assignment(
-  e: TextAST.AssignmentExpression
+  e: TextAST.AssignmentExpression,
 ): Aug.Latex.AssignmentExpression {
   return {
     type: "AssignmentExpression",
@@ -759,18 +759,18 @@ function assignment(
 }
 
 function callExpressionToAug(
-  expr: TextAST.CallExpression
+  expr: TextAST.CallExpression,
 ): Aug.Latex.FunctionCall | Aug.Latex.DotAccess {
-  if (expr.callee.type === "Identifier")
+  if (expr.callee.type === "Identifier") {
     return {
       type: "FunctionCall",
       callee: identifierToAug(expr.callee),
       args: expr.arguments.map(childExprToAug),
     };
-  else if (
+  } else if (
     expr.callee.type === "MemberExpression" &&
     expr.callee.property.type === "Identifier"
-  )
+  ) {
     // Case e.g. L.random(5) or f(x).total()
     return {
       type: "DotAccess",
@@ -781,6 +781,7 @@ function callExpressionToAug(
         args: expr.arguments.map(childExprToAug),
       },
     };
+  }
   throw Error("Programming Error: Invalid callee");
 }
 
@@ -794,7 +795,7 @@ const binopMap: Record<string, string> = {
 };
 
 function piecewiseToAug(
-  branches: TextAST.PiecewiseBranch[]
+  branches: TextAST.PiecewiseBranch[],
 ): Aug.Latex.AnyChild {
   if (branches.length === 0) {
     return {
@@ -808,12 +809,13 @@ function piecewiseToAug(
 }
 
 function piecewiseInnerToAug(
-  branches: TextAST.PiecewiseBranch[]
+  branches: TextAST.PiecewiseBranch[],
 ): Aug.Latex.AnyChild {
   const [firstBranch] = branches;
   if (firstBranch === undefined) return constant(NaN);
-  if (firstBranch.condition === null)
+  if (firstBranch.condition === null) {
     return childExprToAug(firstBranch.consequent);
+  }
   const firstCond = childExprToAug(firstBranch.condition);
   if (!isPiecewiseBoolean(firstCond)) {
     throw Error("Invalid condition");
@@ -821,10 +823,9 @@ function piecewiseInnerToAug(
   return {
     type: "Piecewise" as const,
     condition: firstCond,
-    consequent:
-      firstBranch.consequent === null
-        ? constant(1)
-        : childExprToAug(firstBranch.consequent),
+    consequent: firstBranch.consequent === null
+      ? constant(1)
+      : childExprToAug(firstBranch.consequent),
     alternate: piecewiseInnerToAug(branches.slice(1)),
   };
 }

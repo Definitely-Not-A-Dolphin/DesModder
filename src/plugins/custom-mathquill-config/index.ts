@@ -34,7 +34,7 @@ export default class CustomMathQuillConfig extends PluginController<Config> {
 
     this.cc.rootElt.style.setProperty(
       "--delimiter-override",
-      `"${CSS.escape(config.delimiterOverride)}"`
+      `"${CSS.escape(config.delimiterOverride)}"`,
     );
 
     const settingsObj = {

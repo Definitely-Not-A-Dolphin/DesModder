@@ -20,20 +20,24 @@ function _ColorEvaluation(val: TypedConstantColorValue) {
                 .slice(0, length)
                 .map(
                   (clist) =>
-                    `\\left(${clist.map(truncatedLatexLabel).join(",")}\\right)`
+                    `\\left(${
+                      clist.map(truncatedLatexLabel).join(",")
+                    }\\right)`,
                 )
                 .join(",") +
               (value.length > length
                 ? `\\textcolor{gray}{...\\mathit{${
-                    value.length - length
-                  }\\ more}}`
+                  value.length - length
+                }\\ more}}`
                 : "") +
               "\\right]\\right)"
             );
           } else {
-            return `\\operatorname{rgb}\\left(${value
-              .map(truncatedLatexLabel)
-              .join(",")}\\right)`;
+            return `\\operatorname{rgb}\\left(${
+              value
+                .map(truncatedLatexLabel)
+                .join(",")
+            }\\right)`;
           }
         }}
       />

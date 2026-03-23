@@ -21,7 +21,7 @@ describe("Find-replace", () => {
     await driver.click(".dcg-expression-search-bar .dcg-math-field");
     await driver.keyboard.press("a");
     await driver.click(
-      ".dsm-find-replace-expression-replace-bar .dcg-math-field"
+      ".dsm-find-replace-expression-replace-bar .dcg-math-field",
     );
     await driver.keyboard.press("c");
 

@@ -1,9 +1,9 @@
 import window, { Console } from "#globals";
 import injectScript from "#utils/injectScript.ts";
 import {
-  postMessageUp,
-  listenToMessageDown,
   arrayToSet,
+  listenToMessageDown,
+  postMessageUp,
 } from "#utils/messages.ts";
 import { pollForValue } from "#utils/utils.ts";
 import { addForceDisabled, addPanic } from "../panic/panic";
@@ -33,9 +33,9 @@ function runDesModder() {
 function getCalcDesktopURL() {
   const script: HTMLScriptElement | null =
     document.querySelector("script[src*='shared_calculator_desktop']") ??
-    document.querySelector("script[src*='calculator_desktop']") ??
-    document.querySelector("script[src*='calculator_geometry']") ??
-    document.querySelector("script[src*='calculator_3d']");
+      document.querySelector("script[src*='calculator_desktop']") ??
+      document.querySelector("script[src*='calculator_geometry']") ??
+      document.querySelector("script[src*='calculator_3d']");
   return script?.src;
 }
 
@@ -45,7 +45,7 @@ async function load(pluginsForceDisabled: Set<string>) {
   if ((window as any).DesModder) {
     throw new Error(
       "DesModder is already loaded in the tab, probably due to an update in Firefox, " +
-        "or due to reinstalling DesModder. Stopping the loading process for DesModder."
+        "or due to reinstalling DesModder. Stopping the loading process for DesModder.",
     );
   }
 
@@ -59,7 +59,7 @@ async function load(pluginsForceDisabled: Set<string>) {
   if ((window.Desmos as any)?.Calculator || (window as any).Calc) {
     throw new Error(
       "DesModder failed to load properly; it was unable to block the initial load of Desmos. " +
-        "Stopping the loading process for DesModder."
+        "Stopping the loading process for DesModder.",
     );
   }
 
@@ -67,12 +67,12 @@ async function load(pluginsForceDisabled: Set<string>) {
     BROWSER === "firefox"
       ? `%cThe warning above (Loading failed for the <script> with source...) is intentional and does not indicate a bug.`
       : `%cThe error above (net::ERR_BLOCKED_BY_CLIENT) is intentional and does not indicate a bug.`,
-    "font-weight: bold;"
+    "font-weight: bold;",
   );
 
   Console.log(
     `%cDesModder is present! (Version ${VERSION})`,
-    "color: #388c46; font-weight: bold; font-size: 2em;"
+    "color: #388c46; font-weight: bold; font-size: 2em;",
   );
 
   const srcURL = await pollForValue(getCalcDesktopURL);
@@ -81,13 +81,13 @@ async function load(pluginsForceDisabled: Set<string>) {
   const calcDesktop = await (await fetch(srcURL + "?")).text();
   // Filter out force-disabled replacements
   const enabledReplacements = replacements.filter(
-    (r) => !r.plugins.every((p) => pluginsForceDisabled.has(p))
+    (r) => !r.plugins.every((p) => pluginsForceDisabled.has(p)),
   );
   // Apply replacements
   const newCode = await fullReplacementCached(
     calcDesktop,
     enabledReplacements,
-    { addPanic, workerAppend }
+    { addPanic, workerAppend },
   );
   // tryRunDesModder polls until the following eval'd code is done.
   tryRunDesModder();

@@ -29,7 +29,7 @@ export function compileGLesmos(
   lineWidth: number,
   derivativeX: undefined | IRExpression,
   derivativeY: undefined | IRExpression,
-  emitGLSL: (chunk: IRChunk, maxUniforms: number) => EmittedGLSL
+  emitGLSL: (chunk: IRChunk, maxUniforms: number) => EmittedGLSL,
 ): GLesmosShaderPackage {
   fillOpacity = clampParam(fillOpacity, 0, 1, 0.4);
   lineOpacity = clampParam(lineOpacity, 0, 1, 0.9);
@@ -37,7 +37,7 @@ export function compileGLesmos(
 
   let { source, shaderFunctions, shaderUniforms } = emitGLSL(
     concreteTree._chunk,
-    MAX_RESTRICTION_UNIFORMS
+    MAX_RESTRICTION_UNIFORMS,
   );
   const shaderFunctionsList = [shaderFunctions];
 

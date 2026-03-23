@@ -8,7 +8,7 @@ export type ComptimeValue = ComptimeValueScalar | number[];
 
 export function evalExpr(
   diagnostics: Diagnostic[],
-  expr: TextAST.Expression<Concrete | Synthetic>
+  expr: TextAST.Expression<Concrete | Synthetic>,
 ): ComptimeValue | null {
   switch (expr.type) {
     case "Number":
@@ -27,8 +27,8 @@ export function evalExpr(
         diagnostics.push(
           error(
             "Static-evaluated lists may only contain numbers",
-            "pos" in expr ? expr.pos : undefined
-          )
+            "pos" in expr ? expr.pos : undefined,
+          ),
         );
         someNotNumber = true;
         return 0;
@@ -45,8 +45,8 @@ export function evalExpr(
         diagnostics.push(
           error(
             `Undefined identifier: ${expr.name.replace("_", "")}`,
-            "pos" in expr ? expr.pos : undefined
-          )
+            "pos" in expr ? expr.pos : undefined,
+          ),
         );
         return null;
       }
@@ -54,8 +54,8 @@ export function evalExpr(
       diagnostics.push(
         error(
           `Static evaluation of ${expr.type} has not yet been implemented`,
-          "pos" in expr ? expr.pos : undefined
-        )
+          "pos" in expr ? expr.pos : undefined,
+        ),
       );
       return null;
   }

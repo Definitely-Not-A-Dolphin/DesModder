@@ -5,7 +5,7 @@ import type { Diagnostic } from "@codemirror/lint";
 function diagnostic(
   severity: "error" | "warning",
   message: string,
-  pos: Pos | undefined
+  pos: Pos | undefined,
 ) {
   return {
     message,

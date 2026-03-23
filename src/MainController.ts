@@ -1,14 +1,14 @@
-import window, { DispatchedEvent, type Calc } from "#globals";
+import window, { type Calc, DispatchedEvent } from "#globals";
 import {
-  plugins,
-  pluginList,
-  PluginID,
   GenericSettings,
-  TransparentPlugins,
   IDToPluginSettings,
+  PluginID,
   PluginInstance,
+  pluginList,
+  plugins,
+  TransparentPlugins,
 } from "./plugins";
-import { postMessageUp, mapToRecord, recordToMap } from "#utils/messages.ts";
+import { mapToRecord, postMessageUp, recordToMap } from "#utils/messages.ts";
 
 export default class DSM extends TransparentPlugins {
   cc = this.calc.controller;
@@ -20,8 +20,8 @@ export default class DSM extends TransparentPlugins {
   private readonly forceDisabled: Set<string>;
   readonly pluginSettings = Object.fromEntries(
     pluginList.map(
-      (plugin) => [plugin.id, getDefaultConfig(plugin.id)] as const
-    )
+      (plugin) => [plugin.id, getDefaultConfig(plugin.id)] as const,
+    ),
   ) as IDToPluginSettings;
 
   private readonly vanillaHandleAction: (evt: DispatchedEvent) => void;
@@ -34,14 +34,15 @@ export default class DSM extends TransparentPlugins {
     opts: {
       /** Called after destroying the DSM (but before destroying the Calc). */
       afterDestroy?: () => void;
-    } = {}
+    } = {},
   ) {
     super();
     this.afterDestroy = opts.afterDestroy;
-    if (calc._dsmConnected)
+    if (calc._dsmConnected) {
       throw new Error(
-        "Cannot bind DesModder controller (DSM) twice to one calc instance."
+        "Cannot bind DesModder controller (DSM) twice to one calc instance.",
       );
+    }
     calc._dsmConnected = true;
     this.destroyHandlers.push(() => {
       calc._dsmConnected = false;
@@ -49,7 +50,7 @@ export default class DSM extends TransparentPlugins {
     // default values
     this.forceDisabled = window.DesModderPreload!.pluginsForceDisabled;
     this.pluginsEnabled = new Map(
-      pluginList.map((plugin) => [plugin.id, plugin.enabledByDefault] as const)
+      pluginList.map((plugin) => [plugin.id, plugin.enabledByDefault] as const),
     );
     // Setup handler override
     this.vanillaHandleAction = this.cc.handleDispatchedAction.bind(this.cc);
@@ -58,7 +59,7 @@ export default class DSM extends TransparentPlugins {
       this.cc.handleDispatchedAction = this.vanillaHandleAction;
     });
     this.vanillaUpdateTheComputedWorld = this.cc.updateTheComputedWorld.bind(
-      this.cc
+      this.cc,
     );
     this.cc.updateTheComputedWorld = this.updateTheComputedWorld.bind(this);
     this.destroyHandlers.push(() => {
@@ -114,7 +115,7 @@ export default class DSM extends TransparentPlugins {
   }
 
   applyStoredSettings(
-    storedSettings: Map<PluginID, GenericSettings | undefined>
+    storedSettings: Map<PluginID, GenericSettings | undefined>,
   ) {
     for (const { id } of pluginList) {
       const stored = storedSettings.get(id);
@@ -192,7 +193,7 @@ export default class DSM extends TransparentPlugins {
     if (!same) {
       if (window.DesModderPreload) {
         window.DesModderPreload.pluginsEnabled = mapToRecord(
-          this.pluginsEnabled
+          this.pluginsEnabled,
         );
       }
       postMessageUp({
@@ -281,8 +282,9 @@ export default class DSM extends TransparentPlugins {
 
   togglePluginSettingBoolean(pluginID: PluginID, key: string) {
     const pluginSettings = this.pluginSettings[pluginID];
-    if (pluginSettings)
+    if (pluginSettings) {
       this.setPluginSetting(pluginID, key, !(pluginSettings[key] as boolean));
+    }
   }
 
   postSetPluginSettingsMessage() {
@@ -324,7 +326,7 @@ export default class DSM extends TransparentPlugins {
     pluginID: PluginID,
     key: string,
     value: boolean | string | number | string[],
-    temporary: boolean = false
+    temporary: boolean = false,
   ) {
     this.updatePluginSettings(pluginID, { [key]: value }, temporary);
   }
@@ -332,7 +334,7 @@ export default class DSM extends TransparentPlugins {
   private updatePluginSettings(
     pluginID: PluginID,
     value: any,
-    temporary: boolean
+    temporary: boolean,
   ) {
     const pluginSettings = this.pluginSettings[pluginID];
     if (!pluginSettings) return;

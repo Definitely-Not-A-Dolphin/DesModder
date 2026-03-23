@@ -14,7 +14,7 @@ export class PluginController<
 
   constructor(
     readonly dsm: DSM,
-    public settings: Settings
+    public settings: Settings,
   ) {}
 
   afterEnable() {}

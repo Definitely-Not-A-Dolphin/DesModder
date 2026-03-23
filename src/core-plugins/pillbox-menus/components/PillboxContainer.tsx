@@ -1,7 +1,7 @@
 import PillboxMenus from "..";
 import "./PillboxContainer.less";
 import { Component, jsx } from "#DCGView";
-import { If, For } from "#components";
+import { For, If } from "#components";
 import { PillboxButton } from "./PillboxButton";
 
 export class PillboxContainer extends Component<{
@@ -20,8 +20,7 @@ export class PillboxContainer extends Component<{
     return (
       <If
         predicate={() =>
-          this.horizontal === this.pm.showHorizontalPillboxMenu()
-        }
+          this.horizontal === this.pm.showHorizontalPillboxMenu()}
       >
         {() => this.templateTrue()}
       </If>

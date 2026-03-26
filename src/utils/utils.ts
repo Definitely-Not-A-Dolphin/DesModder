@@ -76,11 +76,11 @@ export function get<T extends object, K extends string | symbol | number>(
 
 export function isDescendant(elem: HTMLElement | null, target: HTMLElement) {
   while (elem instanceof HTMLElement) {
-    if (elem === target) {
-      return true;
-    }
+    if (elem === target) return true;
+
     elem = elem.parentElement;
   }
+
   return false;
 }
 
@@ -88,9 +88,7 @@ export function isDescendant(elem: HTMLElement | null, target: HTMLElement) {
 export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
-type MapTo<T, U> = {
-  [K in keyof T]: U;
-};
+type MapTo<T, U> = { [K in keyof T]: U };
 
 type UnwrapInner<T extends ReadonlyArray<ReadonlyArray<unknown>>> = {
   [K in keyof T]: T[K][number];

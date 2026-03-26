@@ -20,7 +20,7 @@ import { drawGLesmosSketchToCtx } from "../plugins/GLesmos/drawGLesmosSketchToCt
  * returns before actually initializing the calculator. This leads to a race
  * condition, so poll for Calc being ready. */
 function tryRunDesModder() {
-  if ((window as any).Calc !== undefined) runDesModder();
+  if (window.Calc !== undefined) runDesModder();
   else setTimeout(tryRunDesModder, 10);
 }
 
@@ -42,7 +42,7 @@ function getCalcDesktopURL() {
 async function load(pluginsForceDisabled: Set<string>) {
   if (window.location.pathname === "/geometry-legacy") return;
 
-  if ((window as any).DesModder) {
+  if (window.DesModder) {
     throw new Error(
       "DesModder is already loaded in the tab, probably due to an update in Firefox, " +
         "or due to reinstalling DesModder. Stopping the loading process for DesModder."
@@ -56,7 +56,7 @@ async function load(pluginsForceDisabled: Set<string>) {
     drawGLesmosSketchToCtx,
   } as any;
 
-  if ((window.Desmos as any)?.Calculator || (window as any).Calc) {
+  if ((window.Desmos as any)?.Calculator || window.Calc) {
     throw new Error(
       "DesModder failed to load properly; it was unable to block the initial load of Desmos. " +
         "Stopping the loading process for DesModder."
@@ -91,9 +91,11 @@ async function load(pluginsForceDisabled: Set<string>) {
   );
   // tryRunDesModder polls until the following eval'd code is done.
   tryRunDesModder();
+  // This property isn't on DWindow?
   (window as any).dsm_workerAppend = workerAppend;
   // eslint-disable-next-line no-eval
   (0, eval)(newCode);
+  // Deletion of a property that doesn't exist?
   delete (window as any).dsm_workerAppend;
 }
 

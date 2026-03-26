@@ -10,6 +10,10 @@ import {
 } from "./plugins";
 import { postMessageUp, mapToRecord, recordToMap } from "#utils/messages.ts";
 
+/**
+ * Object that allows access to the settings of Desmodder (and a few other internal things).
+ * This class is exposed in the web console.
+ */
 export default class DSM extends TransparentPlugins {
   cc = this.calc.controller;
   /**
@@ -363,5 +367,6 @@ function getDefaultConfig(id: PluginID) {
       out[configItem.key] = configItem.default;
     }
   }
+
   return out;
 }

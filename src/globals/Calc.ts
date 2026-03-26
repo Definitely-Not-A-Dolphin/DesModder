@@ -249,7 +249,7 @@ interface CalcPrivate {
         typedText: (text: string) => void;
       }
     | undefined;
-  /// / undocumented, may break
+  // undocumented, may break
   controller: {
     rootElt: HTMLElement;
     isNarrow: () => boolean;
@@ -391,5 +391,8 @@ interface CalcDummy {
   _dsmConnected?: boolean;
 }
 
+/**
+ * Very important
+ */
 export type Calc = CalcDummy & CalcPrivate & Desmos.Calculator;
 export type CalcController = Calc["controller"];

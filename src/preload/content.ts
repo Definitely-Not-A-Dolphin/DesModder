@@ -48,8 +48,10 @@ function getInitialData() {
   });
 }
 
-type KID = keyof InitialData;
-function getItem<T extends KID>(items: UntrustedInitialData, key: T) {
+function getItem<T extends keyof InitialData>(
+  items: UntrustedInitialData,
+  key: T
+) {
   return items?.[key] ?? initialDataDefaults[key];
 }
 

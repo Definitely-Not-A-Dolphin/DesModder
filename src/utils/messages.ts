@@ -1,10 +1,10 @@
-/*
-Post message conventions:
-  Always have a type
-  apply-* = message from content script to page, applying some data
-  set-* = message from page to content script, asking to store data in chrome.storage
-  get-* = message from page to content script, asking to get data in chrome.storage
-*/
+/**
+ * Post message conventions:
+ * Always have a type
+ * apply-* = message from content script to page, applying some data
+ * set-* = message from page to content script, asking to store data in chrome.storage
+ * get-* = message from page to content script, asking to get data in chrome.storage
+ */
 import { WindowHeartbeatOptions } from "#plugins/wakatime/heartbeat.ts";
 import { GenericSettings, PluginID } from "#plugins/index.ts";
 

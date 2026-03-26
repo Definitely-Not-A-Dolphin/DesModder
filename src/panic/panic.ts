@@ -82,6 +82,7 @@ function addPanickedPlugin(plugin: string) {
     const list = panicPopover.querySelector("ul#dsm-panic-list")!;
     addLabelledCheckboxItem(list, plugin);
   }
+
   panickedPlugins.add(plugin);
 }
 

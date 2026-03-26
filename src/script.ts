@@ -1,16 +1,16 @@
 import DSM from "#DSM";
 import "./fonts/style.css";
-import window, { Calc } from "#globals";
+import window from "#globals";
 
 const query = new URLSearchParams(window.location.search);
 
 function initDsm() {
-  const calc = (window as any).Calc as Calc;
+  const calc = window.Calc;
   const dsm = new DSM(calc, {
     afterDestroy: () => {
-      delete (window as any).DSM;
-      delete (window as any).DesModder.controller;
-      delete (window as any).DesModder.exposedPlugins;
+      delete window.DSM;
+      delete window.DesModder.controller;
+      delete window.DesModder.exposedPlugins;
 
       // `setTimeout` to wait until after the event loop, with the idea that
       // the `destroy()` callee is likely to run `initializeApi()` in the
@@ -31,7 +31,7 @@ function initDsm() {
 }
 
 export function tryInitDsm() {
-  if ((window as any).Calc !== undefined) initDsm();
+  if (window.Calc !== undefined) initDsm();
   else setTimeout(tryInitDsm, 10);
 }
 

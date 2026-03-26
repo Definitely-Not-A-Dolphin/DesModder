@@ -9,12 +9,11 @@ const CACHE_KEY = "replacement_cached";
 interface ReplacementOpts {
   addPanic: (b: Block) => void;
   /**
-  /*
-  * The replacement functions doesn't actually append the `workerAppend` string,
-  * it just uses it for a cache key. The function does add a `${window.dsm_workerAppend}`
-  * in the worker string, so the expectation is that `window.dsm_workerAppend` is
-  * set on the window before the new worker string is evaluated.
-  */
+   * The replacement functions doesn't actually append the `workerAppend` string,
+   * it just uses it for a cache key. The function does add a `${window.dsm_workerAppend}`
+   * in the worker string, so the expectation is that `window.dsm_workerAppend` is
+   * set on the window before the new worker string is evaluated.
+   */
   workerAppend: string;
 }
 
@@ -106,12 +105,12 @@ async function setCache(db: IDBPDatabase, obj: Cached) {
 }
 
 // https://github.com/bryc/code/blob/fed42df9db547493452e32375c93d7854383e480/jshash/experimental/cyrb53.js
-/*
-    cyrb53 (c) 2018 bryc (github.com/bryc)
-    A fast and simple hash function with decent collision resistance.
-    Largely inspired by MurmurHash2/3, but with a focus on speed/simplicity.
-    Public domain. Attribution appreciated.
-*/
+/**
+ * cyrb53 (c) 2018 bryc (github.com/bryc)
+ * A fast and simple hash function with decent collision resistance.
+ * Largely inspired by MurmurHash2/3, but with a focus on speed/simplicity.
+ * Public domain. Attribution appreciated.
+ */
 function cyrb53(str: string, seed = 0) {
   let h1 = 0xdeadbeef ^ seed;
   let h2 = 0x41c6ce57 ^ seed;

@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
 
 // Open /calculator when the browser action is clicked.
 if (BROWSER === "chrome") {
-  chrome.action.onClicked?.addListener(() => {
+  chrome.action.onClicked.addListener(() => {
     void chrome.tabs.create({
       url: "https://www.desmos.com/calculator",
     });

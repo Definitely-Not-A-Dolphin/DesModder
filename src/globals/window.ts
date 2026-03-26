@@ -1,27 +1,34 @@
-import { DCGViewModule } from "../DCGView";
-import Node from "#parsing/parsenode.ts";
 import DSM from "#DSM";
+import Node from "#parsing/parsenode.ts";
+import { GraphState } from "../../graph-state";
 import {
   CheckboxComponent,
+  DropdownPopoverComponent,
   DStaticMathquillViewComponent,
-  ImageIconViewComponent,
-  ExpressionIconViewComponent,
   ExpressionFooterViewComponent,
+  ExpressionIconViewComponent,
+  ImageIconViewComponent,
   InlineMathInputViewComponent,
+  MathQuillConfig,
   MathQuillField,
   MathQuillViewComponent,
   SegmentedControlComponent,
   TooltipComponent,
-  MathQuillConfig,
-  DropdownPopoverComponent,
 } from "../components/desmosComponents";
+import { DCGViewModule } from "../DCGView";
 import { GenericSettings, PluginID } from "../plugins";
+import { Calc } from "./Calc";
 import { ItemModel, ValueType, ValueTypeMap } from "./models";
-import { GraphState } from "../../graph-state";
 
+/**
+ * Interface with Window, Desmos and Desmodder properties?
+ *
+ * @extends Window
+ */
 export interface DWindow extends Window {
+  // Why is this any?
   DesModder: any;
-  DSM: DSM;
+  DSM?: DSM;
   DesModderPreload?: {
     pluginsForceDisabled: Set<PluginID>;
     pluginsEnabled: Record<PluginID, boolean | undefined>;
@@ -29,9 +36,17 @@ export interface DWindow extends Window {
   };
   // DesModderFragile: {};
   Desmos: Desmos;
+  Calc: Calc;
 }
 
+/**
+ * The Desmos namespace from @types/desmos.
+ * Not to be confused with the Desmos Interface
+ */
 type DesmosPublic = typeof Desmos;
+/**
+ * Interface representing Desmos?
+ */
 interface Desmos extends DesmosPublic {
   Private: {
     Fragile: Fragile;
@@ -45,6 +60,9 @@ interface Desmos extends DesmosPublic {
   };
 }
 
+/**
+ * Interface for the MathQuill API
+ */
 interface MathQuillApi {
   latex: () => string;
 }
@@ -213,4 +231,4 @@ declare global {
  * Use `console.log` (lowercase) when you're debugging, to avoid accidental commit
  * Use `/* eslint-disable no-console` and lowercase `console.log` on node scripts
  */
-export const Console = ((globalThis ?? window) as any).console;
+export const Console = (globalThis ?? window).console;

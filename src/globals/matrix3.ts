@@ -2,6 +2,7 @@ import type { Grapher3d } from "./Calc";
 
 /** Most methods mutate this. */
 export interface Matrix3 {
+  // Why is this undefined?
   __nominallyMatrix3: undefined;
   /** Row-major 9 elements. */
   elements: number[];

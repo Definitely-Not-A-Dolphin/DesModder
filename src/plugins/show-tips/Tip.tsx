@@ -1,15 +1,15 @@
-import "./Tip.less";
-import { getTipData } from "./tips";
-import { Component, jsx } from "#DCGView";
+import { Component } from "#DCGView";
 import { If } from "#components";
 import { format } from "#i18n";
-import ShowTips from ".";
+import "./Tip.less";
+import ShowTips from "./index.ts";
+import { getTipData } from "./tips.ts";
 
 export default class Tip extends Component<{ st: ShowTips }> {
   currentTipIndex!: number;
   tips!: ReturnType<typeof getTipData>;
 
-  init() {
+  override init() {
     this.tips = getTipData();
     this.currentTipIndex = Math.floor(Math.random() * this.tips.length);
   }

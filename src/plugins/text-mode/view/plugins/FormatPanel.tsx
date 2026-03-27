@@ -1,10 +1,10 @@
-import { astToText } from "../../../../../text-mode-core";
-import { analysisStateField } from "../../LanguageServer";
-import "./FormatPanel.less";
-import { EditorView } from "@codemirror/view";
-import { Component, jsx } from "#DCGView";
+import { Component } from "#DCGView";
 import { Button, Checkbox, If, Tooltip } from "#components";
 import { format } from "#i18n";
+import { EditorView } from "@codemirror/view";
+import { astToText } from "@desmodder/text-mode-core";
+import { analysisStateField } from "../../LanguageServer.ts";
+import "./FormatPanel.less";
 
 export class FormatPanel extends Component<{
   ev: EditorView;
@@ -14,7 +14,7 @@ export class FormatPanel extends Component<{
   spaces!: boolean;
   newlines!: boolean;
 
-  init() {
+  override init() {
     this.spaces = true;
     this.newlines = true;
     this.ev = this.props.ev();

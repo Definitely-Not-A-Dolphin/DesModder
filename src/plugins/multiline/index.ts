@@ -1,13 +1,13 @@
-import { PluginController } from "../PluginController";
-import { Config, configList } from "./config";
-import "./multiline.less";
-import { CollapseMode, unverticalify, verticalify } from "./verticalify";
 import { MathQuillField, MathQuillView } from "#components";
 import { DispatchedEvent } from "#globals";
 import {
   getController,
   mqKeystroke,
 } from "#plugins/intellisense/latex-parsing.tsx";
+import { PluginController } from "../PluginController.ts";
+import { Config, configList } from "./config.ts";
+import "./multiline.less";
+import { CollapseMode, unverticalify, verticalify } from "./verticalify.ts";
 
 export const R = 1;
 export const L = -1;

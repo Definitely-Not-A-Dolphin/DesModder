@@ -1,6 +1,6 @@
 import * as moo from "#moo";
-import { ProgramAnalysis } from "../ProgramAnalysis";
 import { TextAST } from "..";
+import { ProgramAnalysis } from "../ProgramAnalysis";
 import {
   Expression,
   isExpression,

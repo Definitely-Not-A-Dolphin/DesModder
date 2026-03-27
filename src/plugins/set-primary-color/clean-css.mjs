@@ -11,7 +11,7 @@
  *   cd src/plugins/set-primary-color/
  *   node clean-css.mjs > _overrides.less && npx prettier --write _overrides.less
  */
-import { readFileSync } from "fs";
+import { readFileSync } from "node:fs";
 
 let css = readFileSync("raw.css").toString();
 

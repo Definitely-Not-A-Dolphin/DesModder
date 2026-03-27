@@ -1,6 +1,3 @@
-import { Folder, Program, Table } from "../../../../../text-mode-core/TextAST";
-import { analysisStateField } from "../../LanguageServer";
-import { statementsIntersecting } from "../statementIntersection";
 import { EditorState, Extension, RangeSet } from "@codemirror/state";
 import {
   EditorView,
@@ -9,6 +6,13 @@ import {
   gutters,
   ViewUpdate,
 } from "@codemirror/view";
+import {
+  Folder,
+  Program,
+  Table,
+} from "../../../../../text-mode-core/TextAST/index.ts";
+import { analysisStateField } from "../../LanguageServer.ts";
+import { statementsIntersecting } from "../statementIntersection.ts";
 
 export function stmtNumbers(): Extension {
   return [gutters(), stmtNumberGutter];
@@ -61,11 +65,11 @@ class NumberMarker extends GutterMarker {
     super();
   }
 
-  eq(other: NumberMarker) {
+  override eq(other: NumberMarker) {
     return this.number === other.number;
   }
 
-  toDOM() {
+  override toDOM() {
     return document.createTextNode(this.number);
   }
 }

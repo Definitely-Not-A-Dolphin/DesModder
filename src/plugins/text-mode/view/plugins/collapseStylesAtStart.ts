@@ -1,7 +1,7 @@
-import { analysisStateField } from "../../LanguageServer";
-import { statementsIntersecting } from "../statementIntersection";
 import { foldEffect } from "@codemirror/language";
 import { EditorState } from "@codemirror/state";
+import { analysisStateField } from "../../LanguageServer.ts";
+import { statementsIntersecting } from "../statementIntersection.ts";
 
 function collapsedRanges(state: EditorState) {
   const { program } = state.field(analysisStateField);

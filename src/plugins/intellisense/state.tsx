@@ -1,12 +1,12 @@
-import { BoundIdentifier } from ".";
-import {
-  buildConfigFromGlobals,
-  parseRootLatex,
-} from "../../../text-mode-core";
-import { mapAugAST } from "./latex-parsing";
 import type { Calc, DispatchedEvent, ItemModel } from "#globals";
 import { rootKeys } from "#plugins/find-replace/backend.ts";
 import { get } from "#utils/utils.ts";
+import {
+  buildConfigFromGlobals,
+  parseRootLatex,
+} from "@desmodder/text-mode-core";
+import { BoundIdentifier } from "./index.tsx";
+import { mapAugAST } from "./latex-parsing.tsx";
 
 function getOrMakeKey<K, V>(map: Map<K, V>, k: K, v: () => V) {
   if (map.has(k)) {

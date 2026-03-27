@@ -1,12 +1,3 @@
-import TextMode from "..";
-import {
-  AnyHydrated,
-  AnyHydratedValue,
-  astToText,
-  childLatexToAST,
-  StyleDefaults as Defaults,
-} from "../../../../text-mode-core";
-import { getIndentation } from "../modify";
 import {
   Completion,
   CompletionContext,
@@ -15,7 +6,16 @@ import {
 import { syntaxTree } from "@codemirror/language";
 import { EditorSelection } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
+import {
+  AnyHydrated,
+  AnyHydratedValue,
+  astToText,
+  childLatexToAST,
+  StyleDefaults as Defaults,
+} from "@desmodder/text-mode-core";
 import { SyntaxNode } from "@lezer/common";
+import TextMode from "../index.ts";
+import { getIndentation } from "../modify.ts";
 
 function macroExpandWithSelection(
   before: string,

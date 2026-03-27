@@ -1,3 +1,6 @@
+import { DispatchedEvent } from "#globals";
+import { ChangeSpec, StateEffect } from "@codemirror/state";
+import { EditorView } from "@codemirror/view";
 import {
   astToText,
   childExprToAug,
@@ -8,15 +11,12 @@ import {
   rawNonFolderToAug,
   rawToAugSettings,
   rawToDsmMetadata,
-} from "../../../text-mode-core";
-import { Settings, Statement } from "../../../text-mode-core/TextAST";
-import { TextAST } from "text-mode-core";
-import { addRawID, tmPlugin } from "./LanguageServer";
-import { ChangeSpec, StateEffect } from "@codemirror/state";
-import { EditorView } from "@codemirror/view";
-import { GraphState, NonFolderState } from "../../../graph-state";
-import { DispatchedEvent } from "#globals";
-import Metadata from "metadata/interface";
+} from "@desmodder/text-mode-core";
+import { GraphState, NonFolderState } from "@desmodder/graph-state";
+import Metadata from "#metadata/interface.ts";
+import { TextAST } from "../../../text-mode-core/TextAST";
+import { Settings, Statement } from "../../../text-mode-core/TextAST/index.ts";
+import { addRawID, tmPlugin } from "./LanguageServer.ts";
 
 // @settings related
 const settingsEvents = [

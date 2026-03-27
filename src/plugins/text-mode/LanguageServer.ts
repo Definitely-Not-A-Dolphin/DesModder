@@ -3,10 +3,7 @@
  * The functions in this file manage the interface between codemirror and
  * the Text Mode compiler.
  */
-import TextMode from ".";
-import { ProgramAnalysis, textToRaw } from "../../../text-mode-core";
-import { DispatchedEvent } from "../../globals/Calc";
-import { eventSequenceChanges } from "./modify";
+import { DispatchedEvent } from "#globals";
 import {
   EditorState,
   Facet,
@@ -15,7 +12,10 @@ import {
   Transaction,
 } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
-import { GraphState } from "../../../graph-state";
+import { ProgramAnalysis, textToRaw } from "@desmodder/text-mode-core";
+import { GraphState } from "@desmodder/graph-state";
+import TextMode from "./components";
+import { eventSequenceChanges } from "./modify.ts";
 
 /**
  * onCalcEvent: when we receive a new event dispatched via Calc (such as a

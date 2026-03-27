@@ -1,7 +1,7 @@
-import { PluginController } from "../PluginController";
-import { format } from "#i18n";
 import type { DispatchedEvent } from "#globals";
+import { format } from "#i18n";
 import type { AtLeastOne } from "#utils/utils.ts";
+import { PluginController } from "../PluginController.ts";
 
 export default class PasteImage extends PluginController {
   static id = "paste-image" as const;
@@ -9,11 +9,11 @@ export default class PasteImage extends PluginController {
 
   pasteHandler = this._pasteHandler.bind(this);
 
-  afterEnable() {
+  override afterEnable() {
     document.addEventListener("paste", this.pasteHandler);
   }
 
-  afterDisable() {
+  override afterDisable() {
     document.removeEventListener("paste", this.pasteHandler);
   }
 

@@ -1,6 +1,6 @@
-import { ExpressionAug } from "../../../text-mode-core";
-import { latexStringToIdentifierString } from "./view";
 import { MathQuillField, MQCursor } from "#components";
+import { ExpressionAug } from "@desmodder/text-mode-core";
+import { latexStringToIdentifierString } from "./view.tsx";
 
 export function mapAugAST(
   node: ExpressionAug["latex"],

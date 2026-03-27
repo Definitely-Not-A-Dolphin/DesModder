@@ -1,9 +1,9 @@
-import PerformanceInfo from ".";
-import "./PerformanceView.less";
-import { Component, jsx } from "#DCGView";
-import DSM from "#DSM";
 import { Button, IconButton, Tooltip } from "#components";
+import { Component } from "#DCGView";
+import DSM from "#DSM";
 import { format } from "#i18n";
+import PerformanceInfo from "./index.ts";
+import "./PerformanceView.less";
 
 export class PerformanceView extends Component<{
   pi: () => PerformanceInfo;

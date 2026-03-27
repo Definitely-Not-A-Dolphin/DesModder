@@ -1,27 +1,27 @@
-import { PluginController } from "../PluginController";
-import { Config, configList } from "./config";
+import { PluginController } from "../PluginController.ts";
+import { Config, configList } from "./config.ts";
 
 export default class quakePro extends PluginController<Config> {
   static id = "quake-pro" as const;
   static enabledByDefault = false;
-  static config = configList;
+  static override config = configList;
 
   dollyMagnification = 1;
   scalarZoomed = 1;
 
-  afterEnable() {
+  override afterEnable() {
     this.dollyMagnification = this.settings.dollyMagnification;
     this.scalarZoomed = this.settings.scalarZoomed;
     this.redrawAllLayers();
   }
 
-  afterConfigChange() {
+  override afterConfigChange() {
     this.dollyMagnification = this.settings.dollyMagnification;
     this.scalarZoomed = this.settings.scalarZoomed;
     this.redrawAllLayers();
   }
 
-  afterDisable() {
+  override afterDisable() {
     this.dollyMagnification = 1;
     this.scalarZoomed = 1;
     this.redrawAllLayers();

@@ -1,6 +1,6 @@
-import { PluginController } from "../PluginController";
-import { MainPopupFunc } from "./PerformanceView";
 import { DispatchedEvent, TimingData } from "#globals";
+import { PluginController } from "../PluginController.ts";
+import { MainPopupFunc } from "./PerformanceView.tsx";
 
 export default class PerformanceInfo extends PluginController {
   static id = "performance-info" as const;
@@ -9,7 +9,7 @@ export default class PerformanceInfo extends PluginController {
   timingDataHistory: TimingData[] = [];
   dispatchListenerID!: string;
 
-  afterEnable() {
+  override afterEnable() {
     this.dsm.pillboxMenus?.addPillboxButton({
       id: "dsm-pi-menu",
       tooltip: "performance-info-name",
@@ -23,7 +23,7 @@ export default class PerformanceInfo extends PluginController {
     });
   }
 
-  afterDisable() {
+  override afterDisable() {
     this.cc.dispatcher.unregister(this.dispatchListenerID);
     this.dsm.pillboxMenus?.removePillboxButton("dsm-pi-menu");
   }

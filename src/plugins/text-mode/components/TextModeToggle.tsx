@@ -1,7 +1,6 @@
-import TextMode from "..";
-import { format } from "#i18n";
-import { jsx } from "#DCGView";
 import { Tooltip } from "#components";
+import { format } from "#i18n";
+import TextMode from "../index.ts";
 
 export function TextModeToggle(tm: TextMode) {
   return (

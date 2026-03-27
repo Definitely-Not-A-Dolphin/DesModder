@@ -1,11 +1,11 @@
-import { analysisStateField, tmPlugin } from "../../LanguageServer";
-import { statementsIntersecting } from "../statementIntersection";
-import "./footerWidget.less";
-import { EditorState, RangeSet } from "@codemirror/state";
-import { Decoration, EditorView, WidgetType } from "@codemirror/view";
 import { DCGView } from "#DCGView";
 import { ExpressionFooterView } from "#components";
 import { ExpressionModel } from "#globals";
+import { EditorState, RangeSet } from "@codemirror/state";
+import { Decoration, EditorView, WidgetType } from "@codemirror/view";
+import { analysisStateField, tmPlugin } from "../../LanguageServer.ts";
+import { statementsIntersecting } from "../statementIntersection.ts";
+import "./footerWidget.less";
 
 function getFooters(state: EditorState) {
   const { program } = state.field(analysisStateField);
@@ -55,7 +55,7 @@ class FooterWidget extends WidgetType {
     super();
   }
 
-  eq(other: FooterWidget) {
+  override eq(other: FooterWidget) {
     // TODO-incremental: We need to be stricter than this. This should really
     // be like GUID or full object equality this.model === other.model.
     // But the GUID gets updated every setState(), and the model objects
@@ -80,7 +80,7 @@ class FooterWidget extends WidgetType {
     return this.div;
   }
 
-  destroy() {
+  override destroy() {
     this.unsub?.();
     if (this.div) DCGView.unmountFromNode(this.div);
   }

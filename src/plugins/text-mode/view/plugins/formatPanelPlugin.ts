@@ -1,6 +1,6 @@
-import { FormatPanel } from "./FormatPanel";
-import { EditorView, Panel, showPanel } from "@codemirror/view";
 import { DCGView, MountedComponent } from "#DCGView";
+import { EditorView, Panel, showPanel } from "@codemirror/view";
+import { FormatPanel } from "./FormatPanel.tsx";
 
 function formatPanel(ev: EditorView): Panel {
   const dom = document.createElement("div");

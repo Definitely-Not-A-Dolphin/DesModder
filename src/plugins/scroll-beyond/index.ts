@@ -1,4 +1,4 @@
-import { PluginController } from "../PluginController";
+import { PluginController } from "../PluginController.ts";
 
 export default class ScrollBeyond extends PluginController {
   static id = "scroll-beyond" as const;
@@ -6,13 +6,13 @@ export default class ScrollBeyond extends PluginController {
 
   private dispatchHandler: string | undefined;
 
-  afterEnable(): void {
+  override afterEnable(): void {
     this.dispatchHandler = this.cc.dispatcher.register(() =>
       this.updateStyles()
     );
   }
 
-  afterDisable(): void {
+  override afterDisable(): void {
     if (this.dispatchHandler) {
       this.cc.dispatcher.unregister(this.dispatchHandler);
     }

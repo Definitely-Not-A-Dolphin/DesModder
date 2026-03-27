@@ -1,14 +1,13 @@
-import { toggleString } from ".";
-import "./imageWidget.less";
 import { EditorView, WidgetType } from "@codemirror/view";
-import { jsx } from "#utils/utils.ts";
+import "./imageWidget.less";
+import { toggleString } from "./index.ts";
 
 class ImageWidget extends WidgetType {
   constructor(readonly value: string) {
     super();
   }
 
-  eq(other: ImageWidget) {
+  override eq(other: ImageWidget) {
     return other.value === this.value;
   }
 

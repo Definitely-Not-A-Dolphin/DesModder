@@ -1,16 +1,6 @@
-import TextMode from "..";
-import { analysisStateField, doLint, tmPlugin } from "../LanguageServer";
+import TextMode from "../index.ts";
+import { analysisStateField, doLint, tmPlugin } from "../LanguageServer.ts";
 // Language extension
-import { textMode } from "../lezer/index";
-import "./editor.less";
-import { checkboxPlugin } from "./plugins/checkboxWidget";
-import { collapseStylesAtStart } from "./plugins/collapseStylesAtStart";
-import { footerPlugin } from "./plugins/footerWidget";
-import { formatPanelPlugin } from "./plugins/formatPanelPlugin";
-import { activeStmtGutterHighlighter } from "./plugins/highlightActiveStmtGutter";
-import { stmtNumbers } from "./plugins/stmtNumbers";
-import { styleCircles } from "./plugins/styleCircles";
-import { styleMappingPlugin } from "./plugins/styleMappingWidgets";
 import {
   autocompletion,
   closeBrackets,
@@ -29,6 +19,16 @@ import {
 import { linter } from "@codemirror/lint";
 import { highlightSelectionMatches, searchKeymap } from "@codemirror/search";
 import { EditorState } from "@codemirror/state";
+import { textMode } from "../lezer/index.ts";
+import "./editor.less";
+import { checkboxPlugin } from "./plugins/checkboxWidget.ts";
+import { collapseStylesAtStart } from "./plugins/collapseStylesAtStart.ts";
+import { footerPlugin } from "./plugins/footerWidget.ts";
+import { formatPanelPlugin } from "./plugins/formatPanelPlugin.ts";
+import { activeStmtGutterHighlighter } from "./plugins/highlightActiveStmtGutter.ts";
+import { stmtNumbers } from "./plugins/stmtNumbers.ts";
+import { styleCircles } from "./plugins/styleCircles.ts";
+import { styleMappingPlugin } from "./plugins/styleMappingWidgets/index.ts";
 // Basic editor extensions
 import {
   drawSelection,

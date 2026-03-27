@@ -1,7 +1,7 @@
-import { PluginController } from "../PluginController";
+import { getHSVfromRGB, parseCSSHex } from "#plugins/GLesmos/colorParsing.ts";
+import { PluginController } from "../PluginController.ts";
 import "./_overrides.less";
 import "./custom-overrides.less";
-import { getHSVfromRGB, parseCSSHex } from "#plugins/GLesmos/colorParsing.ts";
 
 interface Config {
   primaryColor: string;
@@ -43,12 +43,12 @@ const originalHref = faviconLink.href;
 export default class SetPrimaryColor extends PluginController<Config> {
   static id = "set-primary-color" as const;
   static enabledByDefault = false;
-  static config = configList;
+  static override config = configList;
   wiggle = 0;
   originalImage: HTMLImageElement | null = null;
   apiContainer!: HTMLElement;
 
-  afterEnable() {
+  override afterEnable() {
     // .dcg-sliding-interior contains everything (header and body)
     this.apiContainer = document.querySelector(".dcg-sliding-interior")!;
     this.applyConfig();
@@ -56,13 +56,13 @@ export default class SetPrimaryColor extends PluginController<Config> {
     this.senseDarkReader();
   }
 
-  afterDisable() {
+  override afterDisable() {
     this.applyColor(DEFAULT_COLOR);
     this.apiContainer.classList.remove("dsm-set-primary-color");
     faviconLink.href = originalHref;
   }
 
-  afterConfigChange() {
+  override afterConfigChange() {
     this.applyConfig();
   }
 

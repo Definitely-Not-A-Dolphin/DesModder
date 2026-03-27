@@ -1,6 +1,6 @@
-import { Inserter, PluginController, Replacer } from "../PluginController";
-import { ErrorTriangle } from "./components/ErrorTriangle";
-import { HideButton } from "./components/HideButton";
+import { Inserter, PluginController, Replacer } from "../PluginController.ts";
+import { ErrorTriangle } from "./components/ErrorTriangle.tsx";
+import { HideButton } from "./components/HideButton.tsx";
 import "./hide-errors.less";
 
 export default class HideErrors extends PluginController {

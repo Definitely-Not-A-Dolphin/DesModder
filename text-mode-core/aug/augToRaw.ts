@@ -1,3 +1,4 @@
+import type * as Graph from "#graph-state";
 import type Metadata from "#metadata/interface";
 import {
   changeExprInMetadata,
@@ -5,11 +6,10 @@ import {
   ID_METADATA_FOLDER,
   isBlankMetadata,
 } from "#metadata/manage";
+import { Aug } from ".";
 import { Config } from "../TextModeConfig";
 import { isConstant } from "./AugLatex";
-import { Aug } from ".";
 import { latexTreeToString } from "./augLatexToRaw";
-import type * as Graph from "#graph-state";
 
 export default function augToRaw(
   cfg: Config,

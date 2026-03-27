@@ -1,14 +1,14 @@
-import { buildConfigFromGlobals, rawToText } from "../../../text-mode-core";
-import { DCGView } from "../../DCGView";
-import { Inserter, PluginController } from "../PluginController";
-import { analysisStateField, onCalcEvent, tmPlugin } from "./LanguageServer";
-import { TextModeToggle } from "./components/TextModeToggle";
-import { initView, startState } from "./view/editor";
-import { EditorView, ViewUpdate } from "@codemirror/view";
+import { DCGView } from "#DCGView";
 import { keys } from "#utils/depUtils.ts";
-import { AllActions, DispatchedEvent } from "src/globals/extra-actions";
+import { EditorView, ViewUpdate } from "@codemirror/view";
+import { buildConfigFromGlobals, rawToText } from "@desmodder/text-mode-core";
+import { AllActions, DispatchedEvent } from "../../globals/extra-actions.ts";
+import { Inserter, PluginController } from "../PluginController.ts";
+import { analysisStateField, onCalcEvent, tmPlugin } from "./LanguageServer.ts";
+import { TextModeToggle } from "./components/TextModeToggle.tsx";
+import { initView, startState } from "./view/editor.ts";
 
-declare module "src/globals/extra-actions" {
+declare module "../../globals/extra-actions.ts" {
   interface AllActions {
     "text-mode": {
       type: "dsm-text-mode-toggle";
@@ -22,7 +22,7 @@ declare module "src/globals/extra-actions" {
 export default class TextMode extends PluginController {
   static id = "text-mode" as const;
   static enabledByDefault = false;
-  static descriptionLearnMore = "https://www.desmodder.com/text-mode";
+  static override descriptionLearnMore = "https://www.desmodder.com/text-mode";
 
   inTextMode: boolean = false;
   /**
@@ -43,7 +43,7 @@ export default class TextMode extends PluginController {
   view: EditorView | null = null;
   dispatchListenerID: string | null = null;
 
-  afterDisable() {
+  override afterDisable() {
     if (this.inTextMode) {
       this.toggleTextModeOff();
     }

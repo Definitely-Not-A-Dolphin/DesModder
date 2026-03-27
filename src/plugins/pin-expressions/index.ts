@@ -1,6 +1,6 @@
-import { Inserter, PluginController } from "../PluginController";
-import { ActionButton } from "../../core-plugins/expr-action-buttons";
-import { ListView, PinnedPanel } from "./components/PinnedPanel";
+import { ActionButton } from "../../core-plugins/expr-action-buttons/index.ts";
+import { Inserter, PluginController } from "../PluginController.ts";
+import { ListView, PinnedPanel } from "./components/PinnedPanel.tsx";
 import "./pinExpressions.less";
 
 export default class PinExpressions extends PluginController {

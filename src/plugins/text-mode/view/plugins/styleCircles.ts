@@ -1,10 +1,10 @@
-import { analysisStateField, tmPlugin } from "../../LanguageServer";
-import { statementsIntersecting } from "../statementIntersection";
-import StyleCircle from "./StyleCircle";
-import { Extension, RangeSet } from "@codemirror/state";
-import { gutter, GutterMarker, gutters } from "@codemirror/view";
 import { DCGView } from "#DCGView";
 import type { ItemModel } from "#globals";
+import { Extension, RangeSet } from "@codemirror/state";
+import { gutter, GutterMarker, gutters } from "@codemirror/view";
+import { analysisStateField, tmPlugin } from "../../LanguageServer.ts";
+import { statementsIntersecting } from "../statementIntersection.ts";
+import StyleCircle from "./StyleCircle.tsx";
 
 export function styleCircles(): Extension {
   return [gutters(), styleCircleGutter];
@@ -48,11 +48,11 @@ class StyleCircleMarker extends GutterMarker {
     super();
   }
 
-  eq(other: StyleCircleMarker) {
+  override eq(other: StyleCircleMarker) {
     return this.model === other.model;
   }
 
-  toDOM() {
+  override toDOM() {
     this.div = document.createElement("div");
     this.div.classList.add("dsm-style-circle");
     const view = DCGView.mountToNode(StyleCircle, this.div, {
@@ -63,18 +63,18 @@ class StyleCircleMarker extends GutterMarker {
     return this.div;
   }
 
-  destroy() {
+  override destroy() {
     this.unsub?.();
     if (this.div) DCGView.unmountFromNode(this.div);
   }
 }
 
 class StyleCircleSpacer extends GutterMarker {
-  eq() {
+  override eq() {
     return true;
   }
 
-  toDOM() {
+  override toDOM() {
     const div = document.createElement("div");
     div.style.width = "29px";
     return div;

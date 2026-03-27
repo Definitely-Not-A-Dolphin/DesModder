@@ -1,3 +1,8 @@
+import { DCGView, MountedComponent, unmountFromNode } from "#DCGView";
+import { MathQuillField, MathQuillView } from "#components";
+import { DispatchedEvent, ItemModel, TextModel } from "#globals";
+import { PluginController } from "#plugins/PluginController.ts";
+import { isDescendant } from "#utils/utils.ts";
 import {
   getController,
   getCorrectableIdentifier,
@@ -5,15 +10,13 @@ import {
   getPartialFunctionCall,
   PartialFunctionCall,
   TryFindMQIdentResult,
-} from "./latex-parsing";
-import { IntellisenseState } from "./state";
-import { pendingIntellisenseTimeouts, setIntellisenseTimeout } from "./utils";
-import { JumpToDefinitionMenuInfo, View } from "./view";
-import { DCGView, MountedComponent, unmountFromNode } from "#DCGView";
-import { MathQuillField, MathQuillView } from "#components";
-import { DispatchedEvent, ItemModel, TextModel } from "#globals";
-import { PluginController } from "#plugins/PluginController.ts";
-import { isDescendant } from "#utils/utils.ts";
+} from "./latex-parsing.tsx";
+import { IntellisenseState } from "./state.tsx";
+import {
+  pendingIntellisenseTimeouts,
+  setIntellisenseTimeout,
+} from "./utils.ts";
+import { JumpToDefinitionMenuInfo, View } from "./view.tsx";
 
 export type BoundIdentifier =
   | {
@@ -53,9 +56,10 @@ export default class Intellisense extends PluginController<{
 }> {
   static id = "intellisense" as const;
   static enabledByDefault = false;
-  static descriptionLearnMore = "https://www.desmodder.com/intellisense";
+  static override descriptionLearnMore =
+    "https://www.desmodder.com/intellisense";
 
-  static config = [
+  static override config = [
     {
       type: "boolean",
       key: "subscriptify",

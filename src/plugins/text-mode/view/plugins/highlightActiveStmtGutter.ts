@@ -1,8 +1,9 @@
-import { Statement } from "../../../../../text-mode-core/TextAST";
-import { analysisStateField } from "../../LanguageServer";
-import { statementsIntersecting } from "../statementIntersection";
 import { RangeSet } from "@codemirror/state";
 import { gutterLineClass, GutterMarker } from "@codemirror/view";
+// Should be a package, not a local import
+import { Statement } from "../../../../../text-mode-core/TextAST/index.ts";
+import { analysisStateField } from "../../LanguageServer.ts";
+import { statementsIntersecting } from "../statementIntersection.ts";
 
 const activeStmtGutterMarker = new (class extends GutterMarker {
   elementClass = "cm-activeLineGutter";

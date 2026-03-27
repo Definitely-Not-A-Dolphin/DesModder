@@ -1,8 +1,8 @@
-import VideoCreator from "..";
-import { scaleBoundsAboutCenter, segmentInterval } from "./utils";
-import { ManagedNumberInputModel } from "../components/ManagedNumberInput";
-import { noSpeed } from "../orientation";
-import { Viewport } from "../../../globals";
+import { Viewport } from "#globals";
+import { ManagedNumberInputModel } from "../components/ManagedNumberInput.tsx";
+import VideoCreator from "../index.ts";
+import { noSpeed } from "../orientation.ts";
+import { scaleBoundsAboutCenter, segmentInterval } from "./utils.ts";
 
 export type CaptureMethod = "once" | "ntimes" | "action" | "slider" | "ticks";
 

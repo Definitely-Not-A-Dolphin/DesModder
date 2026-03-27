@@ -1,10 +1,10 @@
-import { ProgramAnalysis } from "../../../../text-mode-core";
+import { BlockInfo } from "@codemirror/view";
+import { ProgramAnalysis } from "@desmodder/text-mode-core";
 import {
   Positioned,
   Program,
   Statement,
-} from "../../../../text-mode-core/TextAST";
-import { BlockInfo } from "@codemirror/view";
+} from "../../../../text-mode-core/TextAST/index.ts";
 
 export function statementContainingLine(
   analysis: ProgramAnalysis,

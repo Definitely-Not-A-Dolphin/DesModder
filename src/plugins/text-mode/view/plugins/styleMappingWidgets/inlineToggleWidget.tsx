@@ -1,7 +1,6 @@
-import { toggleString } from ".";
-import "./inlineToggleWidget.less";
 import { EditorView, WidgetType } from "@codemirror/view";
-import { jsx } from "#utils/utils.ts";
+import { toggleString } from "./index.ts";
+import "./inlineToggleWidget.less";
 
 class InlineToggleWidget extends WidgetType {
   constructor(
@@ -11,7 +10,7 @@ class InlineToggleWidget extends WidgetType {
     super();
   }
 
-  eq(other: InlineToggleWidget) {
+  override eq(other: InlineToggleWidget) {
     return other.value === this.value && other.path === this.path;
   }
 

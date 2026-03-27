@@ -18,7 +18,7 @@ class CheckboxWidget extends WidgetType {
     super();
   }
 
-  eq(other: CheckboxWidget) {
+  override eq(other: CheckboxWidget) {
     return other.checked === this.checked;
   }
 
@@ -37,7 +37,7 @@ class CheckboxWidget extends WidgetType {
    * This is necessary to allow an editor-wide event handler (mousedown below,
    * the one that calls `toggleBoolean`) to handle interaction with it.
    */
-  ignoreEvent() {
+  override ignoreEvent() {
     return false;
   }
 }

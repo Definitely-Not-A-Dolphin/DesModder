@@ -1,27 +1,30 @@
-import Intellisense, { BoundIdentifier, BoundIdentifierFunction } from ".";
-import {
-  Config,
-  identifierToString,
-  textModeExprToLatex,
-} from "../../../text-mode-core";
-import {
-  DStaticMathquillView,
-  If,
-  Match,
-} from "../../components/desmosComponents";
-import {
-  DocStringRenderable,
-  parseDocstring,
-  tokenizeDocstring,
-} from "./docstring";
-import { PartialFunctionCall } from "./latex-parsing";
-import { setIntellisenseTimeout } from "./utils";
-import "./view.less";
-import { ClassComponent, Component, jsx } from "#DCGView";
+import { ClassComponent, Component } from "#DCGView";
 import { For, StaticMathQuillView } from "#components";
 import { format } from "#i18n";
 import { parseDesmosLatex } from "#utils/depUtils.ts";
 import { IndexFor } from "#utils/utilComponents.tsx";
+import {
+  Config,
+  identifierToString,
+  textModeExprToLatex,
+} from "@desmodder/text-mode-core";
+import {
+  DStaticMathquillView,
+  If,
+  Match,
+} from "../../components/desmosComponents.ts";
+import {
+  DocStringRenderable,
+  parseDocstring,
+  tokenizeDocstring,
+} from "./docstring.ts";
+import Intellisense, {
+  BoundIdentifier,
+  BoundIdentifierFunction,
+} from "./index.tsx";
+import { PartialFunctionCall } from "./latex-parsing.tsx";
+import { setIntellisenseTimeout } from "./utils.ts";
+import "./view.less";
 
 export interface JumpToDefinitionMenuInfo {
   idents: {

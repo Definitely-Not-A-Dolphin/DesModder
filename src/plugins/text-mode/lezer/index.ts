@@ -1,6 +1,3 @@
-import TextMode from "..";
-import { completions } from "./completions";
-import parser from "./syntax.grammar";
 import { CompletionContext } from "@codemirror/autocomplete";
 import {
   delimitedIndent,
@@ -11,6 +8,9 @@ import {
   LRLanguage,
 } from "@codemirror/language";
 import { styleTags, tags as t } from "@lezer/highlight";
+import TextMode from "../index.ts";
+import { completions } from "./completions.ts";
+import parser from "./syntax.grammar";
 
 export const TextModeLanguage = (tm: TextMode) =>
   LRLanguage.define({

@@ -1,6 +1,6 @@
-import { PluginController } from "../PluginController";
-import { generateBracketPairColorizationCSS } from "./bracket-pair-colorization";
-import { Config, configList } from "./config";
+import { PluginController } from "../PluginController.ts";
+import { generateBracketPairColorizationCSS } from "./bracket-pair-colorization.ts";
+import { Config, configList } from "./config.ts";
 import "./index.less";
 
 const bpcStyleSheet = new CSSStyleSheet();
@@ -9,12 +9,12 @@ document.adoptedStyleSheets.push(bpcStyleSheet);
 export default class SyntaxHighlighting extends PluginController<Config> {
   static id = "syntax-highlighting" as const;
   static enabledByDefault = false;
-  static config = configList;
+  static override config = configList;
 
   caretBracketContainer: HTMLElement | null = null;
   mouseBracketContainer: HTMLElement | null = null;
 
-  afterConfigChange(): void {
+  override afterConfigChange(): void {
     this.resetHighlightedRanges();
 
     const bpcCss = generateBracketPairColorizationCSS(this.settings);
@@ -79,7 +79,7 @@ export default class SyntaxHighlighting extends PluginController<Config> {
 
   highlightedRangeInterval!: ReturnType<typeof setInterval>;
 
-  afterEnable(): void {
+  override afterEnable(): void {
     this.afterConfigChange();
 
     this.highlightedRangeInterval = setInterval(() => {
@@ -100,7 +100,7 @@ export default class SyntaxHighlighting extends PluginController<Config> {
     document.addEventListener("click", this.onClick);
   }
 
-  afterDisable(): void {
+  override afterDisable(): void {
     clearInterval(this.highlightedRangeInterval);
     bpcStyleSheet.disabled = true;
     document.removeEventListener("mouseover", this.onMouseOver);

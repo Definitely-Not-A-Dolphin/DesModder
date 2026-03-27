@@ -1,5 +1,3 @@
-import imageWidget from "./imageWidget";
-import inlineToggleWidget from "./inlineToggleWidget";
 import { syntaxTree } from "@codemirror/language";
 import {
   Decoration,
@@ -10,6 +8,8 @@ import {
   WidgetType,
 } from "@codemirror/view";
 import { SyntaxNode } from "@lezer/common";
+import imageWidget from "./imageWidget.tsx";
+import inlineToggleWidget from "./inlineToggleWidget.tsx";
 
 const widgetSpecs: StyleMappingWidgetSpec[] = [inlineToggleWidget, imageWidget];
 

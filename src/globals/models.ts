@@ -3,8 +3,8 @@
  * These have more information than the graph state related to getState and setState.
  */
 import { ClassComponent } from "#DCGView";
-import { CalcController } from ".";
-import { GolfStats } from "../plugins/code-golf/golf-model";
+import { CalcController } from "#globals";
+import { GolfStats } from "#plugins/code-golf/golf-model.ts";
 
 interface BasicSetExpression {
   id: string;

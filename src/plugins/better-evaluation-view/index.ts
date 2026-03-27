@@ -1,10 +1,10 @@
 import { EvaluationContainerComponent } from "#components";
 import { ConstantListValueType, TypedConstantValue, ValueType } from "#globals";
-import { PluginController, Replacer } from "../PluginController";
+import { PluginController, Replacer } from "../PluginController.ts";
 import "./better-evaluation-view.less";
-import { ColorEvaluation } from "./components/ColorEvaluation";
-import { ListEvaluation } from "./components/ListEvaluation";
-import { Config, configList } from "./config";
+import { ColorEvaluation } from "./components/ColorEvaluation.tsx";
+import { ListEvaluation } from "./components/ListEvaluation.tsx";
+import { Config, configList } from "./config.ts";
 
 type EvaluableConstantValueType = ConstantListValueType | ValueType.RGBColor;
 type EvaluableConstantValue = TypedConstantValue<EvaluableConstantValueType>;
@@ -39,13 +39,13 @@ function apiContainer() {
 export default class BetterEvaluationView extends PluginController<Config> {
   static id = "better-evaluation-view" as const;
   static enabledByDefault = true;
-  static config = configList;
+  static override config = configList;
 
-  afterEnable() {
+  override afterEnable() {
     apiContainer()?.classList.add("dsm-better-evaluation-view");
   }
 
-  afterDisable() {
+  override afterDisable() {
     apiContainer()?.classList.remove("dsm-better-evaluation-view");
   }
 

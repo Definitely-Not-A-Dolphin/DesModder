@@ -1,6 +1,6 @@
-import { PluginController } from "../PluginController";
+import { PluginController } from "../PluginController.ts";
 import "./compact.less";
-import { Config, configList } from "./config";
+import { Config, configList } from "./config.ts";
 
 function toggleBodyClass(className: string, bool: boolean) {
   document.body.classList.toggle(className, bool);
@@ -9,9 +9,9 @@ function toggleBodyClass(className: string, bool: boolean) {
 export default class CompactView extends PluginController<Config> {
   static id = "compact-view" as const;
   static enabledByDefault = false;
-  static config = configList;
+  static override config = configList;
 
-  afterConfigChange(): void {
+  override afterConfigChange(): void {
     toggleBodyClass(
       "compact-view-remove-spacing-enabled",
       this.settings.compactFactor > 0,
@@ -93,7 +93,7 @@ export default class CompactView extends PluginController<Config> {
 
   dispatcherID: string | undefined;
 
-  afterEnable() {
+  override afterEnable() {
     this.dispatcherID = this.cc.dispatcher.register(() => {
       if (!this.settings.hideEvaluations) return;
       this.updateHiddenEvaluations();
@@ -102,7 +102,7 @@ export default class CompactView extends PluginController<Config> {
     document.body.classList.add("compact-view-enabled");
   }
 
-  afterDisable() {
+  override afterDisable() {
     if (this.dispatcherID) this.cc.dispatcher.unregister(this.dispatcherID);
     document.body.classList.remove("compact-view-enabled");
   }

@@ -1,8 +1,8 @@
-import "./SegmentedControl.less";
-import { DesmosSegmentedControl, Switch } from "./desmosComponents";
 import { Component, jsx } from "#DCGView";
+import "./SegmentedControl.less";
+import { DesmosSegmentedControl, Switch } from "./desmosComponents.ts";
 
-export default class SegmentedControl extends Component<{
+export class SegmentedControl extends Component<{
   names: string[];
   selectedIndex: number;
   ariaGroupLabel: string;

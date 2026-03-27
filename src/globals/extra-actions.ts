@@ -1,4 +1,4 @@
-import { VanillaDispatchedEvent } from "./Calc";
+import { VanillaDispatchedEvent } from "./Calc.ts";
 
 /**
  * This AllActions interface is intended to be extended through module

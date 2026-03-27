@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
-import { PluginController } from "../PluginController";
-import { MathQuillField, MathQuillView } from "src/components";
-import { getController } from "../intellisense/latex-parsing";
+import { MathQuillField, MathQuillView } from "#components";
 import { ConfigItem } from "#plugins/index.ts";
+import { getController } from "../intellisense/latex-parsing.tsx";
+import { PluginController } from "../PluginController.ts";
 
 import "./index.less";
 
@@ -65,7 +65,7 @@ export default class BetterNavigation
   extends PluginController<BetterNavSettings> {
   static id = "better-navigation" as const;
   static enabledByDefault = true;
-  static config = [
+  static override config = [
     {
       type: "boolean",
       default: true,
@@ -84,7 +84,7 @@ export default class BetterNavigation
     },
   ] satisfies readonly ConfigItem[];
 
-  afterConfigChange(): void {
+  override afterConfigChange(): void {
     document.body.classList.toggle(
       "dsm-better-nav-scrollable-expressions",
       this.settings.scrollableExpressions,
@@ -169,7 +169,7 @@ export default class BetterNavigation
     return "cancel";
   }
 
-  afterEnable() {
+  override afterEnable() {
     this.afterConfigChange();
     this.dsm.overrideKeystroke?.setMQKeystrokeListener(
       "better-navigation",

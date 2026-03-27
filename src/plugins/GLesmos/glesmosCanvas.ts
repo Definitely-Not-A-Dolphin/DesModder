@@ -1,4 +1,6 @@
-import ViewportTransforms from "./ViewportTransforms";
+import { CalcController, window } from "#globals";
+import { format } from "#i18n";
+import ViewportTransforms from "./ViewportTransforms.ts";
 import {
   glesmosError,
   glesmosGetCacheShader,
@@ -8,9 +10,7 @@ import {
   GLesmosProgram,
   GLesmosShaderChunk,
   setUniform,
-} from "./shaders";
-import window, { CalcController } from "#globals";
-import { format } from "#i18n";
+} from "./shaders.ts";
 
 export type GLesmosCanvas = ReturnType<typeof initGLesmosCanvas>;
 

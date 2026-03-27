@@ -1,8 +1,8 @@
-import ViewportTransforms from "./ViewportTransforms";
-import { GLesmosCanvas, initGLesmosCanvas } from "./glesmosCanvas";
-import { glesmosError, GLesmosShaderPackage } from "./shaders";
 import { CalcController, Fragile, ShaderFunctions } from "#globals";
-import { EmittedGLSL } from "./exportAsGLesmos";
+import ViewportTransforms from "./ViewportTransforms.ts";
+import { EmittedGLSL } from "./exportAsGLesmos.ts";
+import { GLesmosCanvas, initGLesmosCanvas } from "./glesmosCanvas.ts";
+import { glesmosError, GLesmosShaderPackage } from "./shaders.ts";
 
 let canvas: GLesmosCanvas | null = null;
 

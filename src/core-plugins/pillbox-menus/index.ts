@@ -1,20 +1,20 @@
-import { Inserter, PluginController } from "../../plugins/PluginController";
-import { MenuFunc } from "./components/Menu";
 import { DCGView } from "#DCGView";
 import { ConfigItem, PluginID, plugins } from "#plugins/index.ts";
-import { createElementWrapped } from "../../preload/replaceElement";
-import { PillboxButton } from "./components/PillboxButton";
-import { PillboxContainer } from "./components/PillboxContainer";
+import { Inserter, PluginController } from "#plugins/PluginController.ts";
+import { createElementWrapped } from "../../preload/replaceElement.ts";
+import { MenuFunc } from "./components/Menu.tsx";
+import { PillboxButton } from "./components/PillboxButton.tsx";
+import { PillboxContainer } from "./components/PillboxContainer.tsx";
 
 export default class PillboxMenus extends PluginController<undefined> {
   static id = "pillbox-menus" as const;
   static enabledByDefault = true;
-  static isCore = true;
+  static override isCore = true;
   expandedPlugin: PluginID | null = null;
   private expandedCategory: string | null = null;
   private dispatcherID?: string;
 
-  afterEnable() {
+  override afterEnable() {
     this.dispatcherID = this.cc.dispatcher.register((e) => {
       if (e.type === "toggle-graph-settings") {
         this.pillboxMenuPinned = false;
@@ -23,7 +23,7 @@ export default class PillboxMenus extends PluginController<undefined> {
     });
   }
 
-  afterDisable() {
+  override afterDisable() {
     if (this.dispatcherID) this.cc.dispatcher.unregister(this.dispatcherID);
   }
 

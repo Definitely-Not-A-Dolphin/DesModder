@@ -1,9 +1,9 @@
-import FindReplace from ".";
-import "./ReplaceBar.less";
-import { Component, jsx } from "#DCGView";
+import { Component } from "#DCGView";
 import { MathQuillView } from "#components";
 import { format } from "#i18n";
 import { autoOperatorNames } from "#utils/depUtils.ts";
+import FindReplace from "./index.tsx";
+import "./ReplaceBar.less";
 
 export default class ReplaceBar extends Component<{
   fr: FindReplace;
@@ -11,7 +11,7 @@ export default class ReplaceBar extends Component<{
   fr!: FindReplace;
   isFocused: boolean = false;
 
-  init() {
+  override init() {
     this.fr = this.props.fr();
   }
 

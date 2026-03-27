@@ -1,7 +1,7 @@
-import { PluginController, Replacer } from "../PluginController";
-import { refactor } from "./backend";
-import { ComponentTemplate, jsx } from "#DCGView";
-import ReplaceBar from "./ReplaceBar";
+import { ComponentTemplate } from "#DCGView";
+import { PluginController, Replacer } from "../PluginController.ts";
+import { refactor } from "./backend.ts";
+import ReplaceBar from "./ReplaceBar.tsx";
 
 export default class FindReplace extends PluginController {
   static id = "find-and-replace" as const;

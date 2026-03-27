@@ -1,12 +1,12 @@
 import { mountToNode } from "#DCGView";
-import { InlineMathInputView } from "src/components";
+import { InlineMathInputView } from "#components";
 import {
   CalcController,
   ExpressionModel,
   FolderModel,
   ItemModel,
-} from "src/globals";
-import CodeGolf from ".";
+} from "#globals";
+import CodeGolf from "./index.ts";
 
 const MAX_GOLF_LENGTH_CHARS = 2000;
 

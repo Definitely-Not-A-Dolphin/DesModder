@@ -1,17 +1,17 @@
-import { Inserter, PluginController } from "../PluginController";
-import { ConfirmLines } from "./components/ConfirmLines";
-import { GLesmosToggle } from "./components/GLesmosToggle";
+import { Inserter, PluginController } from "../PluginController.ts";
+import { ConfirmLines } from "./components/ConfirmLines.tsx";
+import { GLesmosToggle } from "./components/GLesmosToggle.tsx";
 import "./glesmos.less";
 
 export default class GLesmos extends PluginController {
   static id = "GLesmos" as const;
   static enabledByDefault = false;
 
-  afterEnable() {
+  override afterEnable() {
     this.checkGLesmos();
   }
 
-  afterDisable() {
+  override afterDisable() {
     this.checkGLesmos();
     // Don't delete the canvas
   }

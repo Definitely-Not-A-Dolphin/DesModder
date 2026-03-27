@@ -1,7 +1,7 @@
-import PillboxMenus from "..";
-import { Component, jsx } from "#DCGView";
+import { Component } from "#DCGView";
 import { DropdownPopoverWithAnchorShim, Switch } from "#components";
 import { format } from "#i18n";
+import PillboxMenus from "../index.ts";
 import "./PillboxButton.less";
 
 export class PillboxButton extends Component<{
@@ -12,7 +12,7 @@ export class PillboxButton extends Component<{
   pm!: PillboxMenus;
   horizontal!: boolean;
 
-  init() {
+  override init() {
     this.pm = this.props.pm();
     this.horizontal = this.props.horizontal();
   }

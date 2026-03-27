@@ -1,5 +1,5 @@
+import { type Calc, CalcController, Console, ItemModel } from "#globals";
 import Metadata from "#metadata/interface.ts";
-import { migrateToLatestMaybe } from "#metadata/migrate.ts";
 import {
   getBlankMetadata,
   ID_METADATA,
@@ -8,9 +8,9 @@ import {
   mergeMetadata,
   metadataWithIdsMapped,
 } from "#metadata/manage.ts";
-import { type Calc, CalcController, Console, ItemModel } from "#globals";
+import { migrateToLatestMaybe } from "#metadata/migrate.ts";
 import { List } from "#utils/depUtils.ts";
-import { FolderState, ItemState, TextState } from "graph-state/state";
+import { FolderState, ItemState, TextState } from "@desmodder/graph-state";
 
 /*
 This file manages the metadata expressions. These are stored on the graph state as expressions and consist of:

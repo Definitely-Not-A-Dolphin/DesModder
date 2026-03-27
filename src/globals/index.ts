@@ -1,5 +1,4 @@
-import window from "./window";
-export default window;
-export type * from "./Calc";
-export * from "./models";
-export * from "./window";
+export * from "./Calc.ts";
+export * from "./models.ts";
+export * from "./window.ts";
+export * from "./extra-actions.ts";

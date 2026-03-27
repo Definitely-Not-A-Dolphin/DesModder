@@ -1,10 +1,10 @@
-import { PluginController } from "../PluginController";
-import { ActionButton } from "../../core-plugins/expr-action-buttons";
+import { PluginController } from "../PluginController.ts";
+import { ActionButton } from "../../core-plugins/expr-action-buttons/index.ts";
 import { ItemModel } from "#globals";
 import { List } from "#utils/depUtils.ts";
-import { AllActions, DispatchedEvent } from "../../globals/extra-actions";
+import { AllActions, DispatchedEvent } from "#globals";
 
-declare module "src/globals/extra-actions" {
+declare module "#globals" {
   interface AllActions {
     "folder-tools": {
       type:

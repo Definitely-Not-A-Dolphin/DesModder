@@ -1,8 +1,8 @@
-import { colorVec4 } from "./outputHelpers";
-import type { GLesmosShaderPackage } from "./shaders";
+import { ShaderFunctions } from "#globals";
+import type { IRChunk } from "#parsing/IR.ts";
 import type { IRExpression } from "#parsing/parsenode.ts";
-import type { IRChunk } from "../../../parsing/IR";
-import { ShaderFunctions } from "../../globals";
+import { colorVec4 } from "./outputHelpers.ts";
+import type { GLesmosShaderPackage } from "./shaders.ts";
 
 function clampParam(input: number, min: number, max: number, def: number) {
   if (isNaN(input)) return def;

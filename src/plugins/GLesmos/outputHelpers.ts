@@ -1,4 +1,4 @@
-import getRGBPack from "./colorParsing";
+import getRGBPack from "./colorParsing.ts";
 
 function glslFloatify(x: number) {
   return Number.isInteger(x)

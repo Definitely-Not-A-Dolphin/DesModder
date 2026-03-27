@@ -1,4 +1,6 @@
-import window, { type Calc, DispatchedEvent } from "#globals";
+import window from "#globals";
+import type Calc from "#globals";
+import DispatchedEvent from "#globals";
 import {
   GenericSettings,
   IDToPluginSettings,
@@ -7,11 +9,12 @@ import {
   pluginList,
   plugins,
   TransparentPlugins,
-} from "./plugins";
+} from "#plugins/index.ts";
 import { mapToRecord, postMessageUp, recordToMap } from "#utils/messages.ts";
 
 export default class DSM extends TransparentPlugins {
-  cc = this.calc.controller;
+  public calc: Calc;
+  cc;
   /**
    * pluginsEnabled keeps track of what plugins the user wants enabled,
    * regardless of forceDisabled settings.
@@ -30,13 +33,15 @@ export default class DSM extends TransparentPlugins {
   private readonly destroyHandlers: (() => void)[] = [];
 
   constructor(
-    public calc: Calc,
+    calc: Calc,
     opts: {
       /** Called after destroying the DSM (but before destroying the Calc). */
       afterDestroy?: () => void;
     } = {},
   ) {
     super();
+    this.calc = calc;
+    this.cc = this.calc.controller;
     this.afterDestroy = opts.afterDestroy;
     if (calc._dsmConnected) {
       throw new Error(

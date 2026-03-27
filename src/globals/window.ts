@@ -1,6 +1,8 @@
-import { DCGViewModule } from "../DCGView";
-import Node from "#parsing/parsenode.ts";
+import { DCGViewModule } from "#DCGView";
 import DSM from "#DSM";
+import Node from "#parsing/parsenode.ts";
+import { GenericSettings, PluginID } from "#plugins/index.ts";
+import { GraphState } from "@desmodder/graph-state";
 import {
   CheckboxComponent,
   DropdownPopoverComponent,
@@ -14,10 +16,9 @@ import {
   MathQuillViewComponent,
   SegmentedControlComponent,
   TooltipComponent,
-} from "../components/desmosComponents";
-import { GenericSettings, PluginID } from "../plugins";
-import { ItemModel, ValueType, ValueTypeMap } from "./models";
-import { GraphState } from "../../graph-state";
+} from "../components/desmosComponents.ts";
+import { ItemModel, ValueType, ValueTypeMap } from "./models.ts";
+import { Desmos } from "@types/desmos";
 
 export interface DWindow extends Window {
   DesModder: any;
@@ -119,9 +120,7 @@ interface MathquillConfig {
   }) => string;
 }
 
-declare let window: DWindow;
-
-export default window;
+export let window: DWindow;
 
 interface Fragile {
   DCGView: DCGViewModule;

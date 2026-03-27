@@ -1,19 +1,19 @@
-import { PluginController } from "../../plugins/PluginController";
+import { format } from "#i18n";
 import GraphMetadata, {
   Expression as MetadataExpression,
 } from "#metadata/interface.ts";
 import { changeExprInMetadata, getBlankMetadata } from "#metadata/manage.ts";
+import { PluginController } from "#plugins/PluginController.ts";
+import { ItemState } from "@desmodder/graph-state";
+import { AllActions, DispatchedEvent } from "../../globals/extra-actions.ts";
 import {
   deleteJunkMetadataNotes,
   getMetadataFromListModel,
   setMetadataInListModel,
   transferMetadata,
-} from "./sync";
-import { AllActions, DispatchedEvent } from "../../globals/extra-actions";
-import { ItemState } from "graph-state/state";
-import { format } from "#i18n";
+} from "./sync.ts";
 
-declare module "src/globals/extra-actions" {
+declare module "../../globals/extra-actions.ts" {
   interface AllActions {
     "manage-metadata": {
       type: "dsm-manage-metadata-update-for-expr";
@@ -41,7 +41,7 @@ declare module "src/globals/extra-actions" {
 export default class ManageMetadata extends PluginController {
   static id = "manage-metadata" as const;
   static enabledByDefault = true;
-  static isCore = true;
+  static override isCore = true;
 
   graphMetadata: GraphMetadata = getBlankMetadata();
   recentlyOpenedGLesmos = false;

@@ -1,7 +1,7 @@
-import { DStaticMathquillView, MathQuillConfig } from "./desmosComponents";
 import { Component, jsx } from "#DCGView";
+import { DStaticMathquillView, MathQuillConfig } from "./desmosComponents.ts";
 
-export default class StaticMathquillView extends Component<{
+export class StaticMathQuillView extends Component<{
   latex: string;
   config?: MathQuillConfig;
 }> {

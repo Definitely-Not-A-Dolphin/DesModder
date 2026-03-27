@@ -1,8 +1,8 @@
-import window, { Console } from "../globals/window";
 import { format } from "#i18n";
-import { PluginID } from "../plugins";
-import { Block } from "../../apply-replacements/parse";
-import { postMessageUp } from "../utils/messages";
+import { PluginID } from "#plugins/index.ts";
+import { postMessageUp } from "#utils/messages.ts";
+import { Block } from "../../apply-replacements/parse.ts";
+import { Console, window } from "../globals/window.ts";
 import panicHTML from "./panic.html";
 
 function insertPanicElement() {

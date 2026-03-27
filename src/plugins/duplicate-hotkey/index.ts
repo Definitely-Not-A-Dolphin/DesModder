@@ -1,5 +1,5 @@
-import { PluginController } from "../PluginController";
 import { keys } from "#utils/depUtils.ts";
+import { PluginController } from "../PluginController.ts";
 
 export default class DuplicateHotkey extends PluginController {
   static id = "duplicate-expression-hotkey" as const;
@@ -21,12 +21,12 @@ export default class DuplicateHotkey extends PluginController {
     }
   }
 
-  afterEnable() {
+  override afterEnable() {
     this.exppanel = document.querySelector(".dcg-exppanel-outer");
     this.exppanel?.addEventListener("keydown", this.onKeydown);
   }
 
-  afterDisable() {
+  override afterDisable() {
     this.exppanel?.removeEventListener("keydown", this.onKeydown);
   }
 }

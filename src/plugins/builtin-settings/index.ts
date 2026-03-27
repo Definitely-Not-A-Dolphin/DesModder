@@ -1,10 +1,10 @@
-import { PluginController } from "../PluginController";
+import { PluginController } from "../PluginController.ts";
 import {
   Config,
   configList,
   settingsConfigList,
   specialConfigList,
-} from "./config";
+} from "./config.ts";
 
 const settingsKeys = settingsConfigList.map((e) => e.key);
 const specialKeys = specialConfigList.map((e) => e.key);
@@ -17,10 +17,10 @@ function hasQueryFlag(s: string) {
 export default class BuiltinSettings extends PluginController<Config> {
   static id = "builtin-settings" as const;
   static enabledByDefault = true;
-  static config = configList;
+  static override config = configList;
   initialSettings: null | Config = null;
 
-  afterEnable() {
+  override afterEnable() {
     this.initialSettings = { ...this.settings };
     for (const key of settingsKeys) {
       this.initialSettings[key] = (
@@ -43,11 +43,11 @@ export default class BuiltinSettings extends PluginController<Config> {
     this.updateConfig(this.settings);
   }
 
-  afterDisable() {
+  override afterDisable() {
     if (this.initialSettings !== null) this.updateConfig(this.initialSettings);
   }
 
-  afterConfigChange() {
+  override afterConfigChange() {
     this.updateConfig(this.settings);
   }
 

@@ -2,7 +2,7 @@ import "./IconButton.less";
 import { Component, jsx } from "#DCGView";
 import { MaybeClassDict, mergeClass } from "#utils/utils.ts";
 
-export default class IconButton extends Component<{
+export class IconButton extends Component<{
   iconClass: string;
   btnClass?: MaybeClassDict;
   onTap: (e: Event) => void;

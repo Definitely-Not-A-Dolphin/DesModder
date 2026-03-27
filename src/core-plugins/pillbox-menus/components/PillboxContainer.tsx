@@ -1,8 +1,8 @@
-import PillboxMenus from "..";
-import "./PillboxContainer.less";
-import { Component, jsx } from "#DCGView";
+import { Component } from "#DCGView";
 import { For, If } from "#components";
-import { PillboxButton } from "./PillboxButton";
+import PillboxMenus from "../index.ts";
+import { PillboxButton } from "./PillboxButton.tsx";
+import "./PillboxContainer.less";
 
 export class PillboxContainer extends Component<{
   pm: PillboxMenus;
@@ -11,7 +11,7 @@ export class PillboxContainer extends Component<{
   pm!: PillboxMenus;
   horizontal!: boolean;
 
-  init() {
+  override init() {
     this.pm = this.props.pm();
     this.horizontal = this.props.horizontal();
   }

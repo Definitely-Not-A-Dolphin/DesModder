@@ -1,15 +1,14 @@
-import { jsx } from "#DCGView";
 import { StaticMathQuillView } from "#components";
 import { TypedConstantValue, ValueType, ValueTypeMap } from "#globals";
 import { autoCommands, autoOperatorNames } from "#utils/depUtils.ts";
 import { zipWith } from "#utils/utils.ts";
-import { NormalListValueType } from "..";
+import { NormalListValueType } from "../index.ts";
 import {
   complexNumberLabel,
   point3dLabel,
   pointLabel,
   truncatedLatexLabel,
-} from "../label";
+} from "../label.ts";
 
 type TypedConstantIteratorValue<T extends NormalListValueType> = T extends T ? {
     valueType: T;

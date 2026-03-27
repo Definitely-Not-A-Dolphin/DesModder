@@ -1,5 +1,5 @@
-import { PluginID } from "../../plugins";
-import { PluginController } from "../../plugins/PluginController";
+import { PluginID } from "#plugins/index.ts";
+import { PluginController } from "#plugins/PluginController.ts";
 
 type MQKeystrokeCallback = (
   key: string,
@@ -9,7 +9,7 @@ type MQKeystrokeCallback = (
 export default class OverrideKeystroke extends PluginController {
   static id = "override-keystroke" as const;
   static enabledByDefault = true;
-  static isCore = true;
+  static override isCore = true;
 
   private readonly mqKeystrokeListeners = new Map<
     PluginID,

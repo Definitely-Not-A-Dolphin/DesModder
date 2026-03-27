@@ -1,5 +1,5 @@
 import { MathQuillField } from "#components";
-import { GraphState, ItemState, Product } from "../../graph-state/state.ts";
+import { GraphState, ItemState, Product } from "@desmodder/graph-state";
 import type { DispatchedEvent } from "./extra-actions.ts";
 import { Matrix3 } from "./matrix3.ts";
 import { ItemModel } from "./models.ts";

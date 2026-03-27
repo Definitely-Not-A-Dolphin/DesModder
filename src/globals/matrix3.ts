@@ -1,4 +1,4 @@
-import type { Grapher3d } from "./Calc";
+import type { Grapher3d } from "./Calc.ts";
 
 /** Most methods mutate this. */
 export interface Matrix3 {

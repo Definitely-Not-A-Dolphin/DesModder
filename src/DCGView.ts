@@ -1,5 +1,5 @@
 import { Fragile } from "#globals";
-import { createElementWrapped } from "./preload/replaceElement";
+import { createElementWrapped } from "./preload/replaceElement.ts";
 
 export const { DCGView } = Fragile;
 

@@ -1,9 +1,8 @@
-import ExprActionButtons, { ActionButton } from "..";
-import "./ActionButtons.less";
-import { jsx } from "#DCGView";
 import { For, If, Tooltip } from "#components";
 import { ItemModel } from "#globals";
 import { format } from "#i18n";
+import ExprActionButtons, { ActionButton } from "../index.ts";
+import "./ActionButtons.less";
 
 export function ActionButtons(eab: ExprActionButtons, m: ItemModel) {
   return (

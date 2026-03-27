@@ -1,8 +1,7 @@
-import { jsx } from "#DCGView";
 import { StaticMathQuillView } from "#components";
 import { TypedConstantValue, ValueType } from "#globals";
-import { ColorValueType } from "..";
-import { truncatedLatexLabel } from "../label";
+import { ColorValueType } from "../index.ts";
+import { truncatedLatexLabel } from "../label.ts";
 
 type TypedConstantColorValue = TypedConstantValue<ColorValueType>;
 

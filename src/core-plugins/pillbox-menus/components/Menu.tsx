@@ -1,4 +1,4 @@
-import { Component, jsx } from "#DCGView";
+import { Component } from "#DCGView";
 import {
   Checkbox,
   For,
@@ -20,7 +20,7 @@ import {
   plugins,
   SpecificPlugin,
 } from "#plugins/index.ts";
-import PillboxMenus from "..";
+import PillboxMenus from "../index.ts";
 import "./Menu.less";
 declare const VERSION: string;
 
@@ -70,7 +70,7 @@ export default class Menu extends Component<{
 }> {
   pm!: PillboxMenus;
 
-  init() {
+  override init() {
     this.pm = this.props.pm();
   }
 
@@ -434,7 +434,7 @@ class ResetButton extends Component<{
   pm!: PillboxMenus;
   key!: string;
 
-  init() {
+  override init() {
     this.pm = this.props.pm();
     this.key = this.props.key();
   }

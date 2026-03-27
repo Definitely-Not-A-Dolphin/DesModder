@@ -1,4 +1,4 @@
-import { Console, Fragile, ShaderFunctions } from "../../globals/window";
+import { Console, Fragile, ShaderFunctions } from "#globals";
 
 export function glesmosError(msg: string): never {
   Console.error(`[GLesmos Error] ${msg}`);
@@ -310,7 +310,7 @@ export function glesmosGetSDFShader(
 
     //============== BEGIN JFA Helper Data ==============//
 
-      const vec2 JFA_kernel[9] = vec2[9]( 
+      const vec2 JFA_kernel[9] = vec2[9](
         vec2(-1.0,1.0)  , vec2(0.0,1.0)  , vec2(1.0,1.0)  ,
         vec2(-1.0,0.0)  , vec2(0.0,0.0)  , vec2(1.0,0.0)  ,
         vec2(-1.0,-1.0) , vec2(0.0,-1.0) , vec2(1.0,-1.0)
@@ -368,11 +368,11 @@ export function glesmosGetSDFShader(
       // TEST 3: is this an asymptote like 1/x? (compare true derivative to an approximation)
       vec4 deriv_samples = vec4(
         (corners[1] - corners[0]), (corners[3] - corners[2]),
-        (corners[0] - corners[2]), (corners[1] - corners[3]) 
+        (corners[0] - corners[2]), (corners[1] - corners[3])
       );
       vec2 derivative_approx = vec2(
         deriv_samples[0] * 0.5 + deriv_samples[1] * 0.5,
-        deriv_samples[2] * 0.5 + deriv_samples[3] * 0.5 
+        deriv_samples[2] * 0.5 + deriv_samples[3] * 0.5
       );
 
       vec2 derivative_real = f_dxy_p( toMathCoord(fragCoord) );
@@ -397,9 +397,9 @@ export function glesmosGetSDFShader(
           closest = tmp;
         }
       }
-      
+
       return seed + Q_kernel[closest_n]  / iResolution * scale;
-      
+
     }
 
     vec4 Step(in vec2 fragCoord){
@@ -409,25 +409,25 @@ export function glesmosGetSDFShader(
       float stepwidth = floor(exp2(c_maxSteps - c_stepNum - 1.0));
 
       vec2 warp = iResolution / max(iResolution.x, iResolution.y);
-      
+
       float bestDistance = dsm_Infinity;
       vec4  bestLine     = JFA_undefined;
-      
+
       for (int n = 0; n < 9; n++) {
-          
+
         vec2 sampleCoord = fragCoord + JFA_kernel[n] / iResolution * stepwidth;
         vec4 seed        = getPixel( sampleCoord, iChannel0 );
 
         if( seed == JFA_undefined ) continue; // don't try to use this one
         float dist = LineSDF( seed * vec4(warp,warp), fragCoord * warp );
-        
+
         if (dist < bestDistance){
           bestDistance = dist;
           bestLine     = seed;
         }
-              
+
       }
-      
+
       return bestLine;
     }
 
@@ -436,33 +436,33 @@ export function glesmosGetSDFShader(
       vec4 JFA_undefined = vec4(-dsm_Infinity);
 
       vec2 fragCoord = texCoord;
-      
+
       if( iInitFlag == 1 ) {  // JFA initialization
-        
+
         bool mask = detectSignChange( fragCoord ); // works correctly
-        
+
         if( mask ){
 
           fragCoord = quadTreeSolve(fragCoord, 1.0);
           fragCoord = quadTreeSolve(fragCoord, 0.5);
           fragCoord = quadTreeSolve(fragCoord, 0.25);
-          
+
           vec2 mathCoord = fragCoord * graphSize + graphCorner;
           vec2 d = f_dxy(mathCoord.x, mathCoord.y);
-          
+
           d = normalize( vec2(-d.y, d.x) ) / iResolution;
-          
+
           outColor = lineToPixel(-d, d, fragCoord);
         }
         else {
           outColor = JFA_undefined;
         }
-          
+
       }
       else {  // JFA stepping
         outColor = Step( fragCoord );
       }
-          
+
     }
 
     //============== END Shadertoy Buffer A ==============//

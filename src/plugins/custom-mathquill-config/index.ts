@@ -1,8 +1,8 @@
-import { Config, configList } from "./config";
-import "./custom-mathquill-config.less";
 import { MathQuillConfig } from "#components";
 import { DWindow } from "#globals";
 import { PluginController } from "#plugins/PluginController.ts";
+import { Config, configList } from "./config.ts";
+import "./custom-mathquill-config.less";
 
 const defaultConfig: MathQuillConfig = {
   charsThatBreakOutOfSupSub: "+-=<>*",
@@ -18,7 +18,7 @@ const defaultConfig: MathQuillConfig = {
 export default class CustomMathQuillConfig extends PluginController<Config> {
   static id = "custom-mathquill-config" as const;
   static enabledByDefault = false;
-  static config = configList;
+  static override config = configList;
 
   oldConfig = this.cc.getMathquillConfig;
   doAutoCommandInjections = false;
@@ -66,7 +66,7 @@ export default class CustomMathQuillConfig extends PluginController<Config> {
     (window as any as DWindow).Desmos.MathQuill.config(settingsObj);
   }
 
-  afterEnable() {
+  override afterEnable() {
     this.cc.getMathquillConfig = (e) => {
       const currentConfig = this.oldConfig.call(this.cc, e);
       if (this.doAutoCommandInjections) {
@@ -77,7 +77,7 @@ export default class CustomMathQuillConfig extends PluginController<Config> {
     this.updateConfig(this.settings);
   }
 
-  afterDisable() {
+  override afterDisable() {
     this.doAutoCommandInjections = false;
     this.cc.rootElt.classList.remove("commaizer");
     (window as any as DWindow).Desmos.MathQuill.config(defaultConfig);
@@ -86,7 +86,7 @@ export default class CustomMathQuillConfig extends PluginController<Config> {
     this.cc.rootElt.style.removeProperty("--delimiter-override");
   }
 
-  afterConfigChange() {
+  override afterConfigChange() {
     this.updateConfig(this.settings);
   }
 }

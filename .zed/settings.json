@@ -1,39 +1,46 @@
 {
   "languages": {
     "JavaScript": {
+      "formatter": "language_server",
       "language_servers": [
         "deno",
         "!typescript-language-server",
         "!vtsls",
-        "!eslint"
+        "!eslint",
       ],
-      "formatter": "language_server"
+    },
+    "JSON": {
+      "language_servers": ["json-language-server"],
+      "formatter": "language_server",
+    },
+    "JSONC": {
+      "language_servers": ["json-language-server"],
+      "formatter": "prettier",
     },
     "Markdown": {
-      "format_on_save": "off"
+      "format_on_save": "on",
+      "formatter": "language_server",
     },
     "TSX": {
       "language_servers": [
         "deno",
         "!typescript-language-server",
         "!vtsls",
-        "!eslint"
+        "!eslint",
       ],
-      "formatter": "language_server"
+      "formatter": "language_server",
     },
     "TypeScript": {
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true,
+      },
       "language_servers": [
         "deno",
         "!typescript-language-server",
         "!vtsls",
-        "!eslint"
+        "!eslint",
       ],
-      "formatter": "language_server"
-    }
+      "formatter": "language_server",
+    },
   },
-  "lsp": {
-    "eslint": {
-      "enable_lsp_tasks": true
-    }
-  }
 }

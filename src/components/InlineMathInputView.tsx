@@ -1,8 +1,8 @@
-import { Component, jsx } from "../DCGView";
-import { InlineMathInputViewGeneral } from "./desmosComponents";
+import { Component, jsx } from "#DCGView";
+import { InlineMathInputViewGeneral } from "./desmosComponents.ts";
 
 /** InlineMathInputViewGeneral, but fills in default `readonly: false` */
-export default class InlineMathInputView extends Component<
+export class InlineMathInputView extends Component<
   Omit<ConstructorParameters<typeof InlineMathInputViewGeneral>[0], "readonly">
 > {
   template() {

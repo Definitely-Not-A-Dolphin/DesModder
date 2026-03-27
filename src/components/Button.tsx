@@ -2,7 +2,7 @@ import "./Button.less";
 import { Component, jsx } from "#DCGView";
 import { MaybeClassDict, mergeClass } from "#utils/utils.ts";
 
-export default class Button extends Component<{
+export class Button extends Component<{
   color: "blue" | "red" | "light-gray";
   class?: MaybeClassDict;
   onTap: (e: Event) => void;

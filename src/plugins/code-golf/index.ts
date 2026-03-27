@@ -1,11 +1,15 @@
-import { AllActions } from "src/globals/extra-actions";
-import { Inserter, PluginController } from "../PluginController";
-import { DispatchedEvent, ExpressionModel, FolderModel } from "src/globals";
-import { populateGolfStats } from "./golf-model";
-import { GolfStatsPanelFn } from "./GolfStatsPanel";
-import { Config, configList } from "./config";
+import {
+  AllActions,
+  DispatchedEvent,
+  ExpressionModel,
+  FolderModel,
+} from "#globals";
+import { Inserter, PluginController } from "../PluginController.ts";
+import { Config, configList } from "./config.ts";
+import { populateGolfStats } from "./golf-model.ts";
+import { GolfStatsPanelFn } from "./GolfStatsPanel.tsx";
 
-declare module "src/globals/extra-actions" {
+declare module "../../globals/extra-actions.ts" {
   interface AllActions {
     "code-golf": {
       type: "dsm-code-golf-enable-despite-length";
@@ -17,7 +21,7 @@ declare module "src/globals/extra-actions" {
 export default class CodeGolf extends PluginController<Config> {
   static id = "code-golf" as const;
   static enabledByDefault = false;
-  static config = configList;
+  static override config = configList;
 
   expressionItemCostPanel(model: ExpressionModel): Inserter {
     return () => GolfStatsPanelFn(this.cc, model);
@@ -27,11 +31,11 @@ export default class CodeGolf extends PluginController<Config> {
     return () => GolfStatsPanelFn(this.cc, model);
   }
 
-  afterConfigChange(): void {}
+  override afterConfigChange(): void {}
 
-  afterEnable() {}
+  override afterEnable() {}
 
-  afterDisable() {}
+  override afterDisable() {}
 
   handleDispatchedAction(action: DispatchedEvent) {
     switch (action.type) {

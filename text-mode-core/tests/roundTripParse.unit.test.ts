@@ -1,6 +1,7 @@
 // Following imports must go after Desmos loads.
+import Desmos from "desmos";
 import { buildConfigFromGlobals } from "..";
-import { Expression, Concrete } from "../TextAST";
+import { Concrete, Expression } from "../TextAST";
 import { AnyRootOrChild } from "../aug/AugLatex";
 import { latexTreeToString as _latexTreeToString } from "../aug/augLatexToRaw";
 import { parseRootLatex as _parseRootLatex } from "../aug/rawToAug";
@@ -11,10 +12,10 @@ import { rootLatexToAST } from "../up/augToAST";
 // eslint-disable-next-line @desmodder/eslint-rules/no-reach-past-exports
 import "../../src/tests/run_calc_for_tests";
 
-const Calc = window.Desmos.GraphingCalculator(
+const Calc = Desmos.GraphingCalculator(
   document.getElementById("graph-container")!
 );
-const cfg = buildConfigFromGlobals(window.Desmos, Calc);
+const cfg = buildConfigFromGlobals(Desmos, Calc);
 
 function parseRootLatex(s: string) {
   return _parseRootLatex(cfg, s);

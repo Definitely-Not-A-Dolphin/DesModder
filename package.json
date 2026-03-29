@@ -49,9 +49,9 @@
   },
   "devDependencies": {
     "@desmodder/eslint-rules": "*",
+    "@desmodder/types": "^0.1.0",
     "@lezer/generator": "^1.7.0",
     "@types/chrome": "0.0.263",
-    "@types/desmos": "^1.6.3",
     "@types/eslint": "^9.6.1",
     "@types/eslint-config-prettier": "^6.11.3",
     "@types/jest": "^29.5.12",
@@ -93,6 +93,7 @@
     "@lezer/common": "^1.2.1",
     "@lezer/lr": "^1.4.0",
     "client-zip": "^2.4.4",
+    "desmos": "^1.5.4",
     "idb": "^8.0.0",
     "js-tokens": "^9.0.0",
     "moo": "^0.5.2",

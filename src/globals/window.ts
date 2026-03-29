@@ -1,23 +1,24 @@
-import { DCGViewModule } from "../DCGView";
-import Node from "#parsing/parsenode.ts";
 import DSM from "#DSM";
+import Node from "#parsing/parsenode.ts";
+import Desmos from "desmos";
+import { GraphState } from "../../graph-state";
 import {
   CheckboxComponent,
+  DropdownPopoverComponent,
   DStaticMathquillViewComponent,
-  ImageIconViewComponent,
-  ExpressionIconViewComponent,
   ExpressionFooterViewComponent,
+  ExpressionIconViewComponent,
+  ImageIconViewComponent,
   InlineMathInputViewComponent,
+  MathQuillConfig,
   MathQuillField,
   MathQuillViewComponent,
   SegmentedControlComponent,
   TooltipComponent,
-  MathQuillConfig,
-  DropdownPopoverComponent,
 } from "../components/desmosComponents";
+import { DCGViewModule } from "../DCGView";
 import { GenericSettings, PluginID } from "../plugins";
 import { ItemModel, ValueType, ValueTypeMap } from "./models";
-import { GraphState } from "../../graph-state";
 
 export interface DWindow extends Window {
   DesModder: any;

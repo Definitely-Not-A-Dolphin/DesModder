@@ -9,5 +9,5 @@
     { "path": "../metadata" },
     { "path": "../apply-replacements" }
   ],
-  "include": ["**/*"]
+  "include": ["**/*", "../desmosTypes/desmosTypes.d.ts"]
 }

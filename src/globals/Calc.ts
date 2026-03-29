@@ -3,6 +3,7 @@ import { GraphState, ItemState, Product } from "../../graph-state";
 import { MathQuillField } from "#components";
 import { Matrix3 } from "./matrix3";
 import type { DispatchedEvent } from "./extra-actions";
+import { Calculator } from "@desmodder/types";
 
 export type { DispatchedEvent };
 
@@ -349,7 +350,7 @@ interface CalcPrivate {
       // create and wait for a shared calculator, so this is
       // actually a synchronous screenshot but with the extra
       // permitted options from the `asyncScreenshot` API.
-      asyncScreenshot: Desmos.Calculator["asyncScreenshot"];
+      asyncScreenshot: Calculator["asyncScreenshot"];
       // 2d only?
       viewportController: {
         setEvaluatedViewport: (vp: ViewportClass) => void;
@@ -391,5 +392,5 @@ interface CalcDummy {
   _dsmConnected?: boolean;
 }
 
-export type Calc = CalcDummy & CalcPrivate & Desmos.Calculator;
+export type Calc = CalcDummy & CalcPrivate & Calculator;
 export type CalcController = Calc["controller"];

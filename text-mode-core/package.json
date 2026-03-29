@@ -17,7 +17,8 @@
     "#moo": "moo",
     "#parsing/*": "src/parsing/*",
     "#metadata/*": "metadata/*",
-    "#utils/*": "src/utils/*"
+    "#utils/*": "src/utils/*",
+    "@desmodder/types": ""
   },
   "repository": {
     "type": "git",

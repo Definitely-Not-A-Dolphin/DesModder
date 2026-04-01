@@ -384,3 +384,4 @@ quake-pro-opt-scalarZoomed-desc = Combats perspective distortion by multiplying 
 ## Table Exporting
 table-exporting-name = Table Exporting
 table-exporting-desc = Export your favorite tables in all sorts of ways.
+table-exporting-export = Export

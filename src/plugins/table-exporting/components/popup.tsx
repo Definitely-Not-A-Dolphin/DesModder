@@ -1,17 +1,7 @@
 import { Component, jsx } from "#DCGView";
-import { ExportOptions } from "../types";
+import "./popup.less";
 
-export function renderPopup(eo: ExportOptions) {
-  return <Popup eo={eo} />;
-}
-
-export class Popup extends Component<{ eo: ExportOptions }> {
-  eo!: ExportOptions;
-
-  init() {
-    this.eo = this.props.eo();
-  }
-
+export class Popup extends Component {
   template() {
     return <div class="dsm-export-box">Hallo</div>;
   }

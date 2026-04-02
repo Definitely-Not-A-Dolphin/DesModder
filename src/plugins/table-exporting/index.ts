@@ -1,24 +1,66 @@
+import { DCGView, MountedComponent } from "#DCGView";
 import { TableModel } from "#globals";
 import { ActionButton } from "src/core-plugins/expr-action-buttons/index.ts";
 import { tex2typst } from "tex2typst";
 import { PluginController } from "../PluginController.ts";
-import { ExportOption } from "./types.ts";
+import { Popup } from "./components/popup.tsx";
+import { ExportOption } from "./utils.ts";
 
 export default class TableExporting extends PluginController {
   static id = "table-exporting" as const;
   static enabledByDefault = true;
+  static exportButtonClassName = "dsm-export-table" as const;
+  exportButton: HTMLElement | null = null;
+  mountedDiv: HTMLDivElement | null = null;
+  isPopupOpen = false;
+  view: MountedComponent | null = null;
 
   actionButtons: ActionButton[] = [
     {
       tooltip: "table-exporting-export",
-      buttonClass: "dsm-export-table",
+      buttonClass: TableExporting.exportButtonClassName,
       iconClass: "dsm-icon-bookmark",
-      onTap: (model) => this.exportTable(model as TableModel, "csv"),
+      onTap: () => (this.isPopupOpen ? this.unmountPopup() : this.mountPopup()),
       predicate: (model) => model.type === "table",
     },
   ];
 
-  exportTable(model: TableModel, exportOption: ExportOption) {
+  mountPopup(): void {
+    this.exportButton = getElementByClassName(
+      TableExporting.exportButtonClassName
+    )!;
+    this.mountedDiv = document.createElement("div");
+    this.exportButton.after(this.mountedDiv);
+    this.view = DCGView.mountToNode(Popup, this.mountedDiv, {});
+    this.isPopupOpen = true;
+
+    const editListDoneButton = getElementByClassName(
+      "dcg-btn-blue dcg-action-toggle-edit dcg-do-not-blur"
+    );
+    const editListDeleteAllButton = getElementByClassName(
+      "dcg-btn-red dcg-action-clearall"
+    );
+
+    if (!(editListDoneButton && editListDeleteAllButton)) return; // What?
+
+    editListDoneButton.addEventListener("click", () => {
+      this.isPopupOpen = false;
+    });
+
+    editListDeleteAllButton.addEventListener("click", () => {
+      this.isPopupOpen = false;
+    });
+  }
+
+  unmountPopup(): void {
+    this.exportButton = getElementByClassName(
+      TableExporting.exportButtonClassName
+    )!;
+    DCGView.unmountFromNode(this.mountedDiv!);
+    this.isPopupOpen = false;
+  }
+
+  exportTable(model: TableModel, exportOption: ExportOption): string {
     let rotatedTable: string[][] = [];
 
     for (const column of model.columns) {
@@ -27,8 +69,6 @@ export default class TableExporting extends PluginController {
 
     // Now rectanglify it
     rotatedTable = rectanglify2Darray(rotatedTable);
-
-    console.log(rotatedTable);
 
     const adjustedTable = rotate2DArray(rotatedTable);
     void navigator.clipboard.writeText(adjustedTable.toString());
@@ -55,7 +95,7 @@ export function toCSV(table: string[][]): string {
   return csvTable;
 }
 
-export function toTypst(table: string[][]): string {
+function toTypst(table: string[][]): string {
   let typstTable = `#table(\n\tcolumn: ${table[0].length}\n`;
   for (const row of table) {
     typstTable += "\t";
@@ -76,7 +116,7 @@ export function toTypst(table: string[][]): string {
   return typstTable;
 }
 
-export function rectanglify2Darray<T>(array2D: T[][]): T[][] {
+function rectanglify2Darray<T>(array2D: T[][]): T[][] {
   // First find the longest column
   let longestColumnLength = array2D[0].length;
   for (const column of array2D) {
@@ -93,11 +133,11 @@ export function rectanglify2Darray<T>(array2D: T[][]): T[][] {
 }
 
 // Make sure that array2D is rectangular before calling
-export function rotate2DArray<T>(array2D: T[][]): T[][] {
+function rotate2DArray<T>(array2D: T[][]): T[][] {
   const width = array2D.length;
   const height = array2D[0].length;
-
   const rotated = new Array<T[]>(height);
+
   for (let y = 0; y < height; y++) {
     rotated[y] = new Array<T>(width);
 
@@ -108,3 +148,6 @@ export function rotate2DArray<T>(array2D: T[][]): T[][] {
 
   return rotated.reverse();
 }
+
+const getElementByClassName = (className: string) =>
+  document.getElementsByClassName(className).item(0) as HTMLElement | null;

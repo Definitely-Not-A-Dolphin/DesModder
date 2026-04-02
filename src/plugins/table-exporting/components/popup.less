@@ -1,10 +1,21 @@
-@width: 120px;
-@height: 120px;
+.dsm-table-exporting-context-menu ul {
+  position: absolute;
+  background-color: white;
+  border-radius: 5px;
+  filter: drop-shadow(#00000044 3px 3px 3px);
+  padding: 5px;
+  border: 1px solid #bbbbbb;
+  overflow: auto;
 
-.dsm-export-box {
-  height: @height;
-  width: @width;
+  list-style-type: none;
+  margin: 0;
+  text-indent: 0;
+  line-height: 1.5em;
+}
 
-  background-color: "#ffffff";
-  border-radius: 20px;
+.dsm-table-exporting-context-menu-button-container {
+  margin: 0px 0 0;
+  .dcg-tooltip-hit-area-container .dsm-table-exporting-context-menu-button {
+    margin: 0;
+  }
 }
